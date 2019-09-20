@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # This file is part of Openplotter.
-# Copyright (C) 2019 by xxxx <https://github.com/xxxx/openplotter-myapp>
+# Copyright (C) 2019 by e-sailing <https://github.com/e-sailing/openplotter-serial>
 #
 # Openplotter is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,18 +22,18 @@ from openplotterSettings import language
 # use the class "platform" to get info about the host system. See: https://github.com/openplotter/openplotter-settings/blob/master/openplotterSettings/platform.py
 from openplotterSettings import platform
 
-class MyFrame(wx.Frame):
+class SerialFrame(wx.Frame):
 	def __init__(self):
 		self.conf = conf.Conf()
 		self.conf_folder = self.conf.conf_folder
 		self.platform = platform.Platform()
 		self.currentdir = os.path.dirname(__file__)
 		self.currentLanguage = self.conf.get('GENERAL', 'lang')
-		self.language = language.Language(self.currentdir,'openplotter-myapp',self.currentLanguage)
+		self.language = language.Language(self.currentdir,'openplotter-serial',self.currentLanguage)
 
-		wx.Frame.__init__(self, None, title=_('OpenPlotter My App'), size=(800,444))
+		wx.Frame.__init__(self, None, title=_('OpenPlotter Serial'), size=(800,444))
 		self.SetFont(wx.Font(10, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
-		icon = wx.Icon(self.currentdir+"/data/openplotter-myapp.png", wx.BITMAP_TYPE_PNG)
+		icon = wx.Icon(self.currentdir+"/data/openplotter-serial.png", wx.BITMAP_TYPE_PNG)
 		self.SetIcon(icon)
 		self.CreateStatusBar()
 		font_statusBar = self.GetStatusBar().GetFont()
@@ -60,10 +60,10 @@ class MyFrame(wx.Frame):
 
 		self.notebook = wx.Notebook(self)
 		self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.onTabChange)
-		self.myapp = wx.Panel(self.notebook)
+		self.serial = wx.Panel(self.notebook)
 		self.connections = wx.Panel(self.notebook)
 		self.output = wx.Panel(self.notebook)
-		self.notebook.AddPage(self.myapp, _('My App'))
+		self.notebook.AddPage(self.serial, _('Serial'))
 		self.notebook.AddPage(self.connections, _('Data output'))
 		self.notebook.AddPage(self.output, _('Output'))
 		self.il = wx.ImageList(24, 24)
@@ -80,7 +80,7 @@ class MyFrame(wx.Frame):
 		vbox.Add(self.notebook, 1, wx.EXPAND)
 		self.SetSizer(vbox)
 
-		self.pageMyapp()
+		self.pageSerial()
 		self.pageConnections()
 		self.pageOutput()
 		
@@ -111,7 +111,7 @@ class MyFrame(wx.Frame):
 
 	# create your page in the manuals and add the link here
 	def OnToolHelp(self, event): 
-		url = "/usr/share/openplotter-doc/template/myapp_app.html"
+		url = "/usr/share/openplotter-doc/template/serial_app.html"
 		webbrowser.open(url, new=2)
 
 	def OnToolSettings(self, event): 
@@ -126,9 +126,9 @@ class MyFrame(wx.Frame):
 		sizer.Add(self.logger, 1, wx.EXPAND, 0)
 		self.output.SetSizer(sizer)
 
-	def pageMyapp(self):
-		myoptionLabel = wx.StaticText(self.myapp, label=_('Sending:  '))
-		self.myoption = wx.StaticText(self.myapp, label='')
+	def pageSerial(self):
+		myoptionLabel = wx.StaticText(self.serial, label=_('Sending:  '))
+		self.myoption = wx.StaticText(self.serial, label='')
 
 		hbox = wx.BoxSizer(wx.HORIZONTAL)
 		hbox.Add(myoptionLabel, 0, wx.LEFT | wx.EXPAND, 5)
@@ -137,13 +137,13 @@ class MyFrame(wx.Frame):
 		vbox = wx.BoxSizer(wx.VERTICAL)
 		vbox.Add(hbox, 0, wx.ALL | wx.EXPAND, 5)
 		vbox.AddStretchSpacer(1)
-		self.myapp.SetSizer(vbox)
+		self.serial.SetSizer(vbox)
 
-		self.readMyapp()
+		self.readSerial()
 
-	def readMyapp(self):
+	def readSerial(self):
 		# here get data from conf file to load the surrent settings
-		value = self.conf.get('MYAPP', 'sending')
+		value = self.conf.get('SERIAL', 'sending')
 		if not value: value = '0' 
 		self.myoption.SetLabel(value)
 		if value == '1': self.toolbar1.ToggleTool(103,True)
@@ -209,7 +209,7 @@ class MyFrame(wx.Frame):
 		self.toolbar4.EnableTool(402,False)
 
 		self.listConnections.DeleteAllItems()
-		enabled = self.conf.get('MYAPP', 'sending')
+		enabled = self.conf.get('SERIAL', 'sending')
 		for i in self.ports.connections:
 			if i['editable'] == '1': editable = _('yes')
 			else: editable = _('no')
@@ -258,24 +258,24 @@ class MyFrame(wx.Frame):
 
 	def OnToolApply(self,e):
 		if self.toolbar1.GetToolState(103):
-			self.conf.set('MYAPP', 'sending', '1')
+			self.conf.set('SERIAL', 'sending', '1')
 			# starts service and enables it at startup. Use self.platform.admin instead of sudo
 			subprocess.Popen([self.platform.admin, 'python3', self.currentdir+'/service.py', 'enable'])
 			self.ShowStatusBarGREEN(_('Sending dummy data enabled'))
 		else:
-			self.conf.set('MYAPP', 'sending', '0')
+			self.conf.set('SERIAL', 'sending', '0')
 			# stops service and disables it at startup. Use self.platform.admin instead of sudo
 			subprocess.Popen([self.platform.admin, 'python3', self.currentdir+'/service.py', 'disable'])
 			self.ShowStatusBarYELLOW(_('Sending dummy data disabled'))
 		for i in self.ports.connections:
-			self.conf.set('MYAPP', i['id'], str(i['port']))
-		self.readMyapp()
+			self.conf.set('SERIAL', i['id'], str(i['port']))
+		self.readSerial()
 		self.readConnections()
 		self.printConnections()
 		
 	def OnToolCancel(self,e):
 		self.ShowStatusBarRED(_('Changes canceled'))
-		self.readMyapp()
+		self.readSerial()
 		self.readConnections()
 		self.printConnections()
 
@@ -327,7 +327,7 @@ class editPort(wx.Dialog):
 
 def main():
 	app = wx.App()
-	MyFrame().Show()
+	SerialFrame().Show()
 	app.MainLoop()
 
 if __name__ == '__main__':
