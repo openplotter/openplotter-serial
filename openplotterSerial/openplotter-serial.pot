@@ -2,21 +2,20 @@
 # Copyright (C) YEAR ORGANIZATION
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2019-09-28 22:45+0200\n"
-"PO-Revision-Date: 2019-09-28 22:47+0200\n"
-"Language-Team: \n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
 "X-Generator: Poedit 2.2.3\n"
 "X-Poedit-Basepath: .\n"
-"Last-Translator: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: en_GB\n"
 "X-Poedit-SearchPath-0: openplotterSerial.py\n"
 
 #: openplotterSerial.py:62
@@ -120,8 +119,7 @@ msgid "No device selected"
 msgstr ""
 
 #: openplotterSerial.py:483
-msgid ""
-"This action disables Bluetooth and enables UART. OpenPlotter will reboot.\n"
+msgid "This action disables Bluetooth and enables UART. OpenPlotter will reboot.\n"
 msgstr ""
 
 #: openplotterSerial.py:484 openplotterSerial.py:491
@@ -133,8 +131,7 @@ msgid "Question"
 msgstr ""
 
 #: openplotterSerial.py:490
-msgid ""
-"This action disables UART and enables Bluetooth. OpenPlotter will reboot.\n"
+msgid "This action disables UART and enables Bluetooth. OpenPlotter will reboot.\n"
 msgstr ""
 
 #: openplotterSerial.py:549
@@ -142,8 +139,7 @@ msgid "Failed. No port selected"
 msgstr ""
 
 #: openplotterSerial.py:554
-msgid ""
-"The alias must be a lowercase string between 1 and 8 characters or numbers."
+msgid "The alias must be a lowercase string between 1 and 8 characters or numbers."
 msgstr ""
 
 #: openplotterSerial.py:560
@@ -163,8 +159,7 @@ msgid "Please select bauds"
 msgstr ""
 
 #: openplotterSerial.py:600
-msgid ""
-"Device with duplicate vendor and product must be set to \"Remember port\"."
+msgid "Device with duplicate vendor and product must be set to \"Remember port\"."
 msgstr ""
 
 #: openplotterSerial.py:607
@@ -187,21 +182,16 @@ msgstr ""
 msgid ""
 "You have assigned one or more N2K devices to Signal K > OpenCPN.\n"
 "\n"
-"They are ready to send data to Signal K but if you want OpenCPN to get data "
-"from Signal K you need to use the Signal K plugins \"SK to NMEA 0183\" and "
-"\"N2K AIS to NMEA0183\".\n"
+"They are ready to send data to Signal K but if you want OpenCPN to get data from Signal K you need to use the Signal K plugins \"SK to NMEA 0183\" and \"N2K AIS to NMEA0183\".\n"
 "\n"
-"Your devices are also ready to send data from Signal K to your N2K network. "
-"Use the Signal K plugin \"SK to N2K\" and allow PGNs transmission using the "
-"\"Open TX PGNs\" tool.\n"
+"Your devices are also ready to send data from Signal K to your N2K network. Use the Signal K plugin \"SK to N2K\" and allow PGNs transmission using the \"Open TX PGNs\" tool.\n"
 "\n"
 " Go to \"CAN\" tab to access plugins and settings."
 msgstr ""
 
 #: openplotterSerial.py:773
 msgid ""
-"The default OpenCPN connection is missing and it is not getting data from "
-"Signal K. Please create this connection in OpenCPN:\n"
+"The default OpenCPN connection is missing and it is not getting data from Signal K. Please create this connection in OpenCPN:\n"
 "\n"
 "Network\n"
 "Protocol: TCP\n"
@@ -211,8 +201,7 @@ msgstr ""
 
 #: openplotterSerial.py:775
 msgid ""
-"The default OpenCPN connection is disabled and it is not getting data from "
-"Signal K. Please enable this connection in OpenCPN:\n"
+"The default OpenCPN connection is disabled and it is not getting data from Signal K. Please enable this connection in OpenCPN:\n"
 "\n"
 "Network\n"
 "Protocol: TCP\n"

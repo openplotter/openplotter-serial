@@ -25,9 +25,20 @@ from openplotterSettings import platform
 
 class SerialFrame(wx.Frame):
 	def __init__(self):
+		self.rpitype = ''
 		try:
 			modelfile = open('/sys/firmware/devicetree/base/model', 'r', 2000)
-			self.rpimodel = modelfile.read()
+			self.rpimodel = modelfile.read()[:-1]
+			if self.rpimodel == 'Raspberry Pi Zero W Rev 1.1':
+				self.rpitype = '0W'
+			elif self.rpimodel == 'Raspberry Pi 2 Model B Rev 1.1':
+				self.rpitype = '2B'
+			elif self.rpimodel == 'Raspberry Pi 3 Model B Rev 1.2':
+				self.rpitype = '3B'
+			elif self.rpimodel == 'Raspberry Pi 3 Model B Plus Rev 1.3':
+				self.rpitype = '3B+'
+			elif self.rpimodel == 'Raspberry Pi 4 Model B Rev 1.1':
+				self.rpitype = '4B'				
 			modelfile.close()
 		except:
 			self.rpimodel = ''
@@ -37,8 +48,14 @@ class SerialFrame(wx.Frame):
 		self.home = self.conf_folder
 		self.home = os.path.expanduser("~")
 		self.SK_settings = SK_settings(self.conf)
+		self.SK = self.SK_settings.installed
+		self.kplex = os.path.exists(self.home +'/.kplex.conf')
+		self.gpsd = os.path.exists('/etc/default/gpsd')
+		self.pypilot = os.path.exists(self.home+'/pypilot_serial_ports')
+		#print(self.SK, self.kplex, self.gpsd, self.pypilot)
 		self.platform = platform.Platform()
 		self.currentdir = os.path.dirname(__file__)
+		#self.currentdir = '/home/pi/openplotter-serial/openplotterSerial'
 		self.currentLanguage = self.conf.get('GENERAL', 'lang')
 		self.language = language.Language(self.currentdir,'openplotter-serial',self.currentLanguage)
 
@@ -138,7 +155,7 @@ class SerialFrame(wx.Frame):
 		self.list_Serialinst.Bind(wx.EVT_LIST_ITEM_SELECTED, self.on_SerialinstSelected)
 		self.list_Serialinst.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.on_SerialinstDeselected)
 		
-		ttyOP_label = wx.StaticText(self.p_serial, label=_('/dev/ttyOP_'))
+		ttyOP_label = wx.StaticText(self.p_serial, label='/dev/ttyOP_')
 		name_label = wx.StaticText(self.p_serial, label=_('alias'), size=(100,-1))
 		self.Serial_OPname = wx.TextCtrl(self.p_serial, size=(100,-1))
 	
@@ -147,9 +164,10 @@ class SerialFrame(wx.Frame):
 		self.serialData.Bind(wx.EVT_CHOICE, self.onSelectData)
 
 		assignment_label = wx.StaticText(self.p_serial, label=_('assignment'))
-		self.assignmentN2K = [_('manual'),'Signal K > OpenCPN']
+		self.assign0183 = True
+		self.assignmentN2K = [_('manual')]
+		self.assignment0183 = [_('manual')]
 		#self.assignment0183 = [_('manual'),'GPSD','Signal K > OpenCPN','pypilot > Signal K > OpenCPN','GPSD > pypilot > Signal K > OpenCPN']
-		self.assignment0183 = [_('manual'),'GPSD','Signal K > OpenCPN']
 		self.Serial_assignment = wx.Choice(self.p_serial, choices=self.assignment0183, style=wx.CB_READONLY, size=(100,-1))
 		self.Serial_assignment.Bind(wx.EVT_CHOICE, self.onSelectAssigment)
 
@@ -303,7 +321,6 @@ class SerialFrame(wx.Frame):
 						except: pass
 
 			l = [name, i[5:], vendor_id, model_id, serial, port, remember]
-			#print(l)
 			self.list_Serialinst.Append(l)
 			
 		for name in self.Serialinst:
@@ -340,26 +357,34 @@ class SerialFrame(wx.Frame):
 		self.reset_Serial_fields()
 		if not valid: return
 
-		if 'Raspberry' in self.rpimodel:
-			rpi = '3'
-			if '4' in self.rpimodel:
-				rpi = '4'
+		hublen = 9
+		portpos = ''
+		usbport = self.list_Serialinst.GetItemText(i, 5)
+		#print(self.rpitype,usbport)
+		if self.rpitype == '3B':
+			if usbport[4:5] == '2': portpos = 'ul'
+			elif usbport[4:5] == '4': portpos = 'ur'
+			elif usbport[4:5] == '3': portpos = 'll'
+			elif usbport[4:5] == '5': portpos = 'lr'
+		elif self.rpitype == '3B+':
+			if usbport[4:5] == '1':
+				hublen = 11
+				portpos = 'ul'
+				if usbport[6:7] == '3': portpos = 'll'
+			elif usbport[4:5] == '2': portpos = 'lr'
+			elif usbport[4:5] == '3': portpos = 'ur'
+		elif self.rpitype == '4B':
+			if usbport[4:5] == '3': portpos = '4ul'
+			elif usbport[4:5] == '1': portpos = '4ur'
+			elif usbport[4:5] == '4': portpos = '4ll'
+			elif usbport[4:5] == '2': portpos = '4lr'
+
+		if portpos != '':
+			#print(self.currentdir+"/data/rpi_port_" + portpos + ".png")
 			self.toolbar1.DeleteTool(105)
 			self.toolbar1.DeleteTool(106)
 			
-			image = self.emptyimage
-			hublen = 9
-			portnr = self.list_Serialinst.GetItemText(i, 5)[4:5]
-			if portnr == '1':
-				hublen = 11
-				if rpi == '3':
-					if self.list_Serialinst.GetItemText(i, 5)[6:7] == '3':
-						portnr = '4'
-
-			#print(portnr,self.currentdir+"/data/rpi" + rpi + "_port" + portnr + ".png")
-			
-			if portnr in ['1','2','3','4']:
-				image = wx.Bitmap(self.currentdir+"/data/rpi" + rpi + "_port" + portnr + ".png")
+			image = wx.Bitmap(self.currentdir+"/data/rpi_port_" + portpos + ".png")
 			self.toolbar1.AddTool(105, 'Raspberry Pi', image)
 			
 			if len(self.list_Serialinst.GetItemText(i, 5)) > hublen:
@@ -442,10 +467,9 @@ class SerialFrame(wx.Frame):
 	def onSelectData(self, e=0):
 		selected = self.serialData.GetStringSelection()
 		self.Serial_assignment.Clear()
-		if selected == 'NMEA 0183':
-			self.Serial_assignment.AppendItems(self.assignment0183)
-		elif selected == 'NMEA 2000':
-			self.Serial_assignment.AppendItems(self.assignmentN2K)
+		self.assign0183 = selected == 'NMEA 0183'
+		if self.assign0183: self.Serial_assignment.AppendItems(self.assignment0183)
+		else: self.Serial_assignment.AppendItems(self.assignmentN2K)
 		self.Serial_baud_select.SetSelection(-1)
 		self.Serial_baud_select.Disable()
 
@@ -584,7 +608,8 @@ class SerialFrame(wx.Frame):
 					return
 		
 		self.Serialinst[name] = ii
-		self.conf.set('UDEV', 'Serialinst', str(self.Serialinst))
+		self.conf.set('UDEV', 'Serialinst', str(self.Serialinst))		
+		
 		self.apply_changes_Serialinst()
 										
 	def apply_changes_Serialinst(self):
@@ -615,77 +640,76 @@ class SerialFrame(wx.Frame):
 		self.start_udev()
 
 		# write gpsd config
-		gpsd_exists = False
-		file = open('/etc/default/gpsd', 'r')
-		file1 = open(self.home+'/gpsd', 'w')
-		while True:
-			line = file.readline()
-			if not line: break
-			if line[:9] == 'DEVICES="':
-				file1.write('DEVICES="')
-				for name in self.Serialinst:
-					if self.Serialinst[name]['assignment'] == 'GPSD' or self.Serialinst[name]['assignment'] == 'GPSD > pypilot > Signal K > OpenCPN':
-						gpsd_exists = True
-						file1.write(name + ' ')
-				file1.write('"\n')
-			else: file1.write(line)
-		file.close()
-		file1.close()
+		if self.gpsd:
+			gpsd_exists = False
+			file = open('/etc/default/gpsd', 'r')
+			file1 = open(self.home+'/gpsd', 'w')
+			while True:
+				line = file.readline()
+				if not line: break
+				if line[:9] == 'DEVICES="':
+					file1.write('DEVICES="')
+					for name in self.Serialinst:
+						if self.Serialinst[name]['assignment'] == 'GPSD' or self.Serialinst[name]['assignment'] == 'GPSD > pypilot > Signal K > OpenCPN':
+							gpsd_exists = True
+							file1.write(name + ' ')
+					file1.write('"\n')
+				else: file1.write(line)
+			file.close()
+			file1.close()
 
-		if os.system('diff '+self.home+'/gpsd /etc/default/gpsd > /dev/null'):
-			os.system('sudo mv '+self.home+'/gpsd /etc/default')
-			os.system('sudo service gpsd restart')
-		else: os.system('rm -f '+self.home+'/gpsd')
+			if os.system('diff '+self.home+'/gpsd /etc/default/gpsd > /dev/null'):
+				os.system('sudo mv '+self.home+'/gpsd /etc/default')
+				os.system('sudo service gpsd restart')
+			else: os.system('rm -f '+self.home+'/gpsd')
 
-		'''
 		# write pypilot allowed ports
-		resetPypilot = False
-		file = open(self.home+'/pypilot_serial_ports', 'w')
-		for name in self.Serialinst:
-			if self.Serialinst[name]['assignment'] == 'pypilot > Signal K > OpenCPN':
-				file.write(name + '\n')
-		file.close()
-		path = self.home + '/.pypilot/serial_ports'
-		if os.system('diff '+self.home+'/pypilot_serial_ports ' + path + ' > /dev/null'):
-			os.system('mv '+self.home+'/pypilot_serial_ports ' + path)
-			resetPypilot = True
-		else: os.system('rm -f '+self.home+'/pypilot_serial_ports')
-
-		checkPypilot = False
-		pypilotMode = self.conf.get('PYPILOT', 'mode')
-		for name in self.Serialinst:
-			if 'pypilot' in self.Serialinst[name]['assignment']: checkPypilot = True
-		if checkPypilot:
-			if pypilotMode != 'basic autopilot':
-				self.conf.set('PYPILOT', 'mode', 'basic autopilot')
+		if self.pypilot:
+			resetPypilot = False
+			file = open(self.home+'/pypilot_serial_ports', 'w')
+			for name in self.Serialinst:
+				if self.Serialinst[name]['assignment'] == 'pypilot > Signal K > OpenCPN':
+					file.write(name + '\n')
+			file.close()
+			path = self.home + '/.pypilot/serial_ports'
+			if os.system('diff '+self.home+'/pypilot_serial_ports ' + path + ' > /dev/null'):
+				os.system('mv '+self.home+'/pypilot_serial_ports ' + path)
 				resetPypilot = True
-		else:
-			if pypilotMode == 'basic autopilot':
-				check_imu = self.check_imu()
-				if check_imu: 
-					imu_data = eval(check_imu) 
-					imu_name = imu_data[0][0]
-					if imu_name != '0': 
-						self.conf.set('PYPILOT', 'mode', 'imu')
-						resetPypilot = True
+			else: os.system('rm -f '+self.home+'/pypilot_serial_ports')
+
+			checkPypilot = False
+			pypilotMode = self.conf.get('PYPILOT', 'mode')
+			for name in self.Serialinst:
+				if 'pypilot' in self.Serialinst[name]['assignment']: checkPypilot = True
+			if checkPypilot:
+				if pypilotMode != 'basic autopilot':
+					self.conf.set('PYPILOT', 'mode', 'basic autopilot')
+					resetPypilot = True
+			else:
+				if pypilotMode == 'basic autopilot':
+					check_imu = self.check_imu()
+					if check_imu: 
+						imu_data = eval(check_imu) 
+						imu_name = imu_data[0][0]
+						if imu_name != '0': 
+							self.conf.set('PYPILOT', 'mode', 'imu')
+							resetPypilot = True
+						else: 
+							self.conf.set('PYPILOT', 'mode', 'disabled')
+							resetPypilot = True
 					else: 
 						self.conf.set('PYPILOT', 'mode', 'disabled')
 						resetPypilot = True
-				else: 
-					self.conf.set('PYPILOT', 'mode', 'disabled')
-					resetPypilot = True
 
-		if resetPypilot:
-			self.read_pypilot()
-			self.on_apply_changes_pypilot()
-		'''
+			if resetPypilot:
+				self.read_pypilot()
+				self.on_apply_changes_pypilot()
+
 		# check kplex interfaces
-		try:
+		if self.kplex:
 			kplexfile = open(self.home +'/.kplex.conf', 'r', 2000)
 			data = kplexfile.read()
 			kplexfile.close()
-		except:pass
-		else:
 			#split in kplex blocks
 			datas = data.split('[')
 			datanew = ''
@@ -723,25 +747,9 @@ class SerialFrame(wx.Frame):
 					self.ShowStatusBarGREEN(_('Kplex restarted'))
 			
 		# check SK devices
-		resetSK = False
-
-		if self.SK_settings.setSKsettings(): resetSK = True
-
-		canDevice = self.SK_settings.ngt1_device
-		if canDevice:
-			exists = False
-			for alias in self.Serialinst:
-				if alias == canDevice:
-					if self.Serialinst[alias]['data'] == 'NMEA 2000' and self.Serialinst[alias]['assignment'] == '0': exists = True
-			if not exists:
-				self.SK_settings.set_ngt1_device('',0)
-				self.SK_settings.enable_disable_device('OPcan',0)
-				self.conf.set('N2K', 'output', '0')
-				self.killDevApps()
-				resetSK = True
-
-		if resetSK: self.restart_SK(0)
-		else: time.sleep(1.5)
+		if self.SK:
+			if self.SK_settings.setSKsettings(): self.restart_SK(0)
+			else: time.sleep(1)
 
 		self.read_Serialinst()
 		#self.read_n2k()
@@ -797,15 +805,27 @@ class SerialFrame(wx.Frame):
 
 		disableUART = wx.Button(self.connections, label=_('disable UART'))
 		disableUART.Bind(wx.EVT_BUTTON, self.on_disable_UART)
+		
+		self.SK_activ = wx.CheckBox(self.connections, label=_('setup serial port in Signal K (not recommended)'))
+		self.SK_activ.Bind(wx.EVT_CHECKBOX, self.on_SK_activ)
+
+		self.gpsd_activ = wx.CheckBox(self.connections, label=_('setup serial port in gpsd (not recommended)'))
+		self.gpsd_activ.Bind(wx.EVT_CHECKBOX, self.on_gpsd_activ)
+
+		self.pypilot_activ = wx.CheckBox(self.connections, label=_('setup serial port in pypilot (not recommended)'))
+		self.pypilot_activ.Bind(wx.EVT_CHECKBOX, self.on_pypilot_activ)
 
 		row2 = wx.BoxSizer(wx.HORIZONTAL)
 		row2.AddStretchSpacer(1)
 		row2.Add(enableUART, 0, wx.ALL | wx.EXPAND, 5)
 		row2.Add(disableUART, 0, wx.ALL | wx.EXPAND, 5)
-
+		
 		vbox = wx.BoxSizer(wx.VERTICAL)
 		vbox.Add(self.toolbar3, 0, wx.LEFT | wx.EXPAND, 0)
 		vbox.Add(row2, 0, wx.LEFT | wx.EXPAND, 0)
+		vbox.Add(self.SK_activ, 0, wx.LEFT | wx.EXPAND, 0)
+		vbox.Add(self.gpsd_activ, 0, wx.LEFT | wx.EXPAND, 0)
+		vbox.Add(self.pypilot_activ, 0, wx.LEFT | wx.EXPAND, 0)
 		vbox.AddStretchSpacer(1)
 		self.connections.SetSizer(vbox)	
 		self.printConnections()
@@ -823,6 +843,54 @@ class SerialFrame(wx.Frame):
 			self.toolbar3.EnableTool(303,False)
 			self.toolbar3.EnableTool(304,False)
 		
+	def on_SK_activ(self, e):
+		if self.SK_activ.GetValue():
+			if not ('Signal K > OpenCPN' in self.assignment0183):
+				self.assignment0183.append('Signal K > OpenCPN')
+				self.assignmentN2K.append('Signal K > OpenCPN')
+
+				self.Serial_assignment.Clear()
+				if self.assign0183: self.Serial_assignment.AppendItems(self.assignment0183)
+				else: self.Serial_assignment.AppendItems(self.assignmentN2K)
+		else:
+			if 'Signal K > OpenCPN' in self.assignment0183:
+				self.assignment0183.remove('Signal K > OpenCPN')
+				self.assignmentN2K.remove('Signal K > OpenCPN')
+				
+				self.Serial_assignment.Clear()
+				if self.assign0183: self.Serial_assignment.AppendItems(self.assignment0183)
+				else: self.Serial_assignment.AppendItems(self.assignmentN2K)
+	
+	def on_gpsd_activ(self, e):
+		if self.gpsd_activ.GetValue():
+			if not ('GPSD' in self.assignment0183):
+				self.assignment0183.append('GPSD')
+
+				self.Serial_assignment.Clear()
+				if self.assign0183: self.Serial_assignment.AppendItems(self.assignment0183)
+		else:
+			if 'GPSD' in self.assignment0183:
+				self.assignment0183.remove('GPSD')
+
+				self.Serial_assignment.Clear()
+				if self.assign0183: self.Serial_assignment.AppendItems(self.assignment0183)
+
+	def on_pypilot_activ(self, e):
+		if self.pypilot_activ.GetValue():
+			if not ('pypilot > Signal K > OpenCPN' in self.assignment0183):
+				self.assignment0183.append('pypilot > Signal K > OpenCPN')
+				if self.gpsd_activ.GetValue(): self.assignment0183.append('GPSD > pypilot > Signal K > OpenCPN')
+
+				self.Serial_assignment.Clear()
+				if self.assign0183: self.Serial_assignment.AppendItems(self.assignment0183)
+		else:
+			if 'pypilot > Signal K > OpenCPN' in self.assignment0183:
+				self.assignment0183.remove('pypilot > Signal K > OpenCPN')
+				if 'GPSD > pypilot > Signal K > OpenCPN' in self.assignment0183:
+					self.assignment0183.remove('GPSD > pypilot > Signal K > OpenCPN')
+
+				self.Serial_assignment.Clear()
+				if self.assign0183: self.Serial_assignment.AppendItems(self.assignment0183)
 
 ################################################################################
 
@@ -852,179 +920,55 @@ class opencpnSettings:
 
 		home = os.path.expanduser("~")
 		self.confFile = home+'/.opencpn/opencpn.conf'
-		self.confData = configparser.ConfigParser()
+		self.installed_openocpn = os.path.exists(self.confFile)			
+
+		if self.installed_openocpn:
+			self.confData = configparser.ConfigParser()
 
 	def getConnectionState(self):
-		result = False
-		self.confData.read(self.confFile)
-		tmp = self.confData.get('Settings/NMEADataSource', 'DataConnections')
-		connections = tmp.split('|')
-		for connection in connections:
-			#0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18
-			#serial/network;TCP/UDP/GPSD;address;port;?;serialport;bauds;?;0=input/1=input+output/2=output;?;?;?;?;?;?;?;?;enabled/disabled;comments
-			items = connection.split(';')
-			if items[0] == '1':
-				if items[1] == '0':
-					if items[2] == 'localhost':
-						if items[3] == '10110':
-							if items[8] == '0' or items[8] == '1':
-								if items[17] == '1': result = 'enabled'
-								else: result = 'disabled'
-		return result
-		
+		if self.installed_openocpn:
+			result = False
+			self.confData.read(self.confFile)
+			tmp = self.confData.get('Settings/NMEADataSource', 'DataConnections')
+			connections = tmp.split('|')
+			for connection in connections:
+				#0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18
+				#serial/network;TCP/UDP/GPSD;address;port;?;serialport;bauds;?;0=input/1=input+output/2=output;?;?;?;?;?;?;?;?;enabled/disabled;comments
+				items = connection.split(';')
+				if items[0] == '1':
+					if items[1] == '0':
+						if items[2] == 'localhost':
+							if items[3] == '10110':
+								if items[8] == '0' or items[8] == '1':
+									if items[17] == '1': result = 'enabled'
+									else: result = 'disabled'
+			return result
+		return True
 
 ################################################################################
 
 class SK_settings:
 
 	def __init__(self, conf):
-
+		self.installed = False
 		self.conf = conf
 		self.home = os.path.expanduser("~")
 		self.setting_file = self.home+'/.signalk/settings.json'
 		self.load()
 
 	def load(self):
-
-		if os.path.isfile(self.setting_file):
+		if os.path.exists(self.setting_file):
 			with open(self.setting_file) as data_file:
 				self.data = ujson.load(data_file)
+			self.installed = True			
 		else:
 			self.data = {}
-			print('Error: file ~/.signalk/settings.json does not exists')
-
-		self.sslport = -1
-		if 'sslport' in self.data: self.sslport = self.data['sslport']
-		self.port = -1
-		if 'port' in self.data: self.port = self.data['port']
-		self.ssl = -1
-		if 'ssl' in self.data: self.ssl = self.data['ssl']
-		if (self.ssl == -1 or self.ssl == False) and self.port == -1: self.port = 3000
-		self.http = 'http://'
-		self.ws = 'ws://'
-		self.aktport = self.port
-		if self.ssl:
-			self.http = 'https://'
-			self.ws = 'wss://'
-			self.aktport = self.sslport
-		self.ip = 'localhost'
-		self.http_address = self.http+self.ip+':'+str(self.aktport)
-
-		write = False
-
-		#check defaults
-		OPcan = False
-		OPpypilot = False
-		OPserial = False    #TODO afegir funcio per activar la conexio de dispositius serie
-		OPsensors = False
-		OPnmea0183 = False
-
-		try:
-			if 'pipedProviders' in self.data:
-				for i in self.data['pipedProviders']:
-					if i['id'] == 'OPcan': OPcan = True
-					elif i['id'] == 'OPpypilot': OPpypilot = True
-					elif i['id'] == 'OPserial': OPserial = True
-					elif i['id'] == 'OPsensors': OPsensors = True
-					elif i['id'] == 'OPnmea0183': OPnmea0183 = True
-		except: print('Error: error parsing Signal K settings defaults')
-
-		if not OPcan:
-			self.data['pipedProviders'].append({'pipeElements': [{'type': 'providers/simple', 'options': {'logging': False, 'type': 'NMEA2000', 'subOptions': {'device': '', 'baudrate': '', 'type': 'ngt-1'}}}], 'enabled': False, 'id': 'OPcan'})
-			write = True
-		if not OPpypilot:
-			self.data['pipedProviders'].append({'pipeElements': [{'type': 'providers/simple', 'options': {'logging': False, 'type': 'NMEA0183', 'subOptions': {'host': 'localhost', 'type': 'tcp', 'port': '20220'}}}], 'enabled': False, 'id': 'OPpypilot'})
-			write = True
-		if not OPserial:
-			self.data['pipedProviders'].append({'pipeElements': [{'type': 'providers/simple', 'options': {'logging': False, 'type': 'SignalK', 'subOptions': {'type': 'udp', 'port': '55559'}}}], 'enabled': False, 'id': 'OPserial'})
-			write = True
-		if not OPsensors:
-			self.data['pipedProviders'].append({'pipeElements': [{'type': 'providers/simple', 'options': {'logging': False, 'type': 'SignalK', 'subOptions': {'type': 'udp', 'port': '55557'}}}], 'enabled': False, 'id': 'OPsensors'})
-			write = True
-		if not OPnmea0183:
-			self.data['pipedProviders'].append({'pipeElements': [{'type': 'providers/simple', 'options': {'logging': False, 'type': 'NMEA0183', 'subOptions': {'type': 'udp', 'port': '10110'}}}], 'enabled': False, 'id': 'OPnmea0183'})
-			write = True
-
-		#check state and devices
-		self.OPcan = ''
-		self.ngt1_enabled = -1
-		self.ngt1_device = ''
-		self.ngt1_baudrate = ''
-		self.canbus_enabled = -1
-		self.canbus_interface = ''
-		self.pypilot_enabled = -1
-		self.nmea0183_enabled = -1
-		self.sensors_enabled = -1
-		count = 0
-		try:
-			if 'pipedProviders' in self.data:
-				for i in self.data['pipedProviders']:
-					if 'type' in i['pipeElements'][0]['options']['subOptions']:
-						if i['pipeElements'][0]['options']['subOptions']['type'] == 'ngt-1':
-							self.ngt1_enabled = i['enabled']
-							self.OPcan = count
-							self.ngt1_device = i['pipeElements'][0]['options']['subOptions']['device']
-							self.ngt1_baudrate = i['pipeElements'][0]['options']['subOptions']['baudrate']
-						elif i['pipeElements'][0]['options']['subOptions']['type'][0:6] == 'canbus':
-							self.canbus_enabled = i['enabled']
-							self.OPcan = ount
-							self.canbus_interface = i['pipeElements'][0]['options']['subOptions']['interface']
-						elif i['id'] == 'OPpypilot':
-							self.pypilot_enabled = i['enabled']
-							self.pypilot = count
-						elif i['id'] == 'OPnmea0183':
-							self.nmea0183_enabled = i['enabled']
-							self.nmea0183 = count
-						elif i['id'] == 'OPsensors':
-							self.sensors_enabled = i['enabled']
-							self.sensors = count
-					count+=1
-		except: print('Error: error parsing Signal K settings connections')
-
-		if write: self.write_settings()
 
 	def setSKsettings(self):
 		write = False
-		pypilot = self.conf.get('PYPILOT', 'mode')
-		i2c = self.conf.get('I2C', 'sensors')
-		if i2c: i2c = eval(i2c)
-		onewire = self.conf.get('1W', 'ds18b20')
-		if onewire: onewire = eval(onewire)
-		spi = eval(self.conf.get('SPI', 'mcp'))
-		sdr = self.conf.get('AIS-SDR', 'enable')
 		serialInst = self.conf.get('UDEV', 'Serialinst')
 		try: serialInst = eval(serialInst)
 		except: serialInst = {}
-		#OPsensors
-		spiEnabled = False
-		for i in spi:
-			if i[0] == 1: spiEnabled = True
-		if spiEnabled or i2c or onewire or pypilot == 'basic autopilot' or pypilot == 'imu':
-			if not self.sensors_enabled:
-				self.data['pipedProviders'][self.sensors]['enabled'] = True
-				write = True
-		else:
-			if self.sensors_enabled:
-				self.data['pipedProviders'][self.sensors]['enabled'] = False
-				write = True
-		#OPnmea0183
-		if sdr == '1' or pypilot == 'imu':
-			if not self.nmea0183_enabled:
-				self.data['pipedProviders'][self.nmea0183]['enabled'] = True
-				write = True
-		else:
-			if self.nmea0183_enabled:
-				self.data['pipedProviders'][self.nmea0183]['enabled'] = False
-				write = True
-		#OPpypilot
-		if pypilot == 'basic autopilot':
-			if not self.pypilot_enabled:
-				self.data['pipedProviders'][self.pypilot]['enabled'] = True
-				write = True
-		else:
-			if self.pypilot_enabled:
-				self.data['pipedProviders'][self.pypilot]['enabled'] = False
-				write = True
 		#serial NMEA 0183 devices
 		for alias in serialInst:
 			if serialInst[alias]['data'] == 'NMEA 0183' and serialInst[alias]['assignment'] == 'Signal K > OpenCPN':
@@ -1083,66 +1027,6 @@ class SK_settings:
 		if write: self.write_settings()
 		return write
 
-
-	def set_ngt1_device(self,device,speed):
-		write = False
-		if self.data['pipedProviders'][self.OPcan]['pipeElements'][0]['options']['subOptions']['device'] != '/dev/'+device:
-			self.data['pipedProviders'][self.OPcan]['pipeElements'][0]['options']['subOptions']['device'] = '/dev/'+device
-			write = True
-		if self.data['pipedProviders'][self.OPcan]['pipeElements'][0]['options']['subOptions']['baudrate'] != int(speed):
-			self.data['pipedProviders'][self.OPcan]['pipeElements'][0]['options']['subOptions']['baudrate'] = int(speed)
-			write = True
-
-		if write: self.write_settings()
-		return write
-
-	def set_canbus_enable(self,enable):
-		if self.canbus_enabled == -1:
-			self.data['pipedProviders'][self.OPcan]['pipeElements'][0]['options']['subOptions']['type'] = 'canbus-canboatjs'
-			self.data['pipedProviders'][self.OPcan]['pipeElements'][0]['options']['subOptions']['interface'] = 'can0'
-			try:
-				del self.data['pipedProviders'][self.OPcan]['pipeElements'][0]['options']['subOptions']['device']
-				del self.data['pipedProviders'][self.OPcan]['pipeElements'][0]['options']['subOptions']['baudrate']
-			except:
-				pass
-		self.enable_disable_all(enable)
-
-	def enable_disable_all(self,enable):
-		if enable == 1:
-			self.data['pipedProviders'][self.OPcan]['enabled']=True
-		elif enable == 0:
-			self.data['pipedProviders'][self.OPcan]['enabled']=False
-		self.write_settings()
-
-	def enable_disable_device(self,deviceId,enable):
-		write = False
-		count = 0
-		for i in self.data['pipedProviders']:
-			if i['id'] == deviceId:
-				if enable == 1:
-					if i['enabled'] == False:
-						write = True
-						self.data['pipedProviders'][count]['enabled'] = True
-				elif enable == 0:
-					if i['enabled'] == True:
-						write = True
-						self.data['pipedProviders'][count]['enabled'] = False
-			count = count + 1
-
-		if write: self.write_settings()
-		return write
-
-	def check_device(self,device):
-		exists = False
-		for i in self.data['pipedProviders']:
-			if 'device' in i['pipeElements'][0]['options']['subOptions']:
-				if i['pipeElements'][0]['options']['subOptions']['device'] == device:
-					exists = True
-					if i['enabled']: status = 'enabled'
-					else: status = 'disabled'
-		if exists: return status
-		else: return exists
-
 	def write_settings(self):
 		data = ujson.dumps(self.data, indent=4, sort_keys=True)
 		try:
@@ -1151,8 +1035,6 @@ class SK_settings:
 			wififile.close()
 			self.load()
 		except: print('Error: error saving Signal K settings')
-
-
 
 ################################################################################
 
