@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=OpenPlotter Serial
+Exec=openplotter-serial
+Icon=openplotter-serial
+StartupNotify=true
+Terminal=false
+Type=Application
+Categories=OpenPlotter
