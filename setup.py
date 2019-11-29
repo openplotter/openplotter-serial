@@ -21,7 +21,7 @@ from openplotterSerial import version
 setup (
 	name = 'openplotterSerial',
 	version = version.version,
-	description = 'This is a template to help create apps for OpenPlotter',
+	description = 'OpenPlotter app to manage serial devices',
 	license = 'GPLv3',
 	author="e-sailing",
 	author_email='e.minus.sailing@gmail.com',
