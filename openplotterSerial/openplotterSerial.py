@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Openplotter. If not, see <http://www.gnu.org/licenses/>.
 
-import wx, os, webbrowser, subprocess, pyudev, re, ujson, sys, time
+import wx, os, webbrowser, subprocess, re, ujson, sys, time
 import wx.richtext as rt
 from openplotterSettings import conf
 from openplotterSettings import language
@@ -199,10 +199,6 @@ class SerialFrame(wx.Frame):
 		v_final.Add(self.toolbar2, 0, wx.EXPAND, 0)
 
 		self.p_serial.SetSizer(v_final)
-
-	def start_udev(self):
-		subprocess.call(['sudo', 'udevadm', 'control', '--reload-rules'])
-		subprocess.call(['sudo', 'udevadm', 'trigger', '--attr-match=subsystem=tty'])
 
 	def read_Serialinst(self,e=0):	
 		self.reset_Serial_fields()
@@ -460,66 +456,19 @@ class SerialFrame(wx.Frame):
 			msg = _('This action disables Bluetooth and enables UART interface in GPIO. OpenPlotter will reboot.\n')
 			msg += _('Are you sure?')
 			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
-			if dlg.ShowModal() == wx.ID_YES: self.edit_boot(True)
+			if dlg.ShowModal() == wx.ID_YES: 
+				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uartTrue'])
 		else:
 			msg = _('This action disables UART interface in GPIO and enables Bluetooth. OpenPlotter will reboot.\n')
 			msg += _('Are you sure?')
 			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
-			if dlg.ShowModal() == wx.ID_YES: self.edit_boot(False)
+			if dlg.ShowModal() == wx.ID_YES: 
+				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uartFalse'])
 		try:
 			subprocess.check_output(['systemctl', 'is-active', 'hciuart']).decode(sys.stdin.encoding)
 			self.toolbar1.ToggleTool(103,False)
 		except: self.toolbar1.ToggleTool(103,True)
 		dlg.Destroy()
-
-	def edit_boot(self, onoff):
-		file = open('/boot/config.txt', 'r')
-		file1 = open(self.home+'/config.txt', 'w')
-		exists = False
-		while True:
-			line = file.readline()
-			if not line: break
-			if onoff and 'dtoverlay=pi3-disable-bt' in line: 
-				file1.write('dtoverlay=pi3-disable-bt\n')
-				os.system('sudo systemctl disable hciuart')
-				exists = True
-			elif not onoff and 'dtoverlay=pi3-disable-bt' in line: 
-				file1.write('#dtoverlay=pi3-disable-bt\n')
-				os.system('sudo systemctl enable hciuart')
-				exists = True
-			else: file1.write(line)
-		if onoff and not exists: 
-			file1.write('\ndtoverlay=pi3-disable-bt\n')
-			os.system('sudo systemctl disable hciuart')
-		file.close()
-		file1.close()
-
-		file = open('/boot/cmdline.txt', 'r')
-		file1 = open(self.home+'/cmdline.txt', 'w')
-		text = file.read()
-		text = text.replace('\n', '')
-		text_list = text.split(' ')
-		if onoff and 'console=serial0,115200' in text_list: 
-			text_list.remove('console=serial0,115200')
-		if not onoff and not 'console=serial0,115200' in text_list: 
-			text_list.append('console=serial0,115200')
-		final = ' '.join(text_list)+'\n'
-		file1.write(final)
-		file.close()
-		file1.close()
-
-		reset = False
-		if os.system('diff '+self.home+'/config.txt /boot/config.txt > /dev/null'):
-			os.system('sudo mv '+self.home+'/config.txt /boot')
-			reset = True
-		else: os.system('rm -f '+self.home+'/config.txt')
-		if os.system('diff '+self.home+'/cmdline.txt /boot/cmdline.txt > /dev/null'):
-			os.system('sudo mv '+self.home+'/cmdline.txt /boot')
-			reset = True
-		else: os.system('rm -f '+self.home+'/cmdline.txt')
-
-		if reset == True : os.system('sudo shutdown -r now')
-		
 		
 	def on_update_Serialinst(self, e=0):
 
@@ -578,6 +527,7 @@ class SerialFrame(wx.Frame):
 		self.apply_changes_Serialinst()
 										
 	def apply_changes_Serialinst(self):
+		self.ShowStatusBarYELLOW(_('Applying changes ...'))
 		filename = self.home +'/10-openplotter.rules'
 		if not os.path.isfile(filename):
 			file = open(filename, 'w+')
@@ -598,13 +548,8 @@ class SerialFrame(wx.Frame):
 			write_str += '",SYMLINK+="' + name + '"\n'
 			file.write(write_str)
 		file.close()
-		test = 0
-		test = os.system('sudo mv '+self.home +'/10-openplotter.rules /etc/udev/rules.d')
-
-		self.ShowStatusBarYELLOW(_('Applying changes ...'))
-		self.start_udev()
-
-		self.read_Serialinst()
+		subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'udev', self.home+'/10-openplotter.rules'])
+		self.read_Serialinst()	
 
 	def OnRemoveButton(self, e):
 		index = self.list_Serialinst.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)
@@ -882,8 +827,7 @@ class addConnection(wx.Dialog):
 			msg1 += _('ID: ')+self.ID+'\n'
 			msg1 += _('Serial port: ')+self.alias
 			self.bauds.SetSelection(3)
-			msg2Label.WriteText(_('Press AUTO to create a serial connection in Signal K with the settings above.'))
-			msg2Label.Newline()
+			msg2Label.WriteText(_('Press AUTO to create a connection in Signal K using the settings above. Signal K will send data to OpenCPN, be sure a TCP localhost:10110 input exists in OpenCPN.'))
 			msg2Label.Newline()
 			msg2Label.WriteText(_('Press MANUAL if you need to add special settings.'))
 		elif self.app == 'CAN':
@@ -891,8 +835,9 @@ class addConnection(wx.Dialog):
 			msg1 += _('ID: ')+self.ID+'\n'
 			msg1 += _('Serial port: ')+self.alias
 			self.bauds.SetSelection(5)
-			msg2Label.WriteText(_('Press AUTO to create a serial "canboatjs" connection for NGT-1 or CAN-USB devices in Signal K with the settings above.'))
+			msg2Label.WriteText(_('Press AUTO to create a "canboatjs" connection for a NGT-1 or a CAN-USB device in Signal K using the settings above. Use the "SK → NMEA 0183" plugin to send data to OpenCPN, be sure a TCP localhost:10110 input exists in OpenCPN.'))
 			msg2Label.Newline()
+			msg2Label.WriteText(_('Use "SK → NMEA 2000" plugin to send data from Signal K to your CAN network. Open desired TX PGNs in your device.'))
 			msg2Label.Newline()
 			msg2Label.WriteText(_('Press MANUAL if you need to add special settings or you want to set a CANable device.'))
 		elif self.app == 'gpsd':
@@ -901,10 +846,9 @@ class addConnection(wx.Dialog):
 			self.bauds.Disable()
 			baudsLabel.Disable()
 			setupBtn.Disable()
-			msg2Label.WriteText(_('Press AUTO to add this device to the list of devices managed by GPSD.'))
+			msg2Label.WriteText(_('Press AUTO to add this device to the list of devices managed by GPSD. Pypilot will get data from GPSD automatically.'))
 			msg2Label.Newline()
-			msg2Label.Newline()
-			msg2Label.WriteText(_('Baud Rate will be automatically assigned.'))
+			msg2Label.WriteText(_('Be sure you send only GNSS or AIS data to GPSD. Baud Rate will be automatically assigned.'))
 		elif self.app == 'pypilot':
 			msg1 = _('Data: ')+'\n'
 			msg1 += _('ID: ')+'\n'
