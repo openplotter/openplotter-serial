@@ -762,6 +762,9 @@ class SerialFrame(wx.Frame):
 		elif connection == 'CAN Bus':
 			subprocess.call(['pkill', '-f', 'openplotter-can'])
 			subprocess.Popen(['openplotter-can', 'canable'])
+		elif connection == 'OpenCPN':
+			subprocess.call(['pkill', '-f', 'opencpn'])
+			subprocess.Popen(['opencpn'])
 
 	def OnRemoveConnection(self, e):
 		selected = self.listConnections.GetFirstSelected()
@@ -780,6 +783,9 @@ class SerialFrame(wx.Frame):
 		elif connection == 'GPSD':
 			subprocess.call([self.platform.admin, 'python3', self.currentdir+'/editGpsd.py', 'remove', ID])
 			self.read_Serialinst()
+		elif connection == 'OpenCPN':
+			subprocess.call(['pkill', '-f', 'opencpn'])
+			subprocess.Popen(['opencpn'])
 
 	def restart_SK(self, msg):
 		if msg == 0: msg = _('Restarting Signal K server... ')
@@ -804,7 +810,7 @@ class addConnection(wx.Dialog):
 		self.data = data
 		self.app = app
 		title = _('Adding connection for device: ')+alias
-		wx.Dialog.__init__(self, None, title=title, size=(500, 350))
+		wx.Dialog.__init__(self, None, title=title, size=(500, 444))
 		panel = wx.Panel(self)
 
 		msg1Label = wx.StaticText(panel,-1, style = wx.ALIGN_LEFT) 
@@ -827,7 +833,11 @@ class addConnection(wx.Dialog):
 			msg1 += _('ID: ')+self.ID+'\n'
 			msg1 += _('Serial port: ')+self.alias
 			self.bauds.SetSelection(3)
-			msg2Label.WriteText(_('Press AUTO to create a connection in Signal K using the settings above. Signal K will send data to OpenCPN, be sure a TCP localhost:10110 input exists in OpenCPN.'))
+			msg2Label.WriteText(_('Press AUTO to create a connection in Signal K using the settings above.'))
+			msg2Label.Newline()
+			msg2Label.Newline()
+			msg2Label.WriteText(_('Signal K will send data to OpenCPN, be sure a network TCP localhost:10110 input connection exists in OpenCPN.'))
+			msg2Label.Newline()
 			msg2Label.Newline()
 			msg2Label.WriteText(_('Press MANUAL if you need to add special settings.'))
 		elif self.app == 'CAN':
@@ -835,9 +845,14 @@ class addConnection(wx.Dialog):
 			msg1 += _('ID: ')+self.ID+'\n'
 			msg1 += _('Serial port: ')+self.alias
 			self.bauds.SetSelection(5)
-			msg2Label.WriteText(_('Press AUTO to create a "canboatjs" connection for a NGT-1 or a CAN-USB device in Signal K using the settings above. Use the "SK → NMEA 0183" plugin to send data to OpenCPN, be sure a TCP localhost:10110 input exists in OpenCPN.'))
+			msg2Label.WriteText(_('Press AUTO to create a "canboatjs" connection for a NGT-1 or a CAN-USB device in Signal K using the settings above.'))
+			msg2Label.Newline()
+			msg2Label.Newline()
+			msg2Label.WriteText(_('Use the "SK → NMEA 0183" plugin to send data to OpenCPN, be sure a network TCP localhost:10110 input connection exists in OpenCPN.'))
+			msg2Label.Newline()
 			msg2Label.Newline()
 			msg2Label.WriteText(_('Use "SK → NMEA 2000" plugin to send data from Signal K to your CAN network. Open desired TX PGNs in your device.'))
+			msg2Label.Newline()
 			msg2Label.Newline()
 			msg2Label.WriteText(_('Press MANUAL if you need to add special settings or you want to set a CANable device.'))
 		elif self.app == 'gpsd':
@@ -846,9 +861,13 @@ class addConnection(wx.Dialog):
 			self.bauds.Disable()
 			baudsLabel.Disable()
 			setupBtn.Disable()
-			msg2Label.WriteText(_('Press AUTO to add this device to the list of devices managed by GPSD. Pypilot will get data from GPSD automatically.'))
+			msg2Label.WriteText(_('Press AUTO to add this device to the list of devices managed by GPSD.'))
+			msg2Label.Newline()
 			msg2Label.Newline()
 			msg2Label.WriteText(_('Be sure you send only GNSS or AIS data to GPSD. Baud Rate will be automatically assigned.'))
+			msg2Label.Newline()
+			msg2Label.Newline()
+			msg2Label.WriteText(_('Pypilot will get data from GPSD automatically.'))
 		elif self.app == 'pypilot':
 			msg1 = _('Data: ')+'\n'
 			msg1 += _('ID: ')+'\n'
