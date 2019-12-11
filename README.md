@@ -14,7 +14,7 @@ Install [openplotter-settings](https://github.com/openplotter/openplotter-settin
 
 Install dependencies:
 
-`sudo apt install python3-pyudev`
+`sudo apt install python3-pyudev gpsd`
 
 Clone the repository:
 

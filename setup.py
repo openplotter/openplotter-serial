@@ -31,6 +31,6 @@ setup (
 	'Operating System :: POSIX :: Linux',
 	'Programming Language :: Python :: 3'],
 	include_package_data=True,
-	entry_points={'console_scripts': ['openplotter-serial=openplotterSerial.openplotterSerial:main']},
+	entry_points={'console_scripts': ['openplotter-serial=openplotterSerial.openplotterSerial:main', 'serialPostInstall=openplotterSerial.serialPostInstall:main', 'serialPreUninstall=openplotterSerial.serialPreUninstall:main']},
 	data_files=[('share/applications', ['openplotterSerial/data/openplotter-serial.desktop']),('share/pixmaps', ['openplotterSerial/data/openplotter-serial.png']),],
 	)
