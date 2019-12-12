@@ -20,7 +20,7 @@ import wx.richtext as rt
 from openplotterSettings import conf
 from openplotterSettings import language
 from openplotterSettings import platform
-from openplotterSettings import serialSettings
+from openplotterSettings import selectConnections
 from openplotterSettings import serialPorts
 
 class SerialFrame(wx.Frame):
@@ -213,7 +213,7 @@ class SerialFrame(wx.Frame):
 		except:
 			self.Serialinst = {}
 
-		serialDevices = serialSettings.Serial()
+		serialDevices = selectConnections.Serial()
 		for device in serialDevices.devices:
 			devname = device.get('DEVNAME')
 			value = device.get('DEVPATH')
@@ -378,15 +378,18 @@ class SerialFrame(wx.Frame):
 					elif self.listConnections.GetItemText(i, 2) == 'Signal K':
 						self.listConnections.SetItemBackgroundColour(i,(255,215,0))
 			for ii in range(self.listConnections.GetItemCount()):
-				enabled2 = False
-				for iii in usedSerialPorts:
-					if iii['app'] == self.listConnections.GetItemText(ii, 3) and iii['id'] == self.listConnections.GetItemText(ii, 4): enabled2 = iii['enabled']
-				if self.listConnections.GetItemText(i, 0) == self.listConnections.GetItemText(ii, 0) and i != ii and enabled and enabled2:
-					self.listConnections.SetItemBackgroundColour(i,(255,0,0))
+				if not self.listConnections.GetItemText(ii, 0) and self.listConnections.GetItemText(ii, 1):
 					self.listConnections.SetItemBackgroundColour(ii,(255,0,0))
-				if self.listConnections.GetItemText(i, 1) == self.listConnections.GetItemText(ii, 1) and i != ii and enabled and enabled2:
-					self.listConnections.SetItemBackgroundColour(i,(255,0,0))
-					self.listConnections.SetItemBackgroundColour(ii,(255,0,0))
+				else:
+					enabled2 = False
+					for iii in usedSerialPorts:
+						if iii['app'] == self.listConnections.GetItemText(ii, 3) and iii['id'] == self.listConnections.GetItemText(ii, 4): enabled2 = iii['enabled']
+					if self.listConnections.GetItemText(i, 0) == self.listConnections.GetItemText(ii, 0) and i != ii and enabled and enabled2:
+						self.listConnections.SetItemBackgroundColour(i,(255,0,0))
+						self.listConnections.SetItemBackgroundColour(ii,(255,0,0))
+					if self.listConnections.GetItemText(i, 1) == self.listConnections.GetItemText(ii, 1) and i != ii and enabled and enabled2:
+						self.listConnections.SetItemBackgroundColour(i,(255,0,0))
+						self.listConnections.SetItemBackgroundColour(ii,(255,0,0))
 
 	def on_delete_Serialinst(self, e):
 		index = self.list_Serialinst.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)

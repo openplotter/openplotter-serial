@@ -48,8 +48,8 @@ class Check():
 
 		for i in self.usedSerialPorts:
 			if not 'ttyOP_' in i['device']:
-				if not red: red = _('There are serial connections with no alias assigned | ')+i['app']+': '+i['device']
-				else: red += ', '+i['app']+': '+i['device']
+				if not red: red = _('There are serial connections with no alias assigned:')+'\n'+i['app']+' -> '+_('connection ID: ')+i['id']+' | '+_('device: ')+i['device']
+				else: red += '\n'+i['app']+' -> '+_('connection ID: ')+i['id']+' | '+_('device: ')+i['device']
 				green = ''
 
 
