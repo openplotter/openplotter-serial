@@ -793,8 +793,7 @@ class SerialFrame(wx.Frame):
 	def restart_SK(self, msg):
 		if msg == 0: msg = _('Restarting Signal K server... ')
 		seconds = 12
-		subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'stop'])
-		subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'start'])
+		subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'restart'])
 		for i in range(seconds, 0, -1):
 			self.ShowStatusBarYELLOW(msg+str(i))
 			time.sleep(1)
@@ -921,6 +920,12 @@ class addConnection(wx.Dialog):
 			if self.app == 'SK' or self.app == 'CAN':
 				from openplotterSignalkInstaller import editSettings
 				skSettings = editSettings.EditSettings()
+				c = 0
+				while True:
+					if skSettings.connectionIdExists(self.ID):
+						self.ID = self.ID+str(c)
+						c = c + 1
+					else: break
 				if skSettings.setSerialConnection(self.ID, self.data, self.alias, self.bauds.GetValue()): self.restart = True
 				else: self.error = _('Failed. Error creating connection in Signal K')
 			elif self.app == 'gpsd':
