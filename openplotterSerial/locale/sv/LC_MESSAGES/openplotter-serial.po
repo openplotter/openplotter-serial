@@ -2,10 +2,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openplotter\n"
 "POT-Creation-Date: 2019-12-13 19:47+0100\n"
-"PO-Revision-Date: 2019-12-16 12:41+0100\n"
+"PO-Revision-Date: 2019-12-16 13:03+0100\n"
 "Last-Translator: \n"
-"Language-Team: Dutch\n"
-"Language: nl\n"
+"Language-Team: Swedish\n"
+"Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,209 +14,209 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Crowdin-Project: openplotter\n"
-"X-Crowdin-Language: nl\n"
+"X-Crowdin-Language: sv-SE\n"
 "X-Crowdin-File: openplotter-serial.po\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: openplotterSerial.py:52
 msgid "OpenPlotter Serial"
-msgstr ""
+msgstr "OpenPlotter Seriell"
 
 #: openplotterSerial.py:62
 msgid "Help"
-msgstr ""
+msgstr "Hjälp"
 
 #: openplotterSerial.py:65
 msgid "Settings"
-msgstr ""
+msgstr "Inställningar"
 
 #: openplotterSerial.py:68
 msgid "UART"
-msgstr ""
+msgstr "UART"
 
 #: openplotterSerial.py:76
 msgid "Refresh"
-msgstr ""
+msgstr "Uppdatera"
 
 #: openplotterSerial.py:83
 msgid "Devices"
-msgstr ""
+msgstr "Enheter"
 
 #: openplotterSerial.py:84
 msgid "Connections"
-msgstr ""
+msgstr "Anslutningar"
 
 #: openplotterSerial.py:153
 msgid "USB port"
-msgstr ""
+msgstr "USB-port"
 
 #: openplotterSerial.py:154 openplotterSerial.py:586
 msgid "device"
-msgstr ""
+msgstr "enhet"
 
 #: openplotterSerial.py:155 openplotterSerial.py:165 openplotterSerial.py:587
 msgid "alias"
-msgstr ""
+msgstr "alias"
 
 #: openplotterSerial.py:156
 msgid "vendor"
-msgstr ""
+msgstr "tillverkare"
 
 #: openplotterSerial.py:157
 msgid "product"
-msgstr ""
+msgstr "produkt"
 
 #: openplotterSerial.py:158
 msgid "serial"
-msgstr ""
+msgstr "seriell"
 
 #: openplotterSerial.py:159
 msgid "remember"
-msgstr ""
+msgstr "kom ihåg"
 
 #: openplotterSerial.py:168 openplotterSerial.py:588
 msgid "data"
-msgstr ""
+msgstr "data"
 
 #: openplotterSerial.py:171
 msgid "Remember device (by vendor, product, serial)"
-msgstr ""
+msgstr "Kom ihåg enhet (genom leverantör, produkt, serienummer)"
 
 #: openplotterSerial.py:172
 msgid "Remember port (positon on the USB-hub)"
-msgstr ""
+msgstr "Kom ihåg port (port på USB-hubb)"
 
 #: openplotterSerial.py:175
 msgid "Apply"
-msgstr ""
+msgstr "Verkställ"
 
 #: openplotterSerial.py:177 openplotterSerial.py:598
 msgid "Remove"
-msgstr ""
+msgstr "Radera"
 
 #: openplotterSerial.py:237
 msgid "Device with vendor "
-msgstr ""
+msgstr "Enhet med tillverkare "
 
 #: openplotterSerial.py:237
 msgid " is connected to a reserved port"
-msgstr ""
+msgstr " är ansluten till en reserverad port"
 
 #: openplotterSerial.py:273
 msgid "no Hub"
-msgstr ""
+msgstr "ingen hubb"
 
 #: openplotterSerial.py:336
 msgid "There are missing devices"
-msgstr ""
+msgstr "Det saknas anslutna enheter"
 
 #: openplotterSerial.py:397 openplotterSerial.py:560
 msgid "No device selected"
-msgstr ""
+msgstr "Ingen enhet är vald"
 
 #: openplotterSerial.py:459
 msgid "This action disables Bluetooth and enables UART interface in GPIO. OpenPlotter will reboot.\n"
-msgstr ""
+msgstr "Den här åtgärden inaktiverar Bluetooth och aktiverar UART enheten via GPIO-pinnarna. OpenPlotter kommer att startas om.\n"
 
 #: openplotterSerial.py:460 openplotterSerial.py:466
 msgid "Are you sure?"
-msgstr ""
+msgstr "Är du säker?"
 
 #: openplotterSerial.py:461 openplotterSerial.py:467
 msgid "Question"
-msgstr ""
+msgstr "Fråga"
 
 #: openplotterSerial.py:465
 msgid "This action disables UART interface in GPIO and enables Bluetooth. OpenPlotter will reboot.\n"
-msgstr ""
+msgstr "Den här åtgärden inaktiverar UART via GPIO-pinnarna och aktiverar Bluetooth. OpenPlotter kommer att startas om.\n"
 
 #: openplotterSerial.py:480
 msgid "Failed. No port selected"
-msgstr ""
+msgstr "Misslyckades. Ingen port har valts"
 
 #: openplotterSerial.py:485
 msgid "The alias must be a lowercase string between 1 and 8 characters or numbers."
-msgstr ""
+msgstr "Namnet måste vara bestå av gemener eller siffror mellan 1 till 8 tecken långt."
 
 #: openplotterSerial.py:491
 msgid "Same alias used for multiple devices"
-msgstr ""
+msgstr "Misslyckades. Samma namn används på flera enheter"
 
 #: openplotterSerial.py:496
 msgid "Please select type of data"
-msgstr ""
+msgstr "Vänligen välj datatyp"
 
 #: openplotterSerial.py:517
 msgid "Device with duplicate vendor and product must be set to \"Remember port\"."
-msgstr ""
+msgstr "Varning: Usb-Portar med anslutna till likadana enheter (tillverkare och produkt) måste anges till ”kom ihåg port”."
 
 #: openplotterSerial.py:524
 msgid "This port is already reserved and must be set to \"Remember device\"."
-msgstr ""
+msgstr "Varning: Denna port är redan reserverad och måste anges som ”kom ihåg enhet”."
 
 #: openplotterSerial.py:533
 msgid "Applying changes ..."
-msgstr ""
+msgstr "Aktiverar ändringar..."
 
 #: openplotterSerial.py:574
 msgid "Add to Signal K"
-msgstr ""
+msgstr "Addera till Signal K"
 
 #: openplotterSerial.py:576
 msgid "Add to CAN Bus"
-msgstr ""
+msgstr "Addera till CANBUS"
 
 #: openplotterSerial.py:578
 msgid "Add to GPSD"
-msgstr ""
+msgstr "Addera till GPSD"
 
 #: openplotterSerial.py:580
 msgid "Add to Pypilot"
-msgstr ""
+msgstr "Addera till Pypilot"
 
 #: openplotterSerial.py:582
 msgid "Add to Kplex"
-msgstr ""
+msgstr "Addera till Kplex"
 
 #: openplotterSerial.py:589
 msgid "connection"
-msgstr ""
+msgstr "anslutning"
 
 #: openplotterSerial.py:590
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: openplotterSerial.py:591
 msgid "bauds"
-msgstr ""
+msgstr "baud"
 
 #: openplotterSerial.py:596
 msgid "Edit"
-msgstr ""
+msgstr "Redigera"
 
 #: openplotterSerial.py:662 openplotterSerial.py:686
 msgid "Please install \"Signal K Installer\" OpenPlotter app"
-msgstr ""
+msgstr "Vänligen installera \"Signal K Installer\" OpenPlotter app"
 
 #: openplotterSerial.py:689
 msgid "Please install \"CAN Bus\" OpenPlotter app"
-msgstr ""
+msgstr "Vänligen installera \"CAN Bus\" OpenPlotter app"
 
 #: openplotterSerial.py:705
 msgid "GPSD config file modified"
-msgstr ""
+msgstr "Configurationsfilen för GPSD är modifierad"
 
 #: openplotterSerial.py:709
 msgid "Please install \"gpsd\" package"
-msgstr ""
+msgstr "Vänligen installera paketet \"gpsd\""
 
 #: openplotterSerial.py:731
 msgid "Please install \"Pypilot\" OpenPlotter app"
-msgstr ""
+msgstr "Vänligen installera \"Pypilot\" OpenPlotter app"
 
 #: openplotterSerial.py:753
 msgid "Please install \"Kplex\" OpenPlotter app"
-msgstr ""
+msgstr "Vänligen installera \"Kplex\" OpenPlotter app"
 
 #: openplotterSerial.py:782
 msgid "Failed. Error removing connection in Signal K"
