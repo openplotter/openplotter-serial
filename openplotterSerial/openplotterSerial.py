@@ -74,7 +74,7 @@ class SerialFrame(wx.Frame):
 		except: self.toolbar1.ToggleTool(103,True)
 		self.toolbar1.AddSeparator()
 		refresh = self.toolbar1.AddTool(104, _('Refresh'), wx.Bitmap(self.currentdir+"/data/refresh.png"))
-		self.Bind(wx.EVT_TOOL, self.read_Serialinst, refresh)
+		self.Bind(wx.EVT_TOOL, self.onToolRefresh, refresh)
 
 		self.notebook = wx.Notebook(self)
 		self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.onTabChange)
@@ -131,6 +131,10 @@ class SerialFrame(wx.Frame):
 	def OnToolSettings(self, event=0): 
 		subprocess.call(['pkill', '-f', 'openplotter-settings'])
 		subprocess.Popen('openplotter-settings')
+
+	def onToolRefresh(self,e):
+		self.ShowStatusBarBLACK('')
+		self.read_Serialinst()
 
 	def pageSerial(self):
 		self.imgPorts = wx.ImageList(24, 24)
@@ -203,7 +207,6 @@ class SerialFrame(wx.Frame):
 	def read_Serialinst(self,e=0):	
 		self.reset_Serial_fields()
 		self.onListConnectionsDeselected()
-		self.ShowStatusBarBLACK('')
 		self.list_Serialinst.DeleteAllItems()
 		self.listConnections.DeleteAllItems()
 
@@ -627,7 +630,8 @@ class SerialFrame(wx.Frame):
 			elif data == 'Signal K':
 				self.toolbar3.EnableTool(301,True)
 		else:
-			self.toolbar4.EnableTool(401,True)
+			if connection == 'GPSD': self.toolbar4.EnableTool(401,False)
+			else: self.toolbar4.EnableTool(401,True)
 			self.toolbar4.EnableTool(402,True)
 
 	def onListConnectionsDeselected(self, e=0):
@@ -720,12 +724,15 @@ class SerialFrame(wx.Frame):
 			dlg = addConnection(app,device,alias,data)
 			res = dlg.ShowModal()
 			if res == wx.ID_SETUP:
-				pass
-				#subprocess.call(['pkill', '-f', 'openplotter-pypilot'])
-				#subprocess.Popen(['openplotter-pypilot'])
+				subprocess.call(['pkill', '-f', 'openplotter-pypilot'])
+				subprocess.Popen(['openplotter-pypilot'])
 			elif res == wx.ID_OK:
 				if dlg.error: self.ShowStatusBarRED(dlg.error)
-				else: pass
+				else:
+					self.ShowStatusBarYELLOW(_('Applying changes ...'))
+					subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'pypilot'])
+					self.ShowStatusBarGREEN(_('Pypilot serial devices modified and autopilot enabled'))
+					self.read_Serialinst()
 			dlg.Destroy()
 		else:
 			self.ShowStatusBarRED(_('Please install "Pypilot" OpenPlotter app'))
@@ -768,6 +775,9 @@ class SerialFrame(wx.Frame):
 		elif connection == 'OpenCPN':
 			subprocess.call(['pkill', '-f', 'opencpn'])
 			subprocess.Popen(['opencpn'])
+		elif connection == 'Pypilot':
+			subprocess.call(['pkill', '-f', 'openplotter-pypilot'])
+			subprocess.Popen(['openplotter-pypilot'])
 
 	def OnRemoveConnection(self, e):
 		selected = self.listConnections.GetFirstSelected()
@@ -789,7 +799,10 @@ class SerialFrame(wx.Frame):
 		elif connection == 'OpenCPN':
 			subprocess.call(['pkill', '-f', 'opencpn'])
 			subprocess.Popen(['opencpn'])
-
+		elif connection == 'Pypilot':
+			subprocess.call(['pkill', '-f', 'openplotter-pypilot'])
+			subprocess.Popen(['openplotter-pypilot'])
+			
 	def restart_SK(self, msg):
 		if msg == 0: msg = _('Restarting Signal K server... ')
 		seconds = 12
@@ -804,6 +817,7 @@ class SerialFrame(wx.Frame):
 
 class addConnection(wx.Dialog):
 	def __init__(self, app, device, alias, data):
+		self.conf = conf.Conf()
 		self.platform = platform.Platform()
 		self.currentdir = os.path.dirname(__file__)
 		self.ID = alias.replace("ttyOP_", "")
@@ -871,14 +885,23 @@ class addConnection(wx.Dialog):
 			msg2Label.Newline()
 			msg2Label.WriteText(_('Pypilot will get data from GPSD automatically.'))
 		elif self.app == 'pypilot':
-			msg1 = _('Data: ')+'\n'
-			msg1 += _('ID: ')+'\n'
-			msg1 += _('Serial port: ')
-			msg2Label.WriteText(_('Coming soon.'))
+			msg1 = _('Data: ')+self.data+' '+ _('(or motor controller data)') +'\n'
+			msg1 += _('Serial port: ')+self.alias
+			self.bauds.Disable()
+			baudsLabel.Disable()
+			msg2Label.WriteText(_('Press AUTO to use this device to send data to Pypilot. Baud Rate will be automatically assigned.'))
+			msg2Label.Newline()
+			msg2Label.Newline()
+			msg2Label.WriteText(_('You can also set the motor controller in this way, but make sure you have enabled UART before.'))
+			msg2Label.Newline()
+			msg2Label.Newline()
+			msg2Label.WriteText(_('Press MANUAL if you prefer to set this device in openplotter-pypilot app.'))
 		elif self.app == 'kplex':
 			msg1 = _('Data: ')+'\n'
 			msg1 += _('ID: ')+'\n'
 			msg1 += _('Serial port: ')
+			self.bauds.Disable()
+			baudsLabel.Disable()
 			msg2Label.WriteText(_('Coming soon.'))
 
 		msg1Label.SetLabel(msg1)
@@ -930,8 +953,32 @@ class addConnection(wx.Dialog):
 				else: self.error = _('Failed. Error creating connection in Signal K')
 			elif self.app == 'gpsd':
 				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/editGpsd.py', 'add', self.alias])
-			elif self.app == 'pypilot' or self.app == 'kplex': 
+			elif self.app == 'pypilot':
+				exists = False
+				path = self.conf.home + '/.pypilot/serial_ports'
+				try:
+					with open(path, 'r') as f:
+						for line in f:
+							line = line.replace('\n', '')
+							line = line.strip()
+							if self.alias == line: exists = True
+				except: pass
+				if exists: self.error = _('Failed. This device is already set in Pypilot')
+				else:
+					try:
+						with open(path, "a") as file:
+							file.write(self.alias + '\n')
+					except:	self.error = _('Failed. Error setting the device in Pypilot')
+
+				path = self.conf.home + '/.pypilot/'
+				tmp = os.listdir(path)
+				for i in tmp:
+					if i[:4] == 'nmea' and i[-6:] == 'device':
+						subprocess.call(['rm', '-f', path+i])
+
+			elif self.app == 'kplex': 
 				pass
+
 		self.EndModal(wx.ID_OK)
 
 ################################################################################

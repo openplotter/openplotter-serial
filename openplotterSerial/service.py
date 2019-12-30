@@ -83,3 +83,16 @@ if sys.argv[1]=='udev':
 	subprocess.call(['udevadm', 'trigger', '--attr-match=subsystem=tty'])
 if sys.argv[1]=='uartTrue': edit_boot(True)
 if sys.argv[1]=='uartFalse': edit_boot(False)
+if sys.argv[1]=='pypilot':
+	subprocess.call(['systemctl', 'disable', 'pypilot_boatimu'])
+	subprocess.call(['systemctl', 'enable', 'pypilot'])
+	subprocess.call(['systemctl', 'enable', 'openplotter-pypilot-read'])
+	subprocess.call(['systemctl', 'stop', 'pypilot_boatimu'])
+	subprocess.call(['systemctl', 'restart', 'pypilot'])
+	subprocess.call(['systemctl', 'restart', 'openplotter-pypilot-read'])
+	try: subprocess.check_output(['systemctl', 'is-enabled', 'pypilot_webapp']).decode(sys.stdin.encoding)
+	except: pass
+	else: subprocess.call(['systemctl', 'restart', 'pypilot_webapp'])
+	try: subprocess.check_output(['systemctl', 'is-enabled', 'pypilot_lcd']).decode(sys.stdin.encoding)
+	except: pass
+	else: subprocess.call(['systemctl', 'restart', 'pypilot_lcd'])
