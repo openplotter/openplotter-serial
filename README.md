@@ -14,21 +14,26 @@ Install [openplotter-settings](https://github.com/openplotter/openplotter-settin
 
 Install dependencies:
 
-`sudo apt install python3-pyudev gpsd`
+`sudo apt install gpsd`
 
 Clone the repository:
 
 `git clone https://github.com/openplotter/openplotter-serial`
 
-Make your changes and install:
+Install:
+```
+cd openplotter-serial
+sudo python3 setup.py install
+```
+Run post-installation script:
 
-`sudo python3 setup.py install`
+`sudo serialPostInstall`
 
 Run:
 
 `openplotter-serial`
 
-Pull request your changes to github and we will check and add them to the next version of the [Debian package](https://launchpad.net/~openplotter/+archive/ubuntu/openplotter/).
+Make your changes and repeat installation and post-installation steps to test. Pull request your changes to github and we will check and add them to the next version of the [Debian package](https://launchpad.net/~openplotter/+archive/ubuntu/openplotter/).
 
 ### Documentation
 
