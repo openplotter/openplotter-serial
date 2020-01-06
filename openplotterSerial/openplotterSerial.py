@@ -555,7 +555,8 @@ class SerialFrame(wx.Frame):
 			file.write(write_str)
 		file.close()
 		subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'udev', self.home+'/10-openplotter.rules'])
-		self.read_Serialinst()	
+		self.read_Serialinst()
+		self.ShowStatusBarGREEN(_('Applied changes'))
 
 	def OnRemoveButton(self, e):
 		index = self.list_Serialinst.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)

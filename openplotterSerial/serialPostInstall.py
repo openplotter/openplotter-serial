@@ -25,13 +25,13 @@ def main():
 	currentLanguage = conf2.get('GENERAL', 'lang')
 	language.Language(currentdir,'openplotter-serial',currentLanguage)
 
-
 	print(_('Editing GPSD config file...'))
 	try:
-		fo = open('/etc/default/gpsd', "w")
-		fo.write( 'START_DAEMON="false"\nUSBAUTO="false"\nDEVICES=""\nGPSD_OPTIONS="-n -b"')
-		fo.close()
-
+		path = '/etc/default/gpsd'
+		if not os.path.exists(path):
+			fo = open(path, "w")
+			fo.write( 'START_DAEMON="false"\nUSBAUTO="false"\nDEVICES=""\nGPSD_OPTIONS="-n -b"')
+			fo.close()
 		print(' ')
 		print(_('DONE'))
 	except Exception as e: print(_('FAILED: ')+str(e))
