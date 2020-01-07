@@ -14,7 +14,7 @@ Install [openplotter-settings](https://github.com/openplotter/openplotter-settin
 
 Install dependencies:
 
-`sudo apt install gpsd`
+`sudo apt install gpsd gpsd-clients`
 
 Clone the repository:
 
