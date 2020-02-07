@@ -987,6 +987,7 @@ class addConnection(wx.Dialog):
 def main():
 	app = wx.App()
 	SerialFrame().Show()
+	time.sleep(1)
 	app.MainLoop()
 
 if __name__ == '__main__':

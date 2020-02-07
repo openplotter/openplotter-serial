@@ -90,9 +90,6 @@ if sys.argv[1]=='pypilot':
 	subprocess.call(['systemctl', 'stop', 'pypilot_boatimu'])
 	subprocess.call(['systemctl', 'restart', 'pypilot'])
 	subprocess.call(['systemctl', 'restart', 'openplotter-pypilot-read'])
-	try: subprocess.check_output(['systemctl', 'is-enabled', 'pypilot_webapp']).decode(sys.stdin.encoding)
+	try: subprocess.check_output(['systemctl', 'is-enabled', 'pypilot_web']).decode(sys.stdin.encoding)
 	except: pass
-	else: subprocess.call(['systemctl', 'restart', 'pypilot_webapp'])
-	try: subprocess.check_output(['systemctl', 'is-enabled', 'pypilot_lcd']).decode(sys.stdin.encoding)
-	except: pass
-	else: subprocess.call(['systemctl', 'restart', 'pypilot_lcd'])
+	else: subprocess.call(['systemctl', 'restart', 'pypilot_web'])
