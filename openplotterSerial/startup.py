@@ -34,7 +34,7 @@ class Start():
 class Check():
 	def __init__(self, conf, currentLanguage):
 		self.conf = conf
-		currentdir = os.path.dirname(__file__)
+		currentdir = os.path.dirname(os.path.abspath(__file__))
 		language.Language(currentdir,'openplotter-serial',currentLanguage)
 		allSerialPorts = serialPorts.SerialPorts()
 		self.usedSerialPorts = allSerialPorts.getSerialUsedPorts()

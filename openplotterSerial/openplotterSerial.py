@@ -28,7 +28,7 @@ class SerialFrame(wx.Frame):
 		self.conf = conf.Conf()
 		self.home = self.conf.home
 		self.platform = platform.Platform()
-		self.currentdir = os.path.dirname(__file__)
+		self.currentdir = os.path.dirname(os.path.abspath(__file__))
 		self.currentLanguage = self.conf.get('GENERAL', 'lang')
 		self.language = language.Language(self.currentdir,'openplotter-serial',self.currentLanguage)
 		if self.platform.isRPI:
@@ -820,7 +820,7 @@ class addConnection(wx.Dialog):
 	def __init__(self, app, device, alias, data):
 		self.conf = conf.Conf()
 		self.platform = platform.Platform()
-		self.currentdir = os.path.dirname(__file__)
+		self.currentdir = os.path.dirname(os.path.abspath(__file__))
 		self.ID = alias.replace("ttyOP_", "")
 		self.device = '/dev/'+device
 		self.alias = '/dev/'+alias
