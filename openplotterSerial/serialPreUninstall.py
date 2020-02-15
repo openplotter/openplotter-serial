@@ -28,8 +28,12 @@ def main():
 	print(_('Removing GPSD config file...'))
 	try:
 		subprocess.call(['rm', '-f', '/etc/default/gpsd'])
+		print(_('DONE'))
+	except Exception as e: print(_('FAILED: ')+str(e))
 
-		print(' ')
+	print(_('Removing version...'))
+	try:
+		conf2.set('APPS', 'serial', '')
 		print(_('DONE'))
 	except Exception as e: print(_('FAILED: ')+str(e))
 

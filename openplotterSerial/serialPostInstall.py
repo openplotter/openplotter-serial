@@ -18,6 +18,7 @@
 import os
 from openplotterSettings import conf
 from openplotterSettings import language
+from .version import version
 
 def main():
 	conf2 = conf.Conf()
@@ -32,7 +33,12 @@ def main():
 			fo = open(path, "w")
 			fo.write( 'START_DAEMON="false"\nUSBAUTO="false"\nDEVICES=""\nGPSD_OPTIONS="-n -b"')
 			fo.close()
-		print(' ')
+		print(_('DONE'))
+	except Exception as e: print(_('FAILED: ')+str(e))
+
+	print(_('Setting version...'))
+	try:
+		conf2.set('APPS', 'serial', version)
 		print(_('DONE'))
 	except Exception as e: print(_('FAILED: ')+str(e))
 

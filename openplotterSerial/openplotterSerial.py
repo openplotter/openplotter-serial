@@ -22,6 +22,7 @@ from openplotterSettings import language
 from openplotterSettings import platform
 from openplotterSettings import selectConnections
 from openplotterSettings import serialPorts
+from .version import version
 
 class SerialFrame(wx.Frame):
 	def __init__(self):
@@ -49,7 +50,7 @@ class SerialFrame(wx.Frame):
 				modelfile.close()
 			except: self.rpimodel = ''
 	
-		wx.Frame.__init__(self, None, title=_('OpenPlotter Serial'), size=(800,444))
+		wx.Frame.__init__(self, None, title=_('OpenPlotter Serial')+' '+version, size=(800,444))
 		self.SetFont(wx.Font(10, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
 		icon = wx.Icon(self.currentdir+"/data/openplotter-serial.png", wx.BITMAP_TYPE_PNG)
 		self.SetIcon(icon)
@@ -985,6 +986,13 @@ class addConnection(wx.Dialog):
 ################################################################################
 
 def main():
+	try:
+		platform2 = platform.Platform()
+		if not platform2.postInstall(version,'serial'):
+			subprocess.Popen(['openplotterPostInstall', platform2.admin+' serialPostInstall'])
+			return
+	except: pass
+
 	app = wx.App()
 	SerialFrame().Show()
 	time.sleep(1)
