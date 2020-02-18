@@ -22,7 +22,12 @@ from openplotterSettings import language
 from openplotterSettings import platform
 from openplotterSettings import selectConnections
 from openplotterSettings import serialPorts
-from .version import version
+if os.path.dirname(os.path.abspath(__file__))[0:4] == '/usr':
+	from .version import version
+else:
+	import version
+
+
 
 class SerialFrame(wx.Frame):
 	def __init__(self):
@@ -224,6 +229,7 @@ class SerialFrame(wx.Frame):
 			port = value[value.rfind('/usb1/') + 6:-(len(value) - value.find('/tty'))]
 			port = port[port.rfind('/') + 1:]
 			serial = ''
+			if devname[8:10] == 'SC': serial = devname[10:11]
 			vendor_id = ''
 			model_id = ''
 			for tag in device:
@@ -259,51 +265,62 @@ class SerialFrame(wx.Frame):
 			l = [port, devname[5:], name, vendor_id, model_id, serial, remember]
 			l2 = [devname[5:], name]
 
-			#select image
-			if self.platform.isRPI:
-				'''
-				0 /data/rpi_port_ll.png
-				1 /data/rpi_port_lr.png
-				2 /data/rpi_port_ul.png
-				3 /data/rpi_port_ur.png
-				4 /data/rpi_port_4ll.png
-				5 /data/rpi_port_4lr.png
-				6 /data/rpi_port_4ul.png
-				7 /data/rpi_port_4ur.png
-				'''
-				hublen = 9
-				portpos = ''
-				usbport = l[0]
-				hubtext = _('no Hub')
-				image = ''
-				if self.rpitype == '3B':
-					if usbport[4:5] == '2': portpos = 2
-					elif usbport[4:5] == '4': portpos = 3
-					elif usbport[4:5] == '3': portpos = 0
-					elif usbport[4:5] == '5': portpos = 1
-				elif self.rpitype == '3B+':
-					if usbport[4:5] == '1':
-						hublen = 11
-						portpos = 2
-						if usbport[6:7] == '3': portpos = 0
-					elif usbport[4:5] == '2': portpos = 1
-					elif usbport[4:5] == '3': portpos = 3
-				elif self.rpitype == '4B':
-					if usbport[4:5] == '3': portpos = 6
-					elif usbport[4:5] == '1': portpos = 7
-					elif usbport[4:5] == '4': portpos = 4
-					elif usbport[4:5] == '2': portpos = 5
-				
-				if len(usbport) > hublen:
-					portnr = usbport[hublen-3:hublen]
-					if portnr[0:1] in ['1','2','3','4','5','6','7','8']:
-						hubtext = 'Hub port '+portnr
-				if portpos and not 'virtual' in usbport and not 'serial' in usbport: 
-					item = self.list_Serialinst.InsertItem(self.list_Serialinst.GetItemCount(), hubtext, portpos)
-				else: 
-					item = self.list_Serialinst.InsertItem(self.list_Serialinst.GetItemCount(), ' ')
+			if devname[8:10] == 'SC':
+				l[5] = devname[10:11]
+				hubtext = ''
+				if l[5] == '2': hubtext = _('upper left') 
+				elif l[5] == '5': hubtext = _('upper right') 
+				elif l[5] == '1': hubtext = _('middle left') 
+				elif l[5] == '4': hubtext = _('middle right') 
+				elif l[5] == '0': hubtext = _('below left') 
+				elif l[5] == '3': hubtext = _('below right') 
+				item = self.list_Serialinst.InsertItem(self.list_Serialinst.GetItemCount(), hubtext)
 			else:
-				item = self.list_Serialinst.InsertItem(self.list_Serialinst.GetItemCount(), str(self.list_Serialinst.GetItemCount()+1))
+				#select image
+				if self.platform.isRPI:
+					'''
+					0 /data/rpi_port_ll.png
+					1 /data/rpi_port_lr.png
+					2 /data/rpi_port_ul.png
+					3 /data/rpi_port_ur.png
+					4 /data/rpi_port_4ll.png
+					5 /data/rpi_port_4lr.png
+					6 /data/rpi_port_4ul.png
+					7 /data/rpi_port_4ur.png
+					'''
+					hublen = 9
+					portpos = ''
+					usbport = l[0]
+					hubtext = _('no Hub')
+					image = ''
+					if self.rpitype == '3B':
+						if usbport[4:5] == '2': portpos = 2
+						elif usbport[4:5] == '4': portpos = 3
+						elif usbport[4:5] == '3': portpos = 0
+						elif usbport[4:5] == '5': portpos = 1
+					elif self.rpitype == '3B+':
+						if usbport[4:5] == '1':
+							hublen = 11
+							portpos = 2
+							if usbport[6:7] == '3': portpos = 0
+						elif usbport[4:5] == '2': portpos = 1
+						elif usbport[4:5] == '3': portpos = 3
+					elif self.rpitype == '4B':
+						if usbport[4:5] == '3': portpos = 6
+						elif usbport[4:5] == '1': portpos = 7
+						elif usbport[4:5] == '4': portpos = 4
+						elif usbport[4:5] == '2': portpos = 5
+					
+					if len(usbport) > hublen:
+						portnr = usbport[hublen-3:hublen]
+						if portnr[0:1] in ['1','2','3','4','5','6','7','8']:
+							hubtext = 'Hub port '+portnr
+					if portpos and not 'virtual' in usbport and not 'serial' in usbport: 
+						item = self.list_Serialinst.InsertItem(self.list_Serialinst.GetItemCount(), hubtext, portpos)
+					else: 
+						item = self.list_Serialinst.InsertItem(self.list_Serialinst.GetItemCount(), ' ')
+				else:
+					item = self.list_Serialinst.InsertItem(self.list_Serialinst.GetItemCount(), str(self.list_Serialinst.GetItemCount()+1))
 			if l[0]: self.list_Serialinst.SetItem(item, 1, l[0])
 			if l[1]: self.list_Serialinst.SetItem(item, 2, l[1])
 			if l[2]: self.list_Serialinst.SetItem(item, 3, l[2])
@@ -542,7 +559,7 @@ class SerialFrame(wx.Frame):
 			file = open(filename, 'w')
 		for name in self.Serialinst:
 			i = self.Serialinst[name]
-			if 'virtual' == i['port']:
+			if 'virtual' == i['port'] or 'SC' == i['device'][3:5]:
 				write_str = 'KERNEL=="'+i['device']
 			elif 'port' == i['remember']: # non-usb serial
 				write_str = 'KERNEL=="' + i['device'] + '*", KERNELS=="' + i['port']

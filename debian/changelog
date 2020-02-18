@@ -1,5 +1,6 @@
-openplotter-serial (2.0.4-stable) buster; urgency=medium
-
+openplotter-serial (2.0.5-stable) buster; urgency=medium
+  * add mcs compatibility
+  * openplotter-serial (2.0.4-stable) buster; urgency=medium
   * Release Candidate
 
  -- Sailoog <info@sailoog.com>  Sat, 15 Feb 2020 13:41:02 +0100
