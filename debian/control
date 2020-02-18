@@ -9,7 +9,6 @@ X-Python3-Version: >= 3.2
 
 Package: openplotter-serial
 Architecture: all
-Multi-Arch: foreign
 Depends: ${misc:Depends}, ${python3:Depends}, gpsd, gpsd-clients
 Description: OpenPlotter app to manage serial devices
  OpenPlotter app to manage serial devices
