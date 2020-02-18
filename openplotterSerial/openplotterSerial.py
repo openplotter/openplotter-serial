@@ -272,8 +272,8 @@ class SerialFrame(wx.Frame):
 				elif l[5] == '5': hubtext = _('upper right') 
 				elif l[5] == '1': hubtext = _('middle left') 
 				elif l[5] == '4': hubtext = _('middle right') 
-				elif l[5] == '0': hubtext = _('below left') 
-				elif l[5] == '3': hubtext = _('below right') 
+				elif l[5] == '0': hubtext = _('lower left') 
+				elif l[5] == '3': hubtext = _('lower right') 
 				item = self.list_Serialinst.InsertItem(self.list_Serialinst.GetItemCount(), hubtext)
 			else:
 				#select image
