@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: openplotter-serial\n"
-"POT-Creation-Date: 2020-02-18 19:36+0100\n"
-"PO-Revision-Date: 2020-02-18 19:36+0100\n"
+"POT-Creation-Date: 2020-02-29 14:35+0100\n"
+"PO-Revision-Date: 2020-02-29 14:35+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -16,7 +16,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: openplotterSerial.py:58
-msgid "OpenPlotter Serial"
+msgid "Serial"
 msgstr ""
 
 #: openplotterSerial.py:68

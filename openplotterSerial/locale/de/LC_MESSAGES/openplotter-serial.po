@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: openplotter\n"
-"POT-Creation-Date: 2019-12-13 19:47+0100\n"
-"PO-Revision-Date: 2019-12-16 12:54+0100\n"
+"POT-Creation-Date: 2020-02-18 19:36+0100\n"
+"PO-Revision-Date: 2020-02-29 14:41+0100\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -18,320 +18,385 @@ msgstr ""
 "X-Crowdin-File: openplotter-serial.po\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: openplotterSerial.py:52
+#: openplotterSerial.py:58
 msgid "OpenPlotter Serial"
 msgstr "OpenPlotter Seriell"
 
-#: openplotterSerial.py:62
+#: openplotterSerial.py:68
 msgid "Help"
 msgstr "Hilfe"
 
-#: openplotterSerial.py:65
+#: openplotterSerial.py:71
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: openplotterSerial.py:68
+#: openplotterSerial.py:74
 msgid "UART"
 msgstr "UART"
 
-#: openplotterSerial.py:76
+#: openplotterSerial.py:82
 msgid "Refresh"
 msgstr "Aktualisieren"
 
-#: openplotterSerial.py:83
+#: openplotterSerial.py:89
 msgid "Devices"
 msgstr "Geräte"
 
-#: openplotterSerial.py:84
+#: openplotterSerial.py:90
 msgid "Connections"
 msgstr "Verbindungen"
 
-#: openplotterSerial.py:153
+#: openplotterSerial.py:163
 msgid "USB port"
 msgstr "USB-Port"
 
-#: openplotterSerial.py:154 openplotterSerial.py:586
+#: openplotterSerial.py:164 openplotterSerial.py:608
 msgid "device"
 msgstr "Gerät"
 
-#: openplotterSerial.py:155 openplotterSerial.py:165 openplotterSerial.py:587
+#: openplotterSerial.py:165 openplotterSerial.py:175 openplotterSerial.py:609
 msgid "alias"
 msgstr "alias"
 
-#: openplotterSerial.py:156
+#: openplotterSerial.py:166
 msgid "vendor"
 msgstr "Anbieter"
 
-#: openplotterSerial.py:157
+#: openplotterSerial.py:167
 msgid "product"
 msgstr "Produkt"
 
-#: openplotterSerial.py:158
+#: openplotterSerial.py:168
 msgid "serial"
 msgstr "seriell"
 
-#: openplotterSerial.py:159
+#: openplotterSerial.py:169
 msgid "remember"
 msgstr "erinnern"
 
-#: openplotterSerial.py:168 openplotterSerial.py:588
+#: openplotterSerial.py:178 openplotterSerial.py:610
 msgid "data"
 msgstr "Daten"
 
-#: openplotterSerial.py:171
+#: openplotterSerial.py:181
 msgid "Remember device (by vendor, product, serial)"
 msgstr "Gerät merken (nach Hersteller, Produkt, Seriell)"
 
-#: openplotterSerial.py:172
+#: openplotterSerial.py:182
 msgid "Remember port (positon on the USB-hub)"
 msgstr "Port merken (Position und USB-Hub)"
 
-#: openplotterSerial.py:175
+#: openplotterSerial.py:185
 msgid "Apply"
 msgstr "anwenden"
 
-#: openplotterSerial.py:177 openplotterSerial.py:598
+#: openplotterSerial.py:187 openplotterSerial.py:620
 msgid "Remove"
 msgstr "entfernen"
 
-#: openplotterSerial.py:237
+#: openplotterSerial.py:247
 msgid "Device with vendor "
 msgstr "Gerät mit Hersteller "
 
-#: openplotterSerial.py:237
+#: openplotterSerial.py:247
 msgid " is connected to a reserved port"
 msgstr " ist mit einem reservierten Port verbunden"
 
+#: openplotterSerial.py:271
+msgid "upper left"
+msgstr "links oben"
+
+#: openplotterSerial.py:272
+msgid "upper right"
+msgstr "oben rechts"
+
 #: openplotterSerial.py:273
+msgid "middle left"
+msgstr "mitte links"
+
+#: openplotterSerial.py:274
+msgid "middle right"
+msgstr "mittig rechts"
+
+#: openplotterSerial.py:275
+msgid "lower left"
+msgstr "links unten"
+
+#: openplotterSerial.py:276
+msgid "lower right"
+msgstr "rechts unten"
+
+#: openplotterSerial.py:294
 msgid "no Hub"
 msgstr "kein Hub"
 
-#: openplotterSerial.py:336
+#: openplotterSerial.py:357
 msgid "There are missing devices"
 msgstr "Es gibt fehlende Geräte"
 
-#: openplotterSerial.py:397 openplotterSerial.py:560
+#: openplotterSerial.py:418 openplotterSerial.py:582
 msgid "No device selected"
 msgstr "Kein Gerät ausgewählt"
 
-#: openplotterSerial.py:459
+#: openplotterSerial.py:480
 msgid "This action disables Bluetooth and enables UART interface in GPIO. OpenPlotter will reboot.\n"
 msgstr "Diese Aktion deaktiviert Bluetooth und aktiviert die UART-Schnittstelle am GPIO. OpenPlotter wird neu gestartet.\n"
 
-#: openplotterSerial.py:460 openplotterSerial.py:466
+#: openplotterSerial.py:481 openplotterSerial.py:487
 msgid "Are you sure?"
 msgstr "Bist du sicher?"
 
-#: openplotterSerial.py:461 openplotterSerial.py:467
+#: openplotterSerial.py:482 openplotterSerial.py:488
 msgid "Question"
 msgstr "Frage"
 
-#: openplotterSerial.py:465
+#: openplotterSerial.py:486
 msgid "This action disables UART interface in GPIO and enables Bluetooth. OpenPlotter will reboot.\n"
 msgstr "Diese Aktion deaktiviert die UART-Schnittstelle am GPIO und aktiviert Bluetooth. OpenPlotter startet neu.\n"
 
-#: openplotterSerial.py:480
+#: openplotterSerial.py:501
 msgid "Failed. No port selected"
 msgstr "Fehlgeschlagen. Kein Port ausgewählt"
 
-#: openplotterSerial.py:485
+#: openplotterSerial.py:506
 msgid "The alias must be a lowercase string between 1 and 8 characters or numbers."
 msgstr "Der Alias muss ein aus Kleinbuchstaben oder Zahlen bestehnder String sein mit einer Länge von 1 und 8 Zeichen."
 
-#: openplotterSerial.py:491
+#: openplotterSerial.py:512
 msgid "Same alias used for multiple devices"
 msgstr "Gleicher Alias für mehrere Geräte"
 
-#: openplotterSerial.py:496
+#: openplotterSerial.py:517
 msgid "Please select type of data"
 msgstr "Bitte wählen Sie den Datentyp"
 
-#: openplotterSerial.py:517
+#: openplotterSerial.py:538
 msgid "Device with duplicate vendor and product must be set to \"Remember port\"."
 msgstr "Gerät mit gleichem Hersteller und Produkt muss auf \"Port speichern\" gesetzt werden."
 
-#: openplotterSerial.py:524
+#: openplotterSerial.py:545
 msgid "This port is already reserved and must be set to \"Remember device\"."
 msgstr "Dieser Port ist bereits reserviert und muss auf \"Gerät speichern\" gesetzt werden."
 
-#: openplotterSerial.py:533
+#: openplotterSerial.py:554 openplotterSerial.py:751
 msgid "Applying changes ..."
 msgstr "Änderungen werden übernommen ..."
 
-#: openplotterSerial.py:574
+#: openplotterSerial.py:577
+msgid "Applied changes"
+msgstr "Änderungen übernommen"
+
+#: openplotterSerial.py:596
 msgid "Add to Signal K"
 msgstr "Zu Signal K hinzufügen"
 
-#: openplotterSerial.py:576
+#: openplotterSerial.py:598
 msgid "Add to CAN Bus"
 msgstr "Zu CAN-Bus hinzufügen"
 
-#: openplotterSerial.py:578
+#: openplotterSerial.py:600
 msgid "Add to GPSD"
 msgstr "Zu GPSD hinzufügen"
 
-#: openplotterSerial.py:580
+#: openplotterSerial.py:602
 msgid "Add to Pypilot"
 msgstr "Zu Pypilot hinzufügen"
 
-#: openplotterSerial.py:582
+#: openplotterSerial.py:604
 msgid "Add to Kplex"
 msgstr "Zu Kplex hinzufügen"
 
-#: openplotterSerial.py:589
+#: openplotterSerial.py:611
 msgid "connection"
 msgstr "verbindung"
 
-#: openplotterSerial.py:590
+#: openplotterSerial.py:612
 msgid "ID"
 msgstr "ID"
 
-#: openplotterSerial.py:591
+#: openplotterSerial.py:613
 msgid "bauds"
 msgstr "bauds"
 
-#: openplotterSerial.py:596
+#: openplotterSerial.py:618
 msgid "Edit"
 msgstr "Editieren"
 
-#: openplotterSerial.py:662 openplotterSerial.py:686
+#: openplotterSerial.py:685 openplotterSerial.py:709
 msgid "Please install \"Signal K Installer\" OpenPlotter app"
 msgstr "Bitte installieren Sie die OpenPlotter App \"Signal K Installer\""
 
-#: openplotterSerial.py:689
+#: openplotterSerial.py:712
 msgid "Please install \"CAN Bus\" OpenPlotter app"
 msgstr "Bitte installieren Sie \"CAN Bus\" OpenPlotter App"
 
-#: openplotterSerial.py:705
+#: openplotterSerial.py:728
 msgid "GPSD config file modified"
 msgstr "GPSD Konfigurationsdatei geändert"
 
-#: openplotterSerial.py:709
+#: openplotterSerial.py:732
 msgid "Please install \"gpsd\" package"
 msgstr "Bitte installieren Sie das Paket \"gpsd\""
 
-#: openplotterSerial.py:731
+#: openplotterSerial.py:753
+msgid "Pypilot serial devices modified and autopilot enabled"
+msgstr "Pypilot serielle Geräte geändert und Autopilot aktiviert"
+
+#: openplotterSerial.py:757
 msgid "Please install \"Pypilot\" OpenPlotter app"
 msgstr "Bitte installieren Sie \"Pypilot\" OpenPlotter App"
 
-#: openplotterSerial.py:753
+#: openplotterSerial.py:779
 msgid "Please install \"Kplex\" OpenPlotter app"
 msgstr "Bitte installieren Sie \"Kplex\" OpenPlotter App"
 
-#: openplotterSerial.py:782
+#: openplotterSerial.py:811
 msgid "Failed. Error removing connection in Signal K"
 msgstr "Fehlgeschlagen. Fehler beim Entfernen der Verbindung in Signal K"
 
-#: openplotterSerial.py:794
+#: openplotterSerial.py:826
 msgid "Restarting Signal K server... "
 msgstr "Starte Signal K-Server neu... "
 
-#: openplotterSerial.py:800
+#: openplotterSerial.py:832
 msgid "Signal K server restarted"
 msgstr "Signal K Server neu gestartet"
 
-#: openplotterSerial.py:814
+#: openplotterSerial.py:847
 msgid "Adding connection for device: "
 msgstr "Verbindung für Gerät hinzufügen: "
 
-#: openplotterSerial.py:821
+#: openplotterSerial.py:854
 msgid "Baud Rate: "
 msgstr "Baud Rate: "
 
-#: openplotterSerial.py:828
+#: openplotterSerial.py:861
 msgid "MANUAL"
 msgstr "MANUELL"
 
-#: openplotterSerial.py:830
+#: openplotterSerial.py:863
 msgid "AUTO"
 msgstr "AUTO"
 
-#: openplotterSerial.py:834 openplotterSerial.py:846 openplotterSerial.py:861
-#: openplotterSerial.py:874 openplotterSerial.py:879
+#: openplotterSerial.py:867 openplotterSerial.py:879 openplotterSerial.py:894
+#: openplotterSerial.py:907 openplotterSerial.py:919
 msgid "Data: "
 msgstr "Daten: "
 
-#: openplotterSerial.py:835 openplotterSerial.py:847 openplotterSerial.py:875
-#: openplotterSerial.py:880
+#: openplotterSerial.py:868 openplotterSerial.py:880 openplotterSerial.py:920
 msgid "ID: "
 msgstr "ID: "
 
-#: openplotterSerial.py:836 openplotterSerial.py:848 openplotterSerial.py:862
-#: openplotterSerial.py:876 openplotterSerial.py:881
+#: openplotterSerial.py:869 openplotterSerial.py:881 openplotterSerial.py:895
+#: openplotterSerial.py:908 openplotterSerial.py:921
 msgid "Serial port: "
 msgstr "Serieller Port: "
 
-#: openplotterSerial.py:838
+#: openplotterSerial.py:871
 msgid "Press AUTO to create a connection in Signal K using the settings above."
 msgstr "Drücken Sie AUTO um eine Verbindung in Signal K mit den obigen Einstellungen herzustellen."
 
-#: openplotterSerial.py:841
+#: openplotterSerial.py:874
 msgid "Signal K will send data to OpenCPN, be sure a network TCP localhost:10110 input connection exists in OpenCPN."
 msgstr "Signal K sendet Daten an OpenCPN, stellen Sie sicher, dass eine TCP Eingangsverbindung (localhost:10110) in OpenCPN existiert."
 
-#: openplotterSerial.py:844
+#: openplotterSerial.py:877
 msgid "Press MANUAL if you need to add special settings."
 msgstr "Drücken Sie MANUELL, wenn Sie spezielle Einstellungen hinzufügen möchten."
 
-#: openplotterSerial.py:850
+#: openplotterSerial.py:883
 msgid "Press AUTO to create a \"canboatjs\" connection for a NGT-1 or a CAN-USB device in Signal K using the settings above."
 msgstr "Drücken Sie AUTO um eine \"canboatjs\" Verbindung für ein NGT-1 oder ein CAN-USB Gerät in Signal K unter Verwendung der obigen Einstellungen herstellen möchten."
 
-#: openplotterSerial.py:853
+#: openplotterSerial.py:886
 msgid "Use the \"SK → NMEA 0183\" plugin to send data to OpenCPN, be sure a network TCP localhost:10110 input connection exists in OpenCPN."
 msgstr "Verwenden Sie das \"SK → NMEA 0183\" Plugin, um Daten an OpenCPN zu senden. Stellen Sie sicher, dass eine TCP Eingangsverbindung (localhost:10110) in OpenCPN existiert."
 
-#: openplotterSerial.py:856
+#: openplotterSerial.py:889
 msgid "Use \"SK → NMEA 2000\" plugin to send data from Signal K to your CAN network. Open desired TX PGNs in your device."
 msgstr "Benutzen Sie das Plugin \"SK → NMEA 2000\", um Daten von Signal K an Ihr CAN-Netzwerk zu senden. Öffnen Sie die gewünschten TX-PGNs in Ihrem Gerät."
 
-#: openplotterSerial.py:859
+#: openplotterSerial.py:892
 msgid "Press MANUAL if you need to add special settings or you want to set a CANable device."
 msgstr "Drücken Sie MANUELL, wenn Sie spezielle Einstellungen hinzufügen oder ein CAN-fähiges Gerät einstellen möchten."
 
-#: openplotterSerial.py:866
+#: openplotterSerial.py:899
 msgid "Press AUTO to add this device to the list of devices managed by GPSD."
 msgstr "Drücken Sie AUTO um dieses Gerät zur Liste der Geräte hinzuzufügen, die von GPSD verwaltet werden."
 
-#: openplotterSerial.py:869
+#: openplotterSerial.py:902
 msgid "Be sure you send only GNSS or AIS data to GPSD. Baud Rate will be automatically assigned."
 msgstr "Stellen Sie sicher, dass Sie nur GNSS oder AIS Daten an GPSD senden. Baud Rate wird automatisch zugewiesen."
 
-#: openplotterSerial.py:872
+#: openplotterSerial.py:905
 msgid "Pypilot will get data from GPSD automatically."
 msgstr "Pypilot holt automatisch Daten von GPSD."
 
-#: openplotterSerial.py:877 openplotterSerial.py:882
+#: openplotterSerial.py:907
+msgid "(or motor controller data)"
+msgstr "(oder Motorsteuerungsdaten)"
+
+#: openplotterSerial.py:911
+msgid "Press AUTO to use this device to send data to Pypilot. Baud Rate will be automatically assigned."
+msgstr "Drücken Sie AUTO um dieses Gerät zum Senden von Daten an Pypilot zu verwenden. Baud Rate wird automatisch zugewiesen."
+
+#: openplotterSerial.py:914
+msgid "You can also set the motor controller in this way, but make sure you have enabled UART before."
+msgstr "Sie können den Motorregler auch so einstellen, aber stellen Sie sicher, dass Sie zuvor UART aktiviert haben."
+
+#: openplotterSerial.py:917
+msgid "Press MANUAL if you prefer to set this device in openplotter-pypilot app."
+msgstr "Drücken Sie MANUAL, wenn Sie dieses Gerät in der openplotter-pypilot App einstellen möchten."
+
+#: openplotterSerial.py:924
 msgid "Coming soon."
 msgstr "In Kürze erhältlich."
 
-#: openplotterSerial.py:917
+#: openplotterSerial.py:959
 msgid "Failed. This ID already exists"
 msgstr "Fehlgeschlagen. Diese ID existiert bereits"
 
-#: openplotterSerial.py:918
+#: openplotterSerial.py:960
 msgid "Failed. This device is already in use"
 msgstr "Fehlgeschlagen. Dieses Gerät wird bereits verwendet"
 
-#: openplotterSerial.py:930
+#: openplotterSerial.py:972
 msgid "Failed. Error creating connection in Signal K"
 msgstr "Fehlgeschlagen. Fehler beim Erstellen der Verbindung in Signal K"
+
+#: openplotterSerial.py:985
+msgid "Failed. This device is already set in Pypilot"
+msgstr "Fehlgeschlagen. Dieses Gerät ist bereits in Pypilot gesetzt"
+
+#: openplotterSerial.py:990
+msgid "Failed. Error setting the device in Pypilot"
+msgstr "Fehlgeschlagen. Fehler beim Setzen des Geräts in Pypilot"
 
 #: serialPostInstall.py:29
 msgid "Editing GPSD config file..."
 msgstr "Bearbeite GPSD Konfigurationsdatei..."
 
-#: serialPostInstall.py:36 serialPreUninstall.py:33
+#: serialPostInstall.py:36 serialPostInstall.py:42 serialPreUninstall.py:31
+#: serialPreUninstall.py:37
 msgid "DONE"
 msgstr "Fertig"
 
-#: serialPostInstall.py:37 serialPreUninstall.py:34
+#: serialPostInstall.py:37 serialPostInstall.py:43 serialPreUninstall.py:32
+#: serialPreUninstall.py:38
 msgid "FAILED: "
 msgstr "FEHLGESCHLAGEN: "
+
+#: serialPostInstall.py:39
+msgid "Setting version..."
+msgstr "Setze Version..."
 
 #: serialPreUninstall.py:28
 msgid "Removing GPSD config file..."
 msgstr "Entferne GPSD Konfigurationsdatei..."
+
+#: serialPreUninstall.py:34
+msgid "Removing version..."
+msgstr "Entferne Version..."
 
 #: startup.py:41
 msgid "Checking serial connections alias..."
