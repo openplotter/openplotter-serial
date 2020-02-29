@@ -55,7 +55,7 @@ class SerialFrame(wx.Frame):
 				modelfile.close()
 			except: self.rpimodel = ''
 	
-		wx.Frame.__init__(self, None, title=_('OpenPlotter Serial')+' '+version, size=(800,444))
+		wx.Frame.__init__(self, None, title=_('Serial')+' '+version, size=(800,444))
 		self.SetFont(wx.Font(10, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
 		icon = wx.Icon(self.currentdir+"/data/openplotter-serial.png", wx.BITMAP_TYPE_PNG)
 		self.SetIcon(icon)
