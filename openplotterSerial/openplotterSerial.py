@@ -315,7 +315,7 @@ class SerialFrame(wx.Frame):
 						portnr = usbport[hublen-3:hublen]
 						if portnr[0:1] in ['1','2','3','4','5','6','7','8']:
 							hubtext = 'Hub port '+portnr
-					if portpos and not 'virtual' in usbport and not 'serial' in usbport: 
+					if portpos != '' and not 'virtual' in usbport and not 'serial' in usbport: 
 						item = self.list_Serialinst.InsertItem(self.list_Serialinst.GetItemCount(), hubtext, portpos)
 					else: 
 						item = self.list_Serialinst.InsertItem(self.list_Serialinst.GetItemCount(), ' ')
