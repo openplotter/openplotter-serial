@@ -27,8 +27,6 @@ if os.path.dirname(os.path.abspath(__file__))[0:4] == '/usr':
 else:
 	import version
 
-
-
 class SerialFrame(wx.Frame):
 	def __init__(self):
 		self.conf = conf.Conf()
@@ -142,6 +140,8 @@ class SerialFrame(wx.Frame):
 		self.ShowStatusBarBLACK('')
 		self.read_Serialinst()
 
+	##########################################################################
+
 	def pageSerial(self):
 		self.imgPorts = wx.ImageList(24, 24)
 		self.imgPorts.Add(wx.Bitmap(self.currentdir+"/data/rpi_port_ll.png", wx.BITMAP_TYPE_PNG))
@@ -170,7 +170,8 @@ class SerialFrame(wx.Frame):
 		self.list_Serialinst.Bind(wx.EVT_LIST_ITEM_SELECTED, self.on_SerialinstSelected)
 		self.list_Serialinst.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.on_SerialinstDeselected)
 		self.list_Serialinst.SetImageList(self.imgPorts, wx.IMAGE_LIST_SMALL)
-		
+		self.list_Serialinst.SetTextColour(wx.BLACK)
+
 		ttyOP_label = wx.StaticText(self.p_serial, label='/dev/ttyOP_')
 		name_label = wx.StaticText(self.p_serial, label=_('alias'), size=(100,-1))
 		self.Serial_OPname = wx.TextCtrl(self.p_serial, size=(100,-1))
@@ -591,6 +592,8 @@ class SerialFrame(wx.Frame):
 		self.conf.set('UDEV', 'Serialinst', str(self.Serialinst))
 		self.apply_changes_Serialinst()	
 
+	##########################################################################
+
 	def pageConnection(self):
 		self.toolbar3 = wx.ToolBar(self.connections, style=wx.TB_TEXT)
 		skConnections = self.toolbar3.AddTool(301, _('Add to Signal K'), wx.Bitmap(self.currentdir+"/data/sk.png"))
@@ -601,8 +604,6 @@ class SerialFrame(wx.Frame):
 		self.Bind(wx.EVT_TOOL, self.OnGpsdConnections, gpsdConnections)
 		pypilotConnections = self.toolbar3.AddTool(304, _('Add to Pypilot'), wx.Bitmap(self.currentdir+"/data/pypilot.png"))
 		self.Bind(wx.EVT_TOOL, self.OnPypilotConnections, pypilotConnections)
-		kplexConnections = self.toolbar3.AddTool(305, _('Add to Kplex'), wx.Bitmap(self.currentdir+"/data/kplex.png"))
-		self.Bind(wx.EVT_TOOL, self.OnKplexConnections, kplexConnections)
 
 		self.listConnections = wx.ListCtrl(self.connections, -1, style=wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.LC_HRULES, size=(-1,200))
 		self.listConnections.InsertColumn(0, _('device')+' /dev/', width=120)
@@ -613,6 +614,7 @@ class SerialFrame(wx.Frame):
 		self.listConnections.InsertColumn(5, _('bauds'), width=100)
 		self.listConnections.Bind(wx.EVT_LIST_ITEM_SELECTED, self.onListConnectionsSelected)
 		self.listConnections.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.onListConnectionsDeselected)
+		self.listConnections.SetTextColour(wx.BLACK)
 
 		self.toolbar4 = wx.ToolBar(self.connections, style=wx.TB_TEXT | wx.TB_VERTICAL)
 		editConnection = self.toolbar4.AddTool(401, _('Edit'), wx.Bitmap(self.currentdir+"/data/edit.png"))
@@ -757,28 +759,6 @@ class SerialFrame(wx.Frame):
 			self.ShowStatusBarRED(_('Please install "Pypilot" OpenPlotter app'))
 			self.OnToolSettings()
 
-	def OnKplexConnections(self,e):
-		selected = self.listConnections.GetFirstSelected()
-		if selected == -1: return
-		if self.platform.isInstalled('openplotter-kplex'):
-			app = 'kplex'
-			device = self.listConnections.GetItemText(selected, 0)
-			alias = self.listConnections.GetItemText(selected, 1)
-			data = self.listConnections.GetItemText(selected, 2)
-			dlg = addConnection(app,device,alias,data)
-			res = dlg.ShowModal()
-			if res == wx.ID_SETUP:
-				pass
-				#subprocess.call(['pkill', '-f', 'openplotter-kplex'])
-				#subprocess.Popen(['openplotter-kplex'])
-			elif res == wx.ID_OK:
-				if dlg.error: self.ShowStatusBarRED(dlg.error)
-				else: pass
-			dlg.Destroy()
-		else:
-			self.ShowStatusBarRED(_('Please install "Kplex" OpenPlotter app'))
-			self.OnToolSettings()
-
 	def OnEditConnection(self, e):
 		selected = self.listConnections.GetFirstSelected()
 		if selected == -1: return
@@ -915,13 +895,6 @@ class addConnection(wx.Dialog):
 			msg2Label.Newline()
 			msg2Label.Newline()
 			msg2Label.WriteText(_('Press MANUAL if you prefer to set this device in openplotter-pypilot app.'))
-		elif self.app == 'kplex':
-			msg1 = _('Data: ')+'\n'
-			msg1 += _('ID: ')+'\n'
-			msg1 += _('Serial port: ')
-			self.bauds.Disable()
-			baudsLabel.Disable()
-			msg2Label.WriteText(_('Coming soon.'))
 
 		msg1Label.SetLabel(msg1)
 
