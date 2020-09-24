@@ -16,6 +16,11 @@
 # along with Openplotter. If not, see <http://www.gnu.org/licenses/>.
 
 import sys, subprocess
+from openplotterSignalkInstaller import editSettings
+from openplotterSettings import platform
+
+skSettings = editSettings.EditSettings()
+platform2 = platform.Platform()
 
 if sys.argv[1]=='add':
 	device = sys.argv[2]
@@ -37,6 +42,10 @@ if sys.argv[1]=='add':
 	fo.close()
 	subprocess.call(['service', 'gpsd', 'restart'])
 
+	if platform2.skPort:
+		if not skSettings.connectionIdExists('OpenPlotter GPSD'):
+			skSettings.setNetworkConnection('OpenPlotter GPSD', 'NMEA0183', 'GPSD', 'localhost', '2947')
+
 if sys.argv[1]=='remove':
 	device = sys.argv[2]
 	new = []
@@ -55,6 +64,8 @@ if sys.argv[1]=='remove':
 		fo = open('/etc/default/gpsd', "w")
 		fo.write( 'START_DAEMON="false"\nUSBAUTO="false"\nDEVICES=""\nGPSD_OPTIONS="-n -b"')
 		fo.close()
+		if platform2.skPort:
+			skSettings.removeConnection('OpenPlotter GPSD')
 	else:
 		final0 = ' '.join(new)
 		final0 = final0.strip()
@@ -64,3 +75,8 @@ if sys.argv[1]=='remove':
 		fo.close()
 	subprocess.call(['service', 'gpsd', 'restart'])
 
+if platform2.skPort:
+	subprocess.call(['systemctl', 'stop', 'signalk.service'])
+	subprocess.call(['systemctl', 'stop', 'signalk.socket'])
+	subprocess.call(['systemctl', 'start', 'signalk.socket'])
+	subprocess.call(['systemctl', 'start', 'signalk.service'])

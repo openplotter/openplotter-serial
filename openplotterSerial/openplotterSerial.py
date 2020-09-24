@@ -726,8 +726,14 @@ class SerialFrame(wx.Frame):
 			res = dlg.ShowModal()
 			if res == wx.ID_OK:
 				if dlg.error: self.ShowStatusBarRED(dlg.error)
-				else: 
-					self.ShowStatusBarGREEN(_('GPSD config file modified'))
+				else:
+					if self.platform.skPort:
+						msg = _('Restarting Signal K server... ')
+						seconds = 12
+						for i in range(seconds, 0, -1):
+							self.ShowStatusBarYELLOW(msg+str(i))
+							time.sleep(1)
+						self.ShowStatusBarGREEN(_('Signal K server restarted'))
 					self.read_Serialinst()
 			dlg.Destroy()
 		else:
@@ -794,6 +800,13 @@ class SerialFrame(wx.Frame):
 			subprocess.Popen(['openplotter-can', 'canable'])
 		elif connection == 'GPSD':
 			subprocess.call([self.platform.admin, 'python3', self.currentdir+'/editGpsd.py', 'remove', ID])
+			if self.platform.skPort:
+				msg = _('Restarting Signal K server... ')
+				seconds = 12
+				for i in range(seconds, 0, -1):
+					self.ShowStatusBarYELLOW(msg+str(i))
+					time.sleep(1)
+				self.ShowStatusBarGREEN(_('Signal K server restarted'))
 			self.read_Serialinst()
 		elif connection == 'OpenCPN':
 			subprocess.call(['pkill', '-f', 'opencpn'])
@@ -876,7 +889,7 @@ class addConnection(wx.Dialog):
 			self.bauds.Disable()
 			baudsLabel.Disable()
 			setupBtn.Disable()
-			msg2Label.WriteText(_('Press AUTO to add this device to the list of devices managed by GPSD.'))
+			msg2Label.WriteText(_('Press AUTO to add this device to the list of devices managed by GPSD. A connection for GPSD will be created in Signal K if it does not exist.'))
 			msg2Label.Newline()
 			msg2Label.Newline()
 			msg2Label.WriteText(_('Be sure you send only GNSS or AIS data to GPSD. Baud Rate will be automatically assigned.'))
@@ -967,9 +980,6 @@ class addConnection(wx.Dialog):
 				for i in tmp:
 					if i[:4] == 'nmea' and i[-6:] == 'device':
 						subprocess.call(['rm', '-f', path+i])
-
-			elif self.app == 'kplex': 
-				pass
 
 		self.EndModal(wx.ID_OK)
 
