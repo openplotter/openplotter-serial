@@ -851,10 +851,10 @@ class addConnection(wx.Dialog):
 			msg2Label.WriteText(_('Press AUTO to create a connection in Signal K using the settings above.'))
 			msg2Label.Newline()
 			msg2Label.Newline()
-			msg2Label.WriteText(_('Signal K will send data to OpenCPN, be sure a network TCP localhost:10110 input connection exists in OpenCPN.'))
-			msg2Label.Newline()
-			msg2Label.Newline()
 			msg2Label.WriteText(_('Press MANUAL if you need to add special settings.'))
+			msg2Label.Newline()
+			msg2Label.Newline()
+			msg2Label.WriteText(_('To get data in OpenCPN, make sure this network connection exists in OpenCPN:\nProtocol: Signal K\nAddress: localhost\nDataPort: '+self.platform.skPort+'\nAutomatic server discovery: not'))
 		elif self.app == 'CAN':
 			msg1 = _('Data: ')+self.data+'\n'
 			msg1 += _('ID: ')+self.ID+'\n'
@@ -863,13 +863,13 @@ class addConnection(wx.Dialog):
 			msg2Label.WriteText(_('Press AUTO to create a "canboatjs" connection for a NGT-1 or a CAN-USB device in Signal K using the settings above.'))
 			msg2Label.Newline()
 			msg2Label.Newline()
-			msg2Label.WriteText(_('Use the "SK → NMEA 0183" plugin to send data to OpenCPN, be sure a network TCP localhost:10110 input connection exists in OpenCPN.'))
+			msg2Label.WriteText(_('Press MANUAL if you need to add special settings or you want to set a CANable device.'))
 			msg2Label.Newline()
 			msg2Label.Newline()
 			msg2Label.WriteText(_('Use "SK → NMEA 2000" plugin to send data from Signal K to your CAN network. Open desired TX PGNs in your device.'))
 			msg2Label.Newline()
 			msg2Label.Newline()
-			msg2Label.WriteText(_('Press MANUAL if you need to add special settings or you want to set a CANable device.'))
+			msg2Label.WriteText(_('To get data in OpenCPN, make sure this network connection exists in OpenCPN:\nProtocol: Signal K\nAddress: localhost\nDataPort: '+self.platform.skPort+'\nAutomatic server discovery: not'))
 		elif self.app == 'gpsd':
 			msg1 = _('Data: ')+self.data+'\n'
 			msg1 += _('Serial port: ')+self.alias
