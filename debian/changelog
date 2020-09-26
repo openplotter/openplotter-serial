@@ -1,3 +1,14 @@
+openplotter-serial (2.2.0-stable) bionic; urgency=medium
+
+  * Fix errors
+  * Remove kplex connections
+  * Update tips to get data in OpenCPN
+  * Add Signal K connections to GPSD managed connections
+  * Add vendor and models to list of devices
+  * Update translations
+
+ -- Sailoog <info@sailoog.com>  Sat, 26 Sep 2020 13:39:06 +0200
+
 openplotter-serial (2.1.0-stable) bionic; urgency=medium
 
   * Initial release
