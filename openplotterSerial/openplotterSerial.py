@@ -154,10 +154,10 @@ class SerialFrame(wx.Frame):
 		self.imgPorts.Add(wx.Bitmap(self.currentdir+"/data/rpi_port_4ur.png", wx.BITMAP_TYPE_PNG))
 		if self.platform.isRPI:
 			colImages = 130
-			colSerial = 75
+			colSerial = 70
 		else:
 			colImages = 30
-			colSerial = 175
+			colSerial = 170
 		self.list_Serialinst = wx.ListCtrl(self.p_serial, -1, style=wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.LC_HRULES, size=(-1,200))
 		self.list_Serialinst.InsertColumn(0, ' ', width=colImages)
 		self.list_Serialinst.InsertColumn(1, _('USB port'), width=80)
@@ -167,6 +167,7 @@ class SerialFrame(wx.Frame):
 		self.list_Serialinst.InsertColumn(5, _('product'), width=60)
 		self.list_Serialinst.InsertColumn(6, _('serial'), width=colSerial)
 		self.list_Serialinst.InsertColumn(7, _('remember'), width=80)
+		self.list_Serialinst.InsertColumn(8, ' ', width=500)
 		self.list_Serialinst.Bind(wx.EVT_LIST_ITEM_SELECTED, self.on_SerialinstSelected)
 		self.list_Serialinst.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.on_SerialinstDeselected)
 		self.list_Serialinst.SetImageList(self.imgPorts, wx.IMAGE_LIST_SMALL)
@@ -233,10 +234,13 @@ class SerialFrame(wx.Frame):
 			if devname[8:10] == 'SC': serial = devname[10:11]
 			vendor_id = ''
 			model_id = ''
+			moreInfo = ''
 			for tag in device:
 				if tag == 'ID_SERIAL_SHORT': serial = device.get('ID_SERIAL_SHORT')
 				if tag == 'ID_VENDOR_ID': vendor_id = device.get('ID_VENDOR_ID')
 				if tag == 'ID_MODEL_ID': model_id = device.get('ID_MODEL_ID')
+				if tag == 'ID_MODEL_FROM_DATABASE': moreInfo += device.get('ID_MODEL_FROM_DATABASE')
+				if tag == 'ID_VENDOR_FROM_DATABASE': moreInfo += ' '+device.get('ID_VENDOR_FROM_DATABASE')
 			name = ''
 			remember = ''
 			serialData = ''
@@ -263,7 +267,7 @@ class SerialFrame(wx.Frame):
 						if 'data' in ii:
 							serialData = ii['data']
 
-			l = [port, devname[5:], name, vendor_id, model_id, serial, remember]
+			l = [port, devname[5:], name, vendor_id, model_id, serial, remember, moreInfo]
 			l2 = [devname[5:], name]
 
 			if devname[8:10] == 'SC':
@@ -329,6 +333,7 @@ class SerialFrame(wx.Frame):
 			if l[4]: self.list_Serialinst.SetItem(item, 5, l[4])
 			if l[5]: self.list_Serialinst.SetItem(item, 6, l[5])
 			if l[6]: self.list_Serialinst.SetItem(item, 7, l[6])
+			if l[7]: self.list_Serialinst.SetItem(item, 8, l[7])
 
 			if l2[1]:
 				item = self.listConnections.InsertItem(self.listConnections.GetItemCount(), l2[0])
@@ -352,7 +357,9 @@ class SerialFrame(wx.Frame):
 					exist = True
 			#check missing devices
 			if not exist:
-				l = ['', self.Serialinst[name]['port'], self.Serialinst[name]['device'], name, self.Serialinst[name]['vendor'], self.Serialinst[name]['product'], self.Serialinst[name]['serial'], self.Serialinst[name]['remember']]
+				moreInfo = ''
+				if 'moreInfo' in self.Serialinst[name]: moreInfo = self.Serialinst[name]['moreInfo']
+				l = ['', self.Serialinst[name]['port'], self.Serialinst[name]['device'], name, self.Serialinst[name]['vendor'], self.Serialinst[name]['product'], self.Serialinst[name]['serial'], self.Serialinst[name]['remember'], moreInfo]
 				self.list_Serialinst.Append(l)
 				self.list_Serialinst.SetItemBackgroundColour(self.list_Serialinst.GetItemCount()-1,(255,0,0))
 				self.ShowStatusBarRED(_('There are missing devices'))
@@ -528,7 +535,8 @@ class SerialFrame(wx.Frame):
 		product = self.list_Serialinst.GetItemText(index, 5)
 		serial = self.list_Serialinst.GetItemText(index, 6)
 		port = self.list_Serialinst.GetItemText(index, 1)
-		ii = {'device':device, 'vendor':vendor, 'product':product, 'port':port, 'serial':serial, 'remember':remember,'data':data}
+		moreInfo = self.list_Serialinst.GetItemText(index, 8)
+		ii = {'device':device, 'vendor':vendor, 'product':product, 'port':port, 'serial':serial, 'remember':remember,'data':data, 'moreInfo':moreInfo}
 
 		if old_name and old_name != name: del self.Serialinst[old_name]
 
