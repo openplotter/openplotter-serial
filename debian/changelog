@@ -1,3 +1,11 @@
+openplotter-serial (2.2.1-stable) bionic; urgency=medium
+
+  * add Raspberry 4 8GB to supported devices
+  * remove false advice about pypilot motor controller
+  * update translations
+
+ -- Sailoog <info@sailoog.com>  Tue, 29 Sep 2020 20:51:35 +0200
+
 openplotter-serial (2.2.0-stable) bionic; urgency=medium
 
   * Fix errors
