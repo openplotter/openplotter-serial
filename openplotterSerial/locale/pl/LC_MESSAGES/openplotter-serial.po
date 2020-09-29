@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openplotter\n"
 "POT-Creation-Date: 2020-09-24 18:29+0200\n"
-"PO-Revision-Date: 2020-09-26 13:35+0200\n"
+"PO-Revision-Date: 2020-09-29 20:50+0200\n"
 "Last-Translator: \n"
 "Language-Team: Polish\n"
 "Language: pl\n"
@@ -130,7 +130,7 @@ msgstr "dolny prawy"
 
 #: openplotterSerial.py:295
 msgid "no Hub"
-msgstr ""
+msgstr "brak HUBa"
 
 #: openplotterSerial.py:358
 msgid "There are missing devices"
@@ -297,10 +297,14 @@ msgid ""
 "Address: localhost\n"
 "DataPort: "
 msgstr ""
+"Aby otrzymać dane w OpenCPN, upewnij się, że istnieje następuje połączenie sieciowe w OpenCPN:\n"
+"Protokół: Signal K\n"
+"Adres: localhost\n"
+"DataPort: "
 
 #: openplotterSerial.py:876
 msgid "Press AUTO to create a \"canboatjs\" connection for a NGT-1 or a CAN-USB device in Signal K using the settings above."
-msgstr "Naciśnij AUTO aby utworzyć połączenie \"canboatjs\" dla urządzenia NGT-1 lub CAN-USB w Signal K, używając powyższych ustawień."
+msgstr "Naciśnij AUTOMATYCZNIE aby utworzyć połączenie \"canboatjs\" dla urządzenia NGT-1 lub CAN-USB w Signal K, używając powyższych ustawień."
 
 #: openplotterSerial.py:879
 msgid "Press MANUAL if you need to add special settings or you want to set a CANable device."
@@ -312,7 +316,7 @@ msgstr "Użyj wtyczki \"SK → NMEA 2000\", aby wysyłać dane z Signal K do Two
 
 #: openplotterSerial.py:892
 msgid "Press AUTO to add this device to the list of devices managed by GPSD. A connection for GPSD will be created in Signal K if it does not exist."
-msgstr ""
+msgstr "Naciśnij AUTOMATYCZNIE aby dodać to urządzenie do listy urządzeń zarządzanych przez GPSD. Połączenie GPSD zostanie utworzone w Signal K, jeśli nie istnieje."
 
 #: openplotterSerial.py:895
 msgid "Be sure you send only GNSS or AIS data to GPSD. Baud Rate will be automatically assigned."
