@@ -49,7 +49,9 @@ class SerialFrame(wx.Frame):
 				elif self.rpimodel == 'Raspberry Pi 3 Model B Plus Rev 1.3':
 					self.rpitype = '3B+'
 				elif self.rpimodel == 'Raspberry Pi 4 Model B Rev 1.1':
-					self.rpitype = '4B'				
+					self.rpitype = '4B'
+				elif self.rpimodel == 'Raspberry Pi 4 Model B Rev 1.4':
+					self.rpitype = '4B'					
 				modelfile.close()
 			except: self.rpimodel = ''
 	
