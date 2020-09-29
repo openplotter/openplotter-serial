@@ -914,9 +914,6 @@ class addConnection(wx.Dialog):
 			msg2Label.WriteText(_('Press AUTO to use this device to send data to Pypilot. Baud Rate will be automatically assigned.'))
 			msg2Label.Newline()
 			msg2Label.Newline()
-			msg2Label.WriteText(_('You can also set the motor controller in this way, but make sure you have enabled UART before.'))
-			msg2Label.Newline()
-			msg2Label.Newline()
 			msg2Label.WriteText(_('Press MANUAL if you prefer to set this device in openplotter-pypilot app.'))
 
 		msg1Label.SetLabel(msg1)
