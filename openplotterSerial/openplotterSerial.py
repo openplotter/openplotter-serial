@@ -573,7 +573,7 @@ class SerialFrame(wx.Frame):
 			if 'virtual' == i['port'] or 'SC' == i['device'][3:5]:
 				write_str = 'KERNEL=="'+i['device']
 			elif 'port' == i['remember']: # non-usb serial
-				write_str = 'KERNEL=="' + i['device'] + '*", KERNELS=="' + i['port']
+				write_str = 'KERNEL=="' + i['device'][0:-1] + '*", KERNELS=="' + i['port']
 			else:
 				write_str = 'SUBSYSTEM=="tty", ATTRS{idVendor}=="' + i['vendor']
 				write_str += '",ATTRS{idProduct}=="' + i['product']
