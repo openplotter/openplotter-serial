@@ -886,7 +886,7 @@ class addConnection(wx.Dialog):
 			msg2Label.WriteText(_('Press AUTO to create a "canboatjs" connection for a NGT-1 or a CAN-USB device in Signal K using the settings above.'))
 			msg2Label.Newline()
 			msg2Label.Newline()
-			msg2Label.WriteText(_('Press MANUAL if you need to add special settings or you want to set a CANable device.'))
+			msg2Label.WriteText(_('Press MANUAL if you need to add special settings or you want to set a slcand device.'))
 			msg2Label.Newline()
 			msg2Label.Newline()
 			msg2Label.WriteText(_('Use "SK → NMEA 2000" plugin to send data from Signal K to your CAN network. Open desired TX PGNs in your device.'))
