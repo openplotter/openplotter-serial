@@ -1,3 +1,10 @@
+openplotter-serial (2.2.2-stable) bionic; urgency=medium
+
+  * Fix udev error
+  * Update translations
+
+ -- Sailoog <info@sailoog.com>  Sun, 27 Jun 2021 22:00:49 +0200
+
 openplotter-serial (2.2.1-stable) bionic; urgency=medium
 
   * add Raspberry 4 8GB to supported devices
