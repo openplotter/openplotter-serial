@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openplotter\n"
 "POT-Creation-Date: 2021-06-27 21:50+0200\n"
-"PO-Revision-Date: 2021-06-27 21:59+0200\n"
+"PO-Revision-Date: 2021-06-28 18:33+0200\n"
 "Last-Translator: \n"
 "Language-Team: Czech\n"
 "Language: cs\n"
@@ -26,7 +26,7 @@ msgstr "Sériová linka"
 
 #: data/openplotter-serial.desktop:5
 msgid "openplotter-serial"
-msgstr ""
+msgstr "openPlotter sériové rozhraní"
 
 #: openplotterSerial.py:68
 msgid "Help"
@@ -312,7 +312,7 @@ msgstr "Stiskněte Automatické pro vytvoření spojení \"canboatjs\" pro NGT-1
 
 #: openplotterSerial.py:889
 msgid "Press MANUAL if you need to add special settings or you want to set a slcand device."
-msgstr ""
+msgstr "Stiskněte Manuální, pokud potřebujete přidat speciální nastavení nebo si přejete nastavit CAN zařízení."
 
 #: openplotterSerial.py:892
 msgid "Use \"SK → NMEA 2000\" plugin to send data from Signal K to your CAN network. Open desired TX PGNs in your device."

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openplotter\n"
 "POT-Creation-Date: 2021-06-27 21:50+0200\n"
-"PO-Revision-Date: 2021-06-27 21:59+0200\n"
+"PO-Revision-Date: 2021-06-28 18:33+0200\n"
 "Last-Translator: \n"
 "Language-Team: Catalan\n"
 "Language: ca\n"
@@ -26,7 +26,7 @@ msgstr "Sèrie"
 
 #: data/openplotter-serial.desktop:5
 msgid "openplotter-serial"
-msgstr ""
+msgstr "openplotter-serial"
 
 #: openplotterSerial.py:68
 msgid "Help"
@@ -312,7 +312,7 @@ msgstr "Prem AUTO per a crear una connexió \"canboatjs\" per a un dispositiu NG
 
 #: openplotterSerial.py:889
 msgid "Press MANUAL if you need to add special settings or you want to set a slcand device."
-msgstr ""
+msgstr "Prem MANUAL si necessites afegir preferències específiques o si vols establir un dispositiu slcand."
 
 #: openplotterSerial.py:892
 msgid "Use \"SK → NMEA 2000\" plugin to send data from Signal K to your CAN network. Open desired TX PGNs in your device."
