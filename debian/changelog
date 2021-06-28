@@ -1,4 +1,4 @@
-openplotter-serial (2.2.2-stable) bionic; urgency=medium
+openplotter-serial (2.2.3-stable) bionic; urgency=medium
 
   * Fix udev error
   * Update translations
