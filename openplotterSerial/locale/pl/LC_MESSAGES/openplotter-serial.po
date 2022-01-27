@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openplotter\n"
 "POT-Creation-Date: 2021-06-27 21:50+0200\n"
-"PO-Revision-Date: 2021-06-28 18:33+0200\n"
+"PO-Revision-Date: 2021-12-10 12:41\n"
 "Last-Translator: \n"
 "Language-Team: Polish\n"
 "Language: pl\n"
@@ -13,12 +13,12 @@ msgstr ""
 "X-Poedit-Basepath: ../../..\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
 "X-Crowdin-Project: openplotter\n"
 "X-Crowdin-Project-ID: 289888\n"
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: openplotter-serial.po\n"
 "X-Crowdin-File-ID: 17\n"
-"X-Poedit-SearchPath-0: .\n"
 
 #: data/openplotter-serial.desktop:3 openplotterSerial.py:58
 msgid "Serial"
@@ -26,7 +26,7 @@ msgstr "Porty szeregowe"
 
 #: data/openplotter-serial.desktop:5
 msgid "openplotter-serial"
-msgstr ""
+msgstr "openplotter - urządzenia szeregowe"
 
 #: openplotterSerial.py:68
 msgid "Help"
@@ -295,13 +295,11 @@ msgid "Press MANUAL if you need to add special settings."
 msgstr "Naciśnij RĘCZNIE, jeśli chcesz dodać specjalne ustawienia."
 
 #: openplotterSerial.py:880 openplotterSerial.py:895
-msgid ""
-"To get data in OpenCPN, make sure this network connection exists in OpenCPN:\n"
+msgid "To get data in OpenCPN, make sure this network connection exists in OpenCPN:\n"
 "Protocol: Signal K\n"
 "Address: localhost\n"
 "DataPort: "
-msgstr ""
-"Aby otrzymać dane w OpenCPN, upewnij się, że istnieje następuje połączenie sieciowe w OpenCPN:\n"
+msgstr "Aby otrzymać dane w OpenCPN, upewnij się, że istnieje następuje połączenie sieciowe w OpenCPN:\n"
 "Protokół: Signal K\n"
 "Adres: localhost\n"
 "DataPort: "
@@ -312,7 +310,7 @@ msgstr "Naciśnij AUTOMATYCZNIE aby utworzyć połączenie \"canboatjs\" dla urz
 
 #: openplotterSerial.py:889
 msgid "Press MANUAL if you need to add special settings or you want to set a slcand device."
-msgstr ""
+msgstr "Naciśnij RĘCZNIE jeśli chcesz dodać specjalne ustawienia lub chcesz ustawić urządzenie slcand."
 
 #: openplotterSerial.py:892
 msgid "Use \"SK → NMEA 2000\" plugin to send data from Signal K to your CAN network. Open desired TX PGNs in your device."
@@ -407,3 +405,4 @@ msgstr "ID połączenia: "
 #: startup.py:51 startup.py:52
 msgid "device: "
 msgstr "urządzenie: "
+

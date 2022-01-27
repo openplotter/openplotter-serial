@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openplotter\n"
 "POT-Creation-Date: 2021-06-27 21:50+0200\n"
-"PO-Revision-Date: 2021-06-28 18:33+0200\n"
+"PO-Revision-Date: 2021-12-10 12:41\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -13,12 +13,12 @@ msgstr ""
 "X-Poedit-Basepath: ../../..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
 "X-Crowdin-Project: openplotter\n"
 "X-Crowdin-Project-ID: 289888\n"
 "X-Crowdin-Language: es-ES\n"
 "X-Crowdin-File: openplotter-serial.po\n"
 "X-Crowdin-File-ID: 17\n"
-"X-Poedit-SearchPath-0: .\n"
 
 #: data/openplotter-serial.desktop:3 openplotterSerial.py:58
 msgid "Serial"
@@ -26,7 +26,7 @@ msgstr "Serie"
 
 #: data/openplotter-serial.desktop:5
 msgid "openplotter-serial"
-msgstr ""
+msgstr "puertos Serie OpenPlotter"
 
 #: openplotterSerial.py:68
 msgid "Help"
@@ -295,13 +295,11 @@ msgid "Press MANUAL if you need to add special settings."
 msgstr "Presione MANUAL si necesita agregar ajustes especiales."
 
 #: openplotterSerial.py:880 openplotterSerial.py:895
-msgid ""
-"To get data in OpenCPN, make sure this network connection exists in OpenCPN:\n"
+msgid "To get data in OpenCPN, make sure this network connection exists in OpenCPN:\n"
 "Protocol: Signal K\n"
 "Address: localhost\n"
 "DataPort: "
-msgstr ""
-"Para obtener datos en OpenCPN, asegúrese de que esta conexión de red existe en OpenCPN:\n"
+msgstr "Para obtener datos en OpenCPN, asegúrese de que esta conexión de red existe en OpenCPN:\n"
 "Protocolo: Signal K\n"
 "Dirección: localhost\n"
 "Puerto: "
@@ -312,7 +310,7 @@ msgstr "Presione AUTO para crear una conexión \"canboatjs\" para un NGT-1 o un 
 
 #: openplotterSerial.py:889
 msgid "Press MANUAL if you need to add special settings or you want to set a slcand device."
-msgstr ""
+msgstr "Presione MANUAL si necesita agregar ajustes especiales o desea establecer un dispositivo slcand."
 
 #: openplotterSerial.py:892
 msgid "Use \"SK → NMEA 2000\" plugin to send data from Signal K to your CAN network. Open desired TX PGNs in your device."
@@ -407,3 +405,4 @@ msgstr "iD de conexión: "
 #: startup.py:51 startup.py:52
 msgid "device: "
 msgstr "dispositivo: "
+

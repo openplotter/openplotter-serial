@@ -1,3 +1,9 @@
+openplotter-serial (3.0.0-beta) bullseye; urgency=medium
+
+  * Beta
+
+ -- Sailoog <info@sailoog.com>  Thu, 27 Jan 2022 20:59:25 +0100
+
 openplotter-serial (2.2.3-stable) bionic; urgency=medium
 
   * Fix udev error

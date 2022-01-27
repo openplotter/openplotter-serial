@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openplotter\n"
 "POT-Creation-Date: 2021-06-27 21:50+0200\n"
-"PO-Revision-Date: 2021-06-28 18:33+0200\n"
+"PO-Revision-Date: 2021-11-14 19:14\n"
 "Last-Translator: \n"
 "Language-Team: Danish\n"
 "Language: da\n"
@@ -13,12 +13,12 @@ msgstr ""
 "X-Poedit-Basepath: ../../..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
 "X-Crowdin-Project: openplotter\n"
 "X-Crowdin-Project-ID: 289888\n"
 "X-Crowdin-Language: da\n"
 "X-Crowdin-File: openplotter-serial.po\n"
 "X-Crowdin-File-ID: 17\n"
-"X-Poedit-SearchPath-0: .\n"
 
 #: data/openplotter-serial.desktop:3 openplotterSerial.py:58
 msgid "Serial"
@@ -26,7 +26,7 @@ msgstr "Seriel"
 
 #: data/openplotter-serial.desktop:5
 msgid "openplotter-serial"
-msgstr ""
+msgstr "openPlotter Seriel"
 
 #: openplotterSerial.py:68
 msgid "Help"
@@ -295,13 +295,11 @@ msgid "Press MANUAL if you need to add special settings."
 msgstr "Tryk på MANUELT, hvis du har brug for at tilføje specielle indstillinger."
 
 #: openplotterSerial.py:880 openplotterSerial.py:895
-msgid ""
-"To get data in OpenCPN, make sure this network connection exists in OpenCPN:\n"
+msgid "To get data in OpenCPN, make sure this network connection exists in OpenCPN:\n"
 "Protocol: Signal K\n"
 "Address: localhost\n"
 "DataPort: "
-msgstr ""
-"For at hente data i OpenCPN, sørg for at denne netværksforbindelse findes i OpenCPN:\n"
+msgstr "For at hente data i OpenCPN, sørg for at denne netværksforbindelse findes i OpenCPN:\n"
 "Protokol: Signal K\n"
 "Adresse: localhost\n"
 "DataPort: "
@@ -407,3 +405,4 @@ msgstr "forbindelses ID: "
 #: startup.py:51 startup.py:52
 msgid "device: "
 msgstr "enhed: "
+
