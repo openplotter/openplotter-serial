@@ -18,7 +18,13 @@
 import sys, subprocess, os
 
 def edit_boot(onoff):
-	file = open('/boot/config.txt', 'r')
+	config = '/boot/config.txt'
+	boot = '/boot'
+	try: file = open(config, 'r')
+	except: 
+		config = '/boot/firmware/config.txt'
+		boot = '/boot/firmware'
+		file = open(config, 'r')
 	file1 = open('config.txt', 'w')
 	exists = False
 	while True:
@@ -39,7 +45,11 @@ def edit_boot(onoff):
 	file.close()
 	file1.close()
 
-	file = open('/boot/cmdline.txt', 'r')
+	cmdline = '/boot/cmdline.txt'
+	try: file = open(cmdline, 'r')
+	except: 
+		cmdline = '/boot/firmware/cmdline.txt'
+		file = open(cmdline, 'r')
 	file1 = open('cmdline.txt', 'w')
 	text = file.read()
 	text = text.replace('\n', '')
@@ -54,12 +64,12 @@ def edit_boot(onoff):
 	file1.close()
 
 	reset = False
-	if os.system('diff config.txt /boot/config.txt > /dev/null'):
-		os.system('mv config.txt /boot')
+	if os.system('diff config.txt '+config+' > /dev/null'):
+		os.system('mv config.txt '+boot)
 		reset = True
 	else: os.system('rm -f config.txt')
-	if os.system('diff cmdline.txt /boot/cmdline.txt > /dev/null'):
-		os.system('mv cmdline.txt /boot')
+	if os.system('diff cmdline.txt '+cmdline+' > /dev/null'):
+		os.system('mv cmdline.txt '+boot)
 		reset = True
 	else: os.system('rm -f cmdline.txt')
 
