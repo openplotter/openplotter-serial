@@ -580,7 +580,7 @@ class SerialFrame(wx.Frame):
 				if i['serial'] != '' and i['serial'] != 'None':
 					write_str += '",ATTRS{serial}=="' + i['serial']
 			name = name.replace('/dev/','')
-			write_str += '",SYMLINK+="' + name + '"\n'
+			write_str += '",SYMLINK+="'+name+'",MODE="0666"\n'
 			file.write(write_str)
 		file.close()
 		subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'udev', self.home+'/10-openplotter.rules'])
