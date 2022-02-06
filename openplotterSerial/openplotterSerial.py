@@ -785,13 +785,16 @@ class SerialFrame(wx.Frame):
 				url = self.platform.http+'localhost:'+self.platform.skPort+'/admin/#/serverConfiguration/connections/'+ID
 				webbrowser.open(url, new=2)
 		elif connection == 'CAN Bus':
-			subprocess.call(['pkill', '-f', 'openplotter-can'])
+			subprocess.call(['pkill', '-15', 'openplotter-can'])
 			subprocess.Popen(['openplotter-can', 'canable'])
 		elif connection == 'OpenCPN':
-			subprocess.call(['pkill', '-f', 'opencpn'])
-			subprocess.Popen(['opencpn'])
+			subprocess.call(['pkill', '-15', 'opencpn'])
+			subprocess.Popen('opencpn')
+		elif connection == 'OpenCPN FP':
+			subprocess.call(['flatpak', 'kill', 'org.opencpn.OpenCPN'])
+			subprocess.Popen(['flatpak', 'run', 'org.opencpn.OpenCPN'])
 		elif connection == 'Pypilot':
-			subprocess.call(['pkill', '-f', 'openplotter-pypilot'])
+			subprocess.call(['pkill', '-15', 'openplotter-pypilot'])
 			subprocess.Popen(['openplotter-pypilot'])
 
 	def OnRemoveConnection(self, e):
@@ -859,6 +862,7 @@ class addConnection(wx.Dialog):
 		
 		msg2Label = rt.RichTextCtrl(panel, style=wx.TE_MULTILINE|wx.TE_READONLY|wx.TE_DONTWRAP|wx.LC_SORT_ASCENDING)
 		msg2Label.SetMargins((10,10))
+		msg2Label.BeginFontSize(9)
 
 		cancelBtn = wx.Button(panel, wx.ID_CANCEL)
 		setupBtn = wx.Button(panel, wx.ID_SETUP, label=_('MANUAL'))
