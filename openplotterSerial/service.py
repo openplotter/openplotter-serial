@@ -30,17 +30,17 @@ def edit_boot(onoff):
 	while True:
 		line = file.readline()
 		if not line: break
-		if onoff and 'dtoverlay=pi3-disable-bt' in line: 
-			file1.write('dtoverlay=pi3-disable-bt\n')
+		if onoff and 'dtoverlay=disable-bt' in line: 
+			file1.write('dtoverlay=disable-bt\n')
 			os.system('systemctl disable hciuart')
 			exists = True
-		elif not onoff and 'dtoverlay=pi3-disable-bt' in line: 
-			file1.write('#dtoverlay=pi3-disable-bt\n')
+		elif not onoff and 'dtoverlay=disable-bt' in line: 
+			file1.write('#dtoverlay=disable-bt\n')
 			os.system('systemctl enable hciuart')
 			exists = True
 		else: file1.write(line)
 	if onoff and not exists: 
-		file1.write('\ndtoverlay=pi3-disable-bt\n')
+		file1.write('\ndtoverlay=disable-bt\n')
 		os.system('systemctl disable hciuart')
 	file.close()
 	file1.close()
