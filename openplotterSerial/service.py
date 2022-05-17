@@ -18,62 +18,105 @@
 import sys, subprocess, os
 
 def edit_boot(onoff):
-	config = '/boot/config.txt'
-	boot = '/boot'
-	try: file = open(config, 'r')
-	except: 
-		config = '/boot/firmware/config.txt'
-		boot = '/boot/firmware'
+	try:
+		config = '/boot/config.txt'
+		os.system('cp -f '+config+' '+config+'_back')
 		file = open(config, 'r')
-	file1 = open('config.txt', 'w')
+	except:
+		try:
+			config = '/boot/firmware/config.txt'
+			os.system('cp -f '+config+' '+config+'_back')
+			file = open(config, 'r')
+		except Exception as e:
+			print(str(e))
+			return
 	exists = False
+	out = ''
 	while True:
 		line = file.readline()
 		if not line: break
 		if onoff and 'dtoverlay=disable-bt' in line: 
-			file1.write('dtoverlay=disable-bt\n')
+			out += 'dtoverlay=disable-bt\n'
 			os.system('systemctl disable hciuart')
 			exists = True
 		elif not onoff and 'dtoverlay=disable-bt' in line: 
-			file1.write('#dtoverlay=disable-bt\n')
 			os.system('systemctl enable hciuart')
-			exists = True
-		else: file1.write(line)
+		elif 'enable_uart=' in line: pass
+		else: out += line
 	if onoff and not exists: 
-		file1.write('\ndtoverlay=disable-bt\n')
+		out += 'dtoverlay=disable-bt\n'
 		os.system('systemctl disable hciuart')
 	file.close()
-	file1.close()
+	try: 
+		file = open(config, 'w')
+		file.write(out)
+		file.close()
+	except Exception as e:
+		os.system('cp -f '+config+'_back '+config)
+		print(str(e))
+		return
 
-	cmdline = '/boot/cmdline.txt'
-	try: file = open(cmdline, 'r')
-	except: 
-		cmdline = '/boot/firmware/cmdline.txt'
+	try:
+		cmdline = '/boot/cmdline.txt'
+		os.system('cp -f '+cmdline+' '+cmdline+'_back')
 		file = open(cmdline, 'r')
-	file1 = open('cmdline.txt', 'w')
+	except:
+		try:
+			cmdline = '/boot/firmware/cmdline.txt'
+			os.system('cp -f '+cmdline+' '+cmdline+'_back')
+			file = open(cmdline, 'r')
+		except Exception as e:
+			print(str(e))
+			return
 	text = file.read()
 	text = text.replace('\n', '')
 	text_list = text.split(' ')
 	if onoff and 'console=serial0,115200' in text_list: 
 		text_list.remove('console=serial0,115200')
-	if not onoff and not 'console=serial0,115200' in text_list: 
-		text_list.append('console=serial0,115200')
 	final = ' '.join(text_list)+'\n'
-	file1.write(final)
 	file.close()
-	file1.close()
+	try: 
+		file = open(cmdline, 'w')
+		file.write(final)
+		file.close()
+	except Exception as e:
+		os.system('cp -f '+cmdline+'_back '+cmdline)
+		print(str(e))
+		return
 
-	reset = False
-	if os.system('diff config.txt '+config+' > /dev/null'):
-		os.system('mv config.txt '+boot)
-		reset = True
-	else: os.system('rm -f config.txt')
-	if os.system('diff cmdline.txt '+cmdline+' > /dev/null'):
-		os.system('mv cmdline.txt '+boot)
-		reset = True
-	else: os.system('rm -f cmdline.txt')
-
-	if reset == True : os.system('shutdown -r now')
+def edit_boot2(onoff, i):
+	try:
+		config = '/boot/config.txt'
+		os.system('cp -f '+config+' '+config+'_back')
+		file = open(config, 'r')
+	except:
+		try:
+			config = '/boot/firmware/config.txt'
+			os.system('cp -f '+config+' '+config+'_back')
+			file = open(config, 'r')
+		except Exception as e:
+			print(str(e))
+			return
+	exists = False
+	out = ''
+	while True:
+		line = file.readline()
+		if not line: break
+		if onoff and 'dtoverlay=uart'+i in line: 
+			out += 'dtoverlay=uart'+i+'\n'
+			exists = True
+		elif not onoff and 'dtoverlay=uart'+i in line: pass
+		else: out += line
+	if onoff and not exists: out += 'dtoverlay=uart'+i+'\n'
+	file.close()
+	try: 
+		file = open(config, 'w')
+		file.write(out)
+		file.close()
+	except Exception as e:
+		os.system('cp -f '+config+'_back '+config)
+		print(str(e))
+		return
 
 if sys.argv[1]=='start':
 	subprocess.call(['systemctl', 'start', 'signalk.socket'])
@@ -93,6 +136,14 @@ if sys.argv[1]=='udev':
 	subprocess.call(['udevadm', 'trigger', '--attr-match=subsystem=tty'])
 if sys.argv[1]=='uartTrue': edit_boot(True)
 if sys.argv[1]=='uartFalse': edit_boot(False)
+if sys.argv[1]=='uart2True': edit_boot2(True,'2')
+if sys.argv[1]=='uart2False': edit_boot2(False,'2')
+if sys.argv[1]=='uart3True': edit_boot2(True,'3')
+if sys.argv[1]=='uart3False': edit_boot2(False,'3')
+if sys.argv[1]=='uart4True': edit_boot2(True,'4')
+if sys.argv[1]=='uart4False': edit_boot2(False,'4')
+if sys.argv[1]=='uart5True': edit_boot2(True,'5')
+if sys.argv[1]=='uart5False': edit_boot2(False,'5')
 if sys.argv[1]=='pypilot':
 	subprocess.call(['systemctl', 'disable', 'pypilot_boatimu'])
 	subprocess.call(['systemctl', 'enable', 'pypilot'])
