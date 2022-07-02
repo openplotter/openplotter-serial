@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-# This file is part of Openplotter.
-# Copyright (C) 2019 by e-sailing <https://github.com/e-sailing/openplotter-serial>
-#
+# This file is part of OpenPlotter.
+# Copyright (C) 2019 by e-sailing <https://github.com/openplotter/openplotter-serial>
+#               2022 by Sailoog <https://github.com/openplotter/openplotter-serial>
 # Openplotter is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 2 of the License, or
@@ -50,6 +50,8 @@ class SerialFrame(wx.Frame):
 					self.rpitype = '3B+'
 				elif self.rpimodel == 'Raspberry Pi 4 Model B Rev 1.1':
 					self.rpitype = '4B'
+				elif self.rpimodel == 'Raspberry Pi 4 Model B Rev 1.2':
+					self.rpitype = '4B'
 				elif self.rpimodel == 'Raspberry Pi 4 Model B Rev 1.4':
 					self.rpitype = '4B'					
 				modelfile.close()
@@ -71,13 +73,43 @@ class SerialFrame(wx.Frame):
 		toolSettings = self.toolbar1.AddTool(102, _('Settings'), wx.Bitmap(self.currentdir+"/data/settings.png"))
 		self.Bind(wx.EVT_TOOL, self.OnToolSettings, toolSettings)
 		self.toolbar1.AddSeparator()
-		uart = self.toolbar1.AddCheckTool(103, _('UART'), wx.Bitmap(self.currentdir+"/data/uart.png"))
+		uart = self.toolbar1.AddCheckTool(103, 'UART0', wx.Bitmap(self.currentdir+"/data/uart.png"))
 		self.Bind(wx.EVT_TOOL, self.onUart, uart)
-		if not self.platform.isRPI: self.toolbar1.EnableTool(103,False)
-		try:
-			subprocess.check_output(['systemctl', 'is-active', 'hciuart']).decode(sys.stdin.encoding)
-			self.toolbar1.ToggleTool(103,False)
-		except: self.toolbar1.ToggleTool(103,True)
+		uart2 = self.toolbar1.AddCheckTool(105, 'UART2', wx.Bitmap(self.currentdir+"/data/uart.png"))
+		self.Bind(wx.EVT_TOOL, self.onUart2, uart2)
+		uart3 = self.toolbar1.AddCheckTool(106, 'UART3', wx.Bitmap(self.currentdir+"/data/uart.png"))
+		self.Bind(wx.EVT_TOOL, self.onUart3, uart3)
+		uart4 = self.toolbar1.AddCheckTool(107, 'UART4', wx.Bitmap(self.currentdir+"/data/uart.png"))
+		self.Bind(wx.EVT_TOOL, self.onUart4, uart4)
+		uart5 = self.toolbar1.AddCheckTool(108, 'UART5', wx.Bitmap(self.currentdir+"/data/uart.png"))
+		self.Bind(wx.EVT_TOOL, self.onUart5, uart5)
+		self.toolbar1.EnableTool(103,False)
+		self.toolbar1.EnableTool(105,False)
+		self.toolbar1.EnableTool(106,False)
+		self.toolbar1.EnableTool(107,False)
+		self.toolbar1.EnableTool(108,False)
+		if self.platform.isRPI: 
+			self.toolbar1.EnableTool(103,True)
+			try:
+				subprocess.check_output(['systemctl', 'is-active', 'hciuart']).decode(sys.stdin.encoding)
+				self.toolbar1.ToggleTool(103,False)
+			except: self.toolbar1.ToggleTool(103,True)
+			if 'Raspberry Pi 4' in self.rpimodel:
+				self.toolbar1.EnableTool(105,True)
+				self.toolbar1.EnableTool(106,True)
+				self.toolbar1.EnableTool(107,True)
+				self.toolbar1.EnableTool(108,True)
+				try: config = open('/boot/config.txt', 'r')
+				except:
+					try: config = open('/boot/firmware/config.txt', 'r')
+					except: config = ''
+				if config:
+					data = config.read()
+					config.close()
+					if 'dtoverlay=uart2' in data and not '#dtoverlay=uart2' in data: self.toolbar1.ToggleTool(105,True)
+					if 'dtoverlay=uart3' in data and not '#dtoverlay=uart3' in data: self.toolbar1.ToggleTool(106,True)
+					if 'dtoverlay=uart4' in data and not '#dtoverlay=uart4' in data: self.toolbar1.ToggleTool(107,True)
+					if 'dtoverlay=uart5' in data and not '#dtoverlay=uart5' in data: self.toolbar1.ToggleTool(108,True)
 		self.toolbar1.AddSeparator()
 		refresh = self.toolbar1.AddTool(104, _('Refresh'), wx.Bitmap(self.currentdir+"/data/refresh.png"))
 		self.Bind(wx.EVT_TOOL, self.onToolRefresh, refresh)
@@ -138,6 +170,101 @@ class SerialFrame(wx.Frame):
 		subprocess.call(['pkill', '-f', 'openplotter-settings'])
 		subprocess.Popen('openplotter-settings')
 
+	def onUart(self,e):
+		if self.toolbar1.GetToolState(103):
+			msg = _('This action disables Bluetooth and enables UART0 interface in GPIO 14 and 15. Changes will be applied after the next reboot.\n')
+			msg += _('Are you sure?')
+			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
+			if dlg.ShowModal() == wx.ID_YES: 
+				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uartTrue'])
+				self.toolbar1.ToggleTool(103,True)
+			else: self.toolbar1.ToggleTool(103,False)
+		else:
+			msg = _('This action disables UART0 interface in GPIO 14 and 15 and enables Bluetooth. Changes will be applied after the next reboot.\n')
+			msg += _('Are you sure?')
+			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
+			if dlg.ShowModal() == wx.ID_YES: 
+				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uartFalse'])
+				self.toolbar1.ToggleTool(103,False)
+			else: self.toolbar1.ToggleTool(103,True)
+		dlg.Destroy()
+
+	def onUart2(self,e):
+		if self.toolbar1.GetToolState(105):
+			msg = _('This action enables UART2 interface in GPIO 0 and 1. Changes will be applied after the next reboot.\n')
+			msg += _('Are you sure?')
+			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
+			if dlg.ShowModal() == wx.ID_YES: 
+				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart2True'])
+				self.toolbar1.ToggleTool(105,True)
+			else: self.toolbar1.ToggleTool(105,False)
+		else:
+			msg = _('This action disables UART2 interface in GPIO 0 and 1. Changes will be applied after the next reboot.\n')
+			msg += _('Are you sure?')
+			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
+			if dlg.ShowModal() == wx.ID_YES: 
+				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart2False'])
+				self.toolbar1.ToggleTool(105,False)
+			else: self.toolbar1.ToggleTool(105,True)
+		dlg.Destroy()
+
+	def onUart3(self,e):
+		if self.toolbar1.GetToolState(106):
+			msg = _('This action enables UART3 interface in GPIO 4 and 5. Changes will be applied after the next reboot.\n')
+			msg += _('Are you sure?')
+			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
+			if dlg.ShowModal() == wx.ID_YES: 
+				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart3True'])
+				self.toolbar1.ToggleTool(106,True)
+			else: self.toolbar1.ToggleTool(106,False)
+		else:
+			msg = _('This action disables UART3 interface in GPIO 4 and 5. Changes will be applied after the next reboot.\n')
+			msg += _('Are you sure?')
+			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
+			if dlg.ShowModal() == wx.ID_YES: 
+				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart3False'])
+				self.toolbar1.ToggleTool(106,False)
+			else: self.toolbar1.ToggleTool(106,True)
+		dlg.Destroy()
+
+	def onUart4(self,e):
+		if self.toolbar1.GetToolState(107):
+			msg = _('This action enables UART4 interface in GPIO 8 and 9. Changes will be applied after the next reboot.\n')
+			msg += _('Are you sure?')
+			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
+			if dlg.ShowModal() == wx.ID_YES: 
+				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart4True'])
+				self.toolbar1.ToggleTool(107,True)
+			else: self.toolbar1.ToggleTool(107,False)
+		else:
+			msg = _('This action disables UART4 interface in GPIO 8 and 9. Changes will be applied after the next reboot.\n')
+			msg += _('Are you sure?')
+			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
+			if dlg.ShowModal() == wx.ID_YES: 
+				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart4False'])
+				self.toolbar1.ToggleTool(107,False)
+			else: self.toolbar1.ToggleTool(107,True)
+		dlg.Destroy()
+
+	def onUart5(self,e):
+		if self.toolbar1.GetToolState(108):
+			msg = _('This action enables UART5 interface in GPIO 12 and 13. Changes will be applied after the next reboot.\n')
+			msg += _('Are you sure?')
+			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
+			if dlg.ShowModal() == wx.ID_YES: 
+				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart5True'])
+				self.toolbar1.ToggleTool(108,True)
+			else: self.toolbar1.ToggleTool(108,False)
+		else:
+			msg = _('This action disables UART5 interface in GPIO 12 and 13. Changes will be applied after the next reboot.\n')
+			msg += _('Are you sure?')
+			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
+			if dlg.ShowModal() == wx.ID_YES: 
+				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart5False'])
+				self.toolbar1.ToggleTool(108,False)
+			else: self.toolbar1.ToggleTool(108,True)
+		dlg.Destroy()
+		
 	def onToolRefresh(self,e):
 		self.ShowStatusBarBLACK('')
 		self.read_Serialinst()
@@ -485,25 +612,6 @@ class SerialFrame(wx.Frame):
 		self.toolbar2.EnableTool(201,False)
 		self.toolbar2.EnableTool(202,False)
 
-	def onUart(self,e):
-		if self.toolbar1.GetToolState(103):
-			msg = _('This action disables Bluetooth and enables UART interface in GPIO. OpenPlotter will reboot.\n')
-			msg += _('Are you sure?')
-			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
-			if dlg.ShowModal() == wx.ID_YES: 
-				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uartTrue'])
-		else:
-			msg = _('This action disables UART interface in GPIO and enables Bluetooth. OpenPlotter will reboot.\n')
-			msg += _('Are you sure?')
-			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
-			if dlg.ShowModal() == wx.ID_YES: 
-				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uartFalse'])
-		try:
-			subprocess.check_output(['systemctl', 'is-active', 'hciuart']).decode(sys.stdin.encoding)
-			self.toolbar1.ToggleTool(103,False)
-		except: self.toolbar1.ToggleTool(103,True)
-		dlg.Destroy()
-		
 	def on_update_Serialinst(self, e=0):
 
 		index = self.list_Serialinst.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)
@@ -580,7 +688,7 @@ class SerialFrame(wx.Frame):
 				if i['serial'] != '' and i['serial'] != 'None':
 					write_str += '",ATTRS{serial}=="' + i['serial']
 			name = name.replace('/dev/','')
-			write_str += '",SYMLINK+="' + name + '"\n'
+			write_str += '",SYMLINK+="'+name+'",MODE="0666"\n'
 			file.write(write_str)
 		file.close()
 		subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'udev', self.home+'/10-openplotter.rules'])
@@ -785,13 +893,16 @@ class SerialFrame(wx.Frame):
 				url = self.platform.http+'localhost:'+self.platform.skPort+'/admin/#/serverConfiguration/connections/'+ID
 				webbrowser.open(url, new=2)
 		elif connection == 'CAN Bus':
-			subprocess.call(['pkill', '-f', 'openplotter-can'])
+			subprocess.call(['pkill', '-15', 'openplotter-can'])
 			subprocess.Popen(['openplotter-can', 'canable'])
 		elif connection == 'OpenCPN':
-			subprocess.call(['pkill', '-f', 'opencpn'])
-			subprocess.Popen(['opencpn'])
+			subprocess.call(['pkill', '-15', 'opencpn'])
+			subprocess.Popen('opencpn')
+		elif connection == 'OpenCPN FP':
+			subprocess.call(['flatpak', 'kill', 'org.opencpn.OpenCPN'])
+			subprocess.Popen(['flatpak', 'run', 'org.opencpn.OpenCPN'])
 		elif connection == 'Pypilot':
-			subprocess.call(['pkill', '-f', 'openplotter-pypilot'])
+			subprocess.call(['pkill', '-15', 'openplotter-pypilot'])
 			subprocess.Popen(['openplotter-pypilot'])
 
 	def OnRemoveConnection(self, e):
@@ -859,6 +970,7 @@ class addConnection(wx.Dialog):
 		
 		msg2Label = rt.RichTextCtrl(panel, style=wx.TE_MULTILINE|wx.TE_READONLY|wx.TE_DONTWRAP|wx.LC_SORT_ASCENDING)
 		msg2Label.SetMargins((10,10))
+		msg2Label.BeginFontSize(9)
 
 		cancelBtn = wx.Button(panel, wx.ID_CANCEL)
 		setupBtn = wx.Button(panel, wx.ID_SETUP, label=_('MANUAL'))
