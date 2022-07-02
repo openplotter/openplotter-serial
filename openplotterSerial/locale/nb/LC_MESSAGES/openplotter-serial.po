@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openplotter\n"
 "POT-Creation-Date: 2022-05-17 21:31+0200\n"
-"PO-Revision-Date: 2022-06-01 21:21+0200\n"
+"PO-Revision-Date: 2022-07-02 19:45+0200\n"
 "Last-Translator: \n"
 "Language-Team: Norwegian Bokmal\n"
 "Language: nb_NO\n"
@@ -76,31 +76,31 @@ msgstr "Denne handlingen aktiverer UART2-grensesnittet på GPIO 0 og 1. Endringe
 
 #: openplotterSerial.py:202
 msgid "This action disables UART2 interface in GPIO 0 and 1. Changes will be applied after the next reboot.\n"
-msgstr ""
+msgstr "Denne handlingen deaktiverer UART2-grensesnittet på GPIO 0 og 1. Endringer vil bli gjedende etter neste omstart.\n"
 
 #: openplotterSerial.py:213
 msgid "This action enables UART3 interface in GPIO 4 and 5. Changes will be applied after the next reboot.\n"
-msgstr ""
+msgstr "Denne handlingen aktiverer UART3-grensesnittet på GPIO 4 og 5. Endringer vil bli gjeldende etter neste omstart.\n"
 
 #: openplotterSerial.py:221
 msgid "This action disables UART3 interface in GPIO 4 and 5. Changes will be applied after the next reboot.\n"
-msgstr ""
+msgstr "Denne handlingen deaktiverer UART3-grensesnittet på GPIO 4 og 5. Endringer vil bli gjeldende etter neste omstart.\n"
 
 #: openplotterSerial.py:232
 msgid "This action enables UART4 interface in GPIO 8 and 9. Changes will be applied after the next reboot.\n"
-msgstr ""
+msgstr "Denne handlingen aktiverer UART4-grensesnittet på GPIO 8 og 9. Endringer vil bli gjeldende etter neste omstart.\n"
 
 #: openplotterSerial.py:240
 msgid "This action disables UART4 interface in GPIO 8 and 9. Changes will be applied after the next reboot.\n"
-msgstr ""
+msgstr "Denne handlingen deaktiverer UART4-grensesnittet på GPIO 8 og 9. Endringer vil bli gjeldende etter neste omstart.\n"
 
 #: openplotterSerial.py:251
 msgid "This action enables UART5 interface in GPIO 12 and 13. Changes will be applied after the next reboot.\n"
-msgstr ""
+msgstr "Denne handlingen aktiverer UART5-grensesnittet på GPIO 12 og 13. Endringer vil bli gjeldende etter neste omstart.\n"
 
 #: openplotterSerial.py:259
 msgid "This action disables UART5 interface in GPIO 12 and 13. Changes will be applied after the next reboot.\n"
-msgstr ""
+msgstr "Denne handlingen deaktiverer UART5-grensesnittet på GPIO 12 og 13. Endringer vil bli gjeldende etter neste omstart.\n"
 
 #: openplotterSerial.py:292
 msgid "USB port"
@@ -196,27 +196,27 @@ msgstr "Ingen enhet valgt"
 
 #: openplotterSerial.py:619
 msgid "Failed. No port selected"
-msgstr ""
+msgstr "Mislyktes. Ingen port valgt"
 
 #: openplotterSerial.py:624
 msgid "The alias must be a lowercase string between 1 and 8 characters or numbers."
-msgstr ""
+msgstr "Alias må inneholde en små bokstaver eller tall (1 til 8 tegn)."
 
 #: openplotterSerial.py:630
 msgid "Same alias used for multiple devices"
-msgstr ""
+msgstr "Samme alias brukes for flere enheter"
 
 #: openplotterSerial.py:635
 msgid "Please select type of data"
-msgstr ""
+msgstr "Velg datatype"
 
 #: openplotterSerial.py:657
 msgid "Device with duplicate vendor and product must be set to \"Remember port\"."
-msgstr ""
+msgstr "Enhet med duplisert leverandør og produkt må settes til \"Husk port\"."
 
 #: openplotterSerial.py:664
 msgid "This port is already reserved and must be set to \"Remember device\"."
-msgstr ""
+msgstr "Denne porten er allerede reservert og må settes til \"Husk enhet\"."
 
 #: openplotterSerial.py:673 openplotterSerial.py:877
 msgid "Applying changes ..."
@@ -260,27 +260,27 @@ msgstr "Rediger"
 
 #: openplotterSerial.py:805 openplotterSerial.py:829
 msgid "Please install \"Signal K Installer\" OpenPlotter app"
-msgstr ""
+msgstr "Installer \"Signal K-Installer\" OpenPlotter-app"
 
 #: openplotterSerial.py:832
 msgid "Please install \"CAN Bus\" OpenPlotter app"
-msgstr ""
+msgstr "Vennligst installer \"CAN Bus\" OpenPlotter app"
 
 #: openplotterSerial.py:849 openplotterSerial.py:925 openplotterSerial.py:940
 msgid "Restarting Signal K server... "
-msgstr ""
+msgstr "Starter Signal K-server på nytt... "
 
 #: openplotterSerial.py:854 openplotterSerial.py:930 openplotterSerial.py:946
 msgid "Signal K server restarted"
-msgstr ""
+msgstr "Signal K-server startet på nytt"
 
 #: openplotterSerial.py:858
 msgid "Please install \"gpsd\" package"
-msgstr ""
+msgstr "Vennligst installer \"gpsd\" pakke"
 
 #: openplotterSerial.py:879
 msgid "Pypilot serial devices modified and autopilot enabled"
-msgstr ""
+msgstr "Pypilot serielle enheter endret og autopilot aktivert"
 
 #: openplotterSerial.py:883
 msgid "Please install \"Pypilot\" OpenPlotter app"
@@ -288,45 +288,45 @@ msgstr "Vennligst installer \"Pypilot\" OpenPlotter-app"
 
 #: openplotterSerial.py:918
 msgid "Failed. Error removing connection in Signal K"
-msgstr ""
+msgstr "Mislyktes. Feil ved fjerning av tilkobling i Signal K"
 
 #: openplotterSerial.py:961
 msgid "Adding connection for device: "
-msgstr ""
+msgstr "Legger til tilkobling for enhet: "
 
 #: openplotterSerial.py:968
 msgid "Baud Rate: "
-msgstr ""
+msgstr "Overføringshastighet: "
 
 #: openplotterSerial.py:976
 msgid "MANUAL"
-msgstr ""
+msgstr "MANUELL"
 
 #: openplotterSerial.py:978
 msgid "AUTO"
-msgstr ""
+msgstr "AUTO"
 
 #: openplotterSerial.py:982 openplotterSerial.py:994 openplotterSerial.py:1009
 #: openplotterSerial.py:1022
 msgid "Data: "
-msgstr ""
+msgstr "Data: "
 
 #: openplotterSerial.py:983 openplotterSerial.py:995
 msgid "ID: "
-msgstr ""
+msgstr "ID: "
 
 #: openplotterSerial.py:984 openplotterSerial.py:996 openplotterSerial.py:1010
 #: openplotterSerial.py:1023
 msgid "Serial port: "
-msgstr ""
+msgstr "Serieport: "
 
 #: openplotterSerial.py:986
 msgid "Press AUTO to create a connection in Signal K using the settings above."
-msgstr ""
+msgstr "Trykk AUTO for å opprette en kobling i Signal K ved å bruke innstillingene ovenfor."
 
 #: openplotterSerial.py:989
 msgid "Press MANUAL if you need to add special settings."
-msgstr ""
+msgstr "Trykk på MANUELL hvis du trenger å legge til spesielle innstillinger."
 
 #: openplotterSerial.py:992 openplotterSerial.py:1007
 msgid ""
@@ -335,62 +335,66 @@ msgid ""
 "Address: localhost\n"
 "DataPort: "
 msgstr ""
+"For å få data i OpenCPN, kontroller at denne nettverksforbindelsen eksisterer i OpenCPN:\n"
+"Protokoll: Signal K\n"
+"Adresse: localhost\n"
+"dataport: "
 
 #: openplotterSerial.py:998
 msgid "Press AUTO to create a \"canboatjs\" connection for a NGT-1 or a CAN-USB device in Signal K using the settings above."
-msgstr ""
+msgstr "Trykk AUTO for å opprette en \"canboatjs\"-tilkobling til en NGT-1 eller en CAN-USB-enhet i Signal K ved hjelp av innstillingene ovenfor."
 
 #: openplotterSerial.py:1001
 msgid "Press MANUAL if you need to add special settings or you want to set a slcand device."
-msgstr ""
+msgstr "Trykk på MANUELL hvis du trenger å legge til spesielle innstillinger eller konfigurere en slcand-enhet."
 
 #: openplotterSerial.py:1004
 msgid "Use \"SK → NMEA 2000\" plugin to send data from Signal K to your CAN network. Open desired TX PGNs in your device."
-msgstr ""
+msgstr "Bruk \"SK → NMEA 2000\"-plugin for å sende data fra Signal K til CAN nettverket. Åpne ønskede TX PGNer på enheten."
 
 #: openplotterSerial.py:1014
 msgid "Press AUTO to add this device to the list of devices managed by GPSD. A connection for GPSD will be created in Signal K if it does not exist."
-msgstr ""
+msgstr "Trykk AUTO for å legge denne enheten til listen over enheter som administreres av GPSD. En tilkobling til GPSD vil bli opprettet i Signal K hvis den ikke eksisterer."
 
 #: openplotterSerial.py:1017
 msgid "Be sure you send only GNSS or AIS data to GPSD. Baud Rate will be automatically assigned."
-msgstr ""
+msgstr "Vær sikker på at du bare sender GNSS eller AIS-data til GPSD. Overføringshastighet blir satt automatisk."
 
 #: openplotterSerial.py:1020
 msgid "Pypilot will get data from GPSD automatically."
-msgstr ""
+msgstr "Pypilot vil hente data fra GPSD automatisk."
 
 #: openplotterSerial.py:1022
 msgid "(or motor controller data)"
-msgstr ""
+msgstr "(eller motorkontroll-data)"
 
 #: openplotterSerial.py:1026
 msgid "Press AUTO to use this device to send data to Pypilot. Baud Rate will be automatically assigned."
-msgstr ""
+msgstr "Trykk AUTO for å bruke denne enheten for å sende data til Pypilot. Overføringshastighet settes automatisk."
 
 #: openplotterSerial.py:1029
 msgid "Press MANUAL if you prefer to set this device in openplotter-pypilot app."
-msgstr ""
+msgstr "Trykk MANUELL hvis du foretrekker å tilordne denne enheten i appen opplotter-pypilot."
 
 #: openplotterSerial.py:1064
 msgid "Failed. This ID already exists"
-msgstr ""
+msgstr "Mislyktes. Denne IDen finnes allerede"
 
 #: openplotterSerial.py:1065
 msgid "Failed. This device is already in use"
-msgstr ""
+msgstr "Mislyktes. Denne enheten er allerede i bruk"
 
 #: openplotterSerial.py:1077
 msgid "Failed. Error creating connection in Signal K"
-msgstr ""
+msgstr "Feil under oppretting av tilkobling i Signal K"
 
 #: openplotterSerial.py:1090
 msgid "Failed. This device is already set in Pypilot"
-msgstr ""
+msgstr "Mislyktes. Denne enheten er allerede angitt i Pypilot"
 
 #: openplotterSerial.py:1095
 msgid "Failed. Error setting the device in Pypilot"
-msgstr ""
+msgstr "Mislyktes. Feil innstilling av enheten i Pypilot"
 
 #: serialPostInstall.py:29
 msgid "Editing GPSD config file..."
