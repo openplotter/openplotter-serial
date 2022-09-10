@@ -144,13 +144,3 @@ if sys.argv[1]=='uart4True': edit_boot2(True,'4')
 if sys.argv[1]=='uart4False': edit_boot2(False,'4')
 if sys.argv[1]=='uart5True': edit_boot2(True,'5')
 if sys.argv[1]=='uart5False': edit_boot2(False,'5')
-if sys.argv[1]=='pypilot':
-	subprocess.call(['systemctl', 'disable', 'pypilot_boatimu'])
-	subprocess.call(['systemctl', 'enable', 'pypilot'])
-	subprocess.call(['systemctl', 'enable', 'openplotter-pypilot-read'])
-	subprocess.call(['systemctl', 'stop', 'pypilot_boatimu'])
-	subprocess.call(['systemctl', 'restart', 'pypilot'])
-	subprocess.call(['systemctl', 'restart', 'openplotter-pypilot-read'])
-	try: subprocess.check_output(['systemctl', 'is-enabled', 'pypilot_web']).decode(sys.stdin.encoding)
-	except: pass
-	else: subprocess.call(['systemctl', 'restart', 'pypilot_web'])
