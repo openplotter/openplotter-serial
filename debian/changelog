@@ -1,3 +1,10 @@
+openplotter-serial (3.2.0-stable) bullseye; urgency=medium
+
+  * Add pypilot integration
+  * Update translations
+
+ -- Sailoog <info@sailoog.com>  Wed, 07 Sep 2022 20:52:14 +0200
+
 openplotter-serial (3.1.3-stable) bullseye; urgency=medium
 
   * Add UART 2, 3, 4 and 5
