@@ -1,3 +1,11 @@
+openplotter-serial (3.2.8-stable) bullseye; urgency=medium
+
+  * Fix bug in udev vendor and product identification
+  * optimize for small momitors and touchscreens
+  * update translations
+
+ -- Sailoog <info@sailoog.com>  Wed, 28 Jun 2023 17:08:58 +0200
+
 openplotter-serial (3.2.0-stable) bullseye; urgency=medium
 
   * Add pypilot integration
