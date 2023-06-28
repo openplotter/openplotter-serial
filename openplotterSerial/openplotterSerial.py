@@ -294,7 +294,7 @@ class SerialFrame(wx.Frame):
 		self.list_Serialinst.InsertColumn(3, _('alias')+' /dev/', width=100)
 		self.list_Serialinst.InsertColumn(4, _('vendor'), width=60)
 		self.list_Serialinst.InsertColumn(5, _('product'), width=60)
-		self.list_Serialinst.InsertColumn(6, _('serial'), width=colSerial)
+		self.list_Serialinst.InsertColumn(6, _('model'), width=colSerial)
 		self.list_Serialinst.InsertColumn(7, _('remember'), width=80)
 		self.list_Serialinst.InsertColumn(8, ' ', width=500)
 		self.list_Serialinst.Bind(wx.EVT_LIST_ITEM_SELECTED, self.on_SerialinstSelected)
@@ -359,17 +359,35 @@ class SerialFrame(wx.Frame):
 			value = device.get('DEVPATH')
 			port = value[value.rfind('/usb1/') + 6:-(len(value) - value.find('/tty'))]
 			port = port[port.rfind('/') + 1:]
+			
 			serial = ''
-			if devname[8:10] == 'SC': serial = devname[10:11]
 			vendor_id = ''
 			model_id = ''
 			moreInfo = ''
-			for tag in device:
-				if tag == 'ID_SERIAL_SHORT': serial = device.get('ID_SERIAL_SHORT')
-				if tag == 'ID_VENDOR_ID': vendor_id = device.get('ID_VENDOR_ID')
-				if tag == 'ID_MODEL_ID': model_id = device.get('ID_MODEL_ID')
-				if tag == 'ID_MODEL_FROM_DATABASE': moreInfo += device.get('ID_MODEL_FROM_DATABASE')
-				if tag == 'ID_VENDOR_FROM_DATABASE': moreInfo += ' '+device.get('ID_VENDOR_FROM_DATABASE')
+
+			out = subprocess.getoutput('udevadm info -a -n '+devname+' | grep ATTRS{idVendor}')
+			if out:
+				out = out.split('\n')
+				out = out[0]
+				out = out.split('==')
+				vendor_id = out[1].strip('\"')
+
+			out = subprocess.getoutput('udevadm info -a -n '+devname+' | grep ATTRS{idProduct}')
+			if out:
+				out = out.split('\n')
+				out = out[0]
+				out = out.split('==')
+				model_id = out[1].strip('\"')
+
+			if devname[8:10] == 'SC': serial = devname[10:11]
+			else:
+				out = subprocess.getoutput('udevadm info -a -n '+devname+' | grep ATTRS{product}')
+				if out:
+					out = out.split('\n')
+					out = out[0]
+					out = out.split('==')
+					serial = out[1].strip('\"')
+
 			name = ''
 			remember = ''
 			serialData = ''
@@ -686,7 +704,7 @@ class SerialFrame(wx.Frame):
 				write_str = 'SUBSYSTEM=="tty", ATTRS{idVendor}=="' + i['vendor']
 				write_str += '",ATTRS{idProduct}=="' + i['product']
 				if i['serial'] != '' and i['serial'] != 'None':
-					write_str += '",ATTRS{serial}=="' + i['serial']
+					write_str += '",ATTRS{product}=="' + i['serial']
 			name = name.replace('/dev/','')
 			write_str += '",SYMLINK+="'+name+'",MODE="0666"\n'
 			file.write(write_str)
