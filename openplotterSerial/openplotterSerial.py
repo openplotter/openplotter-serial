@@ -312,6 +312,9 @@ class SerialFrame(wx.Frame):
 		self.Serial_rem_port = wx.RadioButton(self.p_serial, label=_('Remember port (position on the USB-hub)'))
 
 		self.toolbar2 = wx.ToolBar(self.p_serial, style=wx.TB_TEXT | wx.TB_VERTICAL)
+		self.serial_show = self.toolbar2.AddTool(203, _('Details'), wx.Bitmap(self.currentdir+"/data/show.png"))
+		self.Bind(wx.EVT_TOOL, self.on_show_Serialinst, self.serial_show)
+		self.toolbar2.AddSeparator()
 		self.serial_update = self.toolbar2.AddTool(201, _('Apply'), wx.Bitmap(self.currentdir+"/data/apply.png"))
 		self.Bind(wx.EVT_TOOL, self.on_update_Serialinst, self.serial_update)
 		self.serial_delete = self.toolbar2.AddTool(202, _('Remove'), wx.Bitmap(self.currentdir+"/data/cancel.png"))
@@ -581,6 +584,7 @@ class SerialFrame(wx.Frame):
 		if not valid: return
 
 		self.toolbar2.EnableTool(201,True)
+		self.toolbar2.EnableTool(203,True)
 		name = self.list_Serialinst.GetItemText(i, 3)
 		if not name: 
 			item = {'data':'','port':self.list_Serialinst.GetItemText(i, 1),'remember':''}
@@ -621,6 +625,17 @@ class SerialFrame(wx.Frame):
 		self.Serial_rem_port.Disable()
 		self.toolbar2.EnableTool(201,False)
 		self.toolbar2.EnableTool(202,False)
+		self.toolbar2.EnableTool(203,False)
+
+	def on_show_Serialinst(self, e=0):
+		index = self.list_Serialinst.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)
+		if index < 0:
+			self.ShowStatusBarYELLOW(_('No device selected'))
+			return
+		device = self.list_Serialinst.GetItemText(index, 2)
+		dlg = showDevice(device)
+		res = dlg.ShowModal()
+		dlg.Destroy()
 
 	def on_update_Serialinst(self, e=0):
 
@@ -1124,6 +1139,46 @@ class addConnection(wx.Dialog):
 						subprocess.call(['rm', '-f', path+i])
 
 		self.EndModal(wx.ID_OK)
+
+################################################################################
+
+class showDevice(wx.Dialog):
+	def __init__(self, device):
+		self.device = '/dev/'+device
+		title = _('Device details on: ')+self.device
+		wx.Dialog.__init__(self, None, title=title, size=(500, 400))
+		panel = wx.Panel(self)
+		
+		msg2Label = rt.RichTextCtrl(panel, style=wx.TE_MULTILINE|wx.TE_READONLY|wx.TE_DONTWRAP|wx.LC_SORT_ASCENDING)
+		msg2Label.SetMargins((10,10))
+		msg2Label.BeginFontSize(9)
+
+		okBtn = wx.Button(panel, wx.ID_OK, label=_('Close'))
+
+		serialDevices = selectConnections.Serial()
+		for device in serialDevices.devices:
+			if 'DEVNAME' in device: 
+				if device.get('DEVNAME') == self.device:
+					for i in device:
+						msg2Label.BeginBold()
+						msg2Label.WriteText(i+': ')
+						msg2Label.EndBold()
+						msg2Label.WriteText(device.get(i))
+						msg2Label.Newline()
+					break
+
+		hbox = wx.BoxSizer(wx.HORIZONTAL)
+		hbox.AddStretchSpacer(1)
+		hbox.Add(okBtn, 0, wx.LEFT | wx.EXPAND, 10)
+
+		vbox = wx.BoxSizer(wx.VERTICAL)
+		vbox.AddSpacer(5)
+		vbox.Add(msg2Label, 1, wx.RIGHT | wx.LEFT | wx.EXPAND, 15)
+		vbox.Add(hbox, 0, wx.ALL | wx.EXPAND, 10)
+
+		panel.SetSizer(vbox)
+		self.panel = panel
+		self.Centre() 
 
 ################################################################################
 
