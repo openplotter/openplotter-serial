@@ -294,7 +294,7 @@ class SerialFrame(wx.Frame):
 		self.list_Serialinst.InsertColumn(3, _('alias')+' /dev/', width=100)
 		self.list_Serialinst.InsertColumn(4, _('vendor'), width=60)
 		self.list_Serialinst.InsertColumn(5, _('product'), width=60)
-		self.list_Serialinst.InsertColumn(6, _('model'), width=colSerial)
+		self.list_Serialinst.InsertColumn(6, _('serial'), width=colSerial)
 		self.list_Serialinst.InsertColumn(7, _('remember'), width=80)
 		self.list_Serialinst.Bind(wx.EVT_LIST_ITEM_SELECTED, self.on_SerialinstSelected)
 		self.list_Serialinst.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.on_SerialinstDeselected)
@@ -309,7 +309,7 @@ class SerialFrame(wx.Frame):
 		self.serialData = wx.Choice(self.p_serial, choices=['NMEA 0183','NMEA 2000', 'Signal K'], style=wx.CB_READONLY, size=(110,-1))
 
 		self.Serial_rem_dev = wx.RadioButton(self.p_serial, label=_('Remember device (by vendor, product, serial)'))
-		self.Serial_rem_port = wx.RadioButton(self.p_serial, label=_('Remember port (positon on the USB-hub)'))
+		self.Serial_rem_port = wx.RadioButton(self.p_serial, label=_('Remember port (position on the USB-hub)'))
 
 		self.toolbar2 = wx.ToolBar(self.p_serial, style=wx.TB_TEXT | wx.TB_VERTICAL)
 		self.serial_update = self.toolbar2.AddTool(201, _('Apply'), wx.Bitmap(self.currentdir+"/data/apply.png"))
@@ -379,12 +379,9 @@ class SerialFrame(wx.Frame):
 
 			if devname[8:10] == 'SC': serial = devname[10:11]
 			else:
-				out = subprocess.getoutput('udevadm info -a -n '+devname+' | grep ATTRS{product}')
-				if out:
-					out = out.split('\n')
-					out = out[0]
-					out = out.split('==')
-					serial = out[1].strip('\"')
+				if 'ID_USB_SERIAL_SHORT' in device: serial = device.get('ID_USB_SERIAL_SHORT')
+				else:
+					if 'ID_SERIAL_SHORT' in device: serial = device.get('ID_SERIAL_SHORT')
 
 			name = ''
 			remember = ''
@@ -698,7 +695,7 @@ class SerialFrame(wx.Frame):
 				write_str = 'SUBSYSTEM=="tty", ATTRS{idVendor}=="' + i['vendor']
 				write_str += '",ATTRS{idProduct}=="' + i['product']
 				if i['serial'] != '' and i['serial'] != 'None':
-					write_str += '",ATTRS{product}=="' + i['serial']
+					write_str += '",ATTRS{serial}=="' + i['serial']
 			name = name.replace('/dev/','')
 			write_str += '",SYMLINK+="'+name+'",MODE="0666"\n'
 			file.write(write_str)
