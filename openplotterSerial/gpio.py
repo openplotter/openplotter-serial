@@ -23,9 +23,9 @@ class Gpio:
 
 	def usedGpios(self):
 
-		try: config = open('/boot/config.txt', 'r')
+		try: config = open('/boot/firmware/config.txt', 'r')
 		except:
-			try: config = open('/boot/firmware/config.txt', 'r')
+			try: config = open('/boot/config.txt', 'r')
 			except: config = ''
 		if config:
 			data = config.read()
