@@ -48,10 +48,36 @@ class Check():
 
 		for i in self.usedSerialPorts:
 			if not 'ttyOP_' in i['device']:
-				if not red: red = _('There are serial connections with no alias assigned:')+'\n'+i['app']+' -> '+_('connection ID: ')+i['id']+' | '+_('device: ')+i['device']
-				else: red += '\n'+i['app']+' -> '+_('connection ID: ')+i['id']+' | '+_('device: ')+i['device']
+				if not red: red = _('There are serial connections with no alias assigned:')+'\n   '+i['app']+' -> '+_('connection ID: ')+i['id']+' | '+_('device: ')+i['device']
+				else: red += '\n   '+i['app']+' -> '+_('connection ID: ')+i['id']+' | '+_('device: ')+i['device']
 				black = ''
 
+		devList = []
+		daemon = False
+		usbauto = False
+		with open('/etc/default/gpsd', 'r') as f:
+			for line in f:
+				if 'DEVICES=' in line:
+					line = line.replace('\n', '')
+					line = line.strip()
+					items = line.split('=')
+					item1 = items[1].replace('"', '')
+					item1 = item1.strip()
+					devList = item1.split(' ')
+				if 'START_DAEMON=' in line:
+					if 'true' in line: daemon = True
+				if 'USBAUTO=' in line:
+					if 'true' in line: usbauto = True
+
+		if usbauto:
+			msg = _('Set USBAUTO="false" in /etc/default/gpsd')
+			if red: red += '\n   '+msg
+			else: red = msg
+
+		if not devList and daemon:
+			msg = _('Set START_DAEMON="false" in /etc/default/gpsd')
+			if red: red += '\n   '+msg
+			else: red = msg
 
 		return {'green': green,'black': black,'red': red}
 

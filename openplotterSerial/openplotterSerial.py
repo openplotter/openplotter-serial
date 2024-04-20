@@ -973,22 +973,7 @@ class SerialFrame(wx.Frame):
 			elif res == wx.ID_OK:
 				if dlg.error: self.ShowStatusBarRED(dlg.error)
 				else:
-					subprocess.call(['pkill', '-x', 'pypilot'])
-					subprocess.call(['pkill', '-f', 'openplotter-pypilot-read'])
-					subprocess.call(['pkill', '-f', 'pypilot_boatimu'])
-					subprocess.call(['pkill', '-f', 'pypilot_web'])
-					subprocess.call(['pkill', '-f', 'pypilot_hat'])
-					pypilot = self.conf.get('PYPILOT', 'pypilot')
-					pypilot_boatimu = self.conf.get('PYPILOT', 'pypilot_boatimu')
-					pypilot_web = self.conf.get('PYPILOT', 'pypilot_web')
-					pypilot_hat = self.conf.get('PYPILOT', 'pypilot_hat')
-					if pypilot_boatimu == '1':
-						subprocess.Popen('pypilot_boatimu', cwd = self.conf.home+'/.pypilot')
-						subprocess.Popen('openplotter-pypilot-read')
-					elif pypilot == '1':
-						subprocess.Popen('pypilot', cwd = self.conf.home+'/.pypilot')
-						if pypilot_web == '1': subprocess.Popen('pypilot_web')
-						if pypilot_hat == '1': subprocess.Popen('pypilot_hat')
+					subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'pypilotRestart'])
 					self.ShowStatusBarGREEN(_('Pypilot serial devices modified and restarted'))
 					self.read_Serialinst()
 			dlg.Destroy()

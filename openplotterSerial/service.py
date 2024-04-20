@@ -206,6 +206,12 @@ elif sys.argv[1]=='udev':
 	subprocess.call(['udevadm', 'control', '--reload-rules'])
 	subprocess.call(['udevadm', 'trigger', '--attr-match=subsystem=tty'])
 
+elif sys.argv[1]=='pypilotRestart':
+	try:
+		subprocess.check_output(['systemctl', 'is-enabled', 'pypilot']).decode(sys.stdin.encoding)
+		subprocess.call(['systemctl', 'restart', 'pypilot'])
+	except: pass
+
 elif sys.argv[1]=='uartTrue': edit_boot(True)
 elif sys.argv[1]=='uartFalse': edit_boot(False)
 

@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Openplotter. If not, see <http://www.gnu.org/licenses/>.
 
-import os
+import os, subprocess
 from openplotterSettings import conf
 from openplotterSettings import language
 from .version import version
@@ -33,6 +33,26 @@ def main():
 			fo = open(path, "w")
 			fo.write( 'START_DAEMON="false"\nUSBAUTO="false"\nDEVICES=""\nGPSD_OPTIONS="-n -b"')
 			fo.close()
+		else:
+			subprocess.call(['sed', '-i', 's/USBAUTO="true"/USBAUTO="false"/g', '/etc/default/gpsd'])
+			subprocess.call(['sed', '-i', 's/USBAUTO = "true"/USBAUTO = "false"/g', '/etc/default/gpsd'])
+			devList = []
+			daemon = False
+			with open('/etc/default/gpsd', 'r') as f:
+				for line in f:
+					if 'DEVICES=' in line:
+						line = line.replace('\n', '')
+						line = line.strip()
+						items = line.split('=')
+						item1 = items[1].replace('"', '')
+						item1 = item1.strip()
+						devList = item1.split(' ')
+					if 'START_DAEMON=' in line:
+						if 'true' in line: daemon = True
+			if not devList and daemon:
+				subprocess.call(['sed', '-i', 's/START_DAEMON="true"/START_DAEMON="false"/g', '/etc/default/gpsd'])
+				subprocess.call(['sed', '-i', 's/START_DAEMON = "true"/START_DAEMON = "false"/g', '/etc/default/gpsd'])
+
 		print(_('DONE'))
 	except Exception as e: print(_('FAILED: ')+str(e))
 
