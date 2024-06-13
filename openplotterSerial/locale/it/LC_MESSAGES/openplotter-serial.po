@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: openplotter\n"
-"POT-Creation-Date: 2023-06-28 20:01+0200\n"
-"PO-Revision-Date: 2023-06-28 20:08+0200\n"
+"POT-Creation-Date: 2024-05-20 11:40+0200\n"
+"PO-Revision-Date: 2024-06-13 11:29+0200\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
 "Language: it\n"
@@ -20,393 +20,456 @@ msgstr ""
 "X-Crowdin-File-ID: 17\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: data/openplotter-serial.desktop:3 openplotterSerial.py:60
+#: data/openplotter-serial.desktop:3 openplotterSerial.py:51
 msgid "Serial"
 msgstr "Seriale"
 
 #: data/openplotter-serial.desktop:5
 msgid "openplotter-serial"
-msgstr ""
+msgstr "openplotter-serial"
 
-#: openplotterSerial.py:70
+#: openplotterSerial.py:61
 msgid "Help"
 msgstr "Guida"
 
-#: openplotterSerial.py:73
+#: openplotterSerial.py:64
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: openplotterSerial.py:114
-msgid "Refresh"
-msgstr "Aggiorna"
-
-#: openplotterSerial.py:121
+#: openplotterSerial.py:136
 msgid "Devices"
 msgstr "Dispositivi"
 
-#: openplotterSerial.py:122
+#: openplotterSerial.py:137
 msgid "Connections"
 msgstr "Connessioni"
 
-#: openplotterSerial.py:175
-msgid "This action disables Bluetooth and enables UART0 interface in GPIO 14 and 15. Changes will be applied after the next reboot.\n"
-msgstr ""
+#: openplotterSerial.py:190
+msgid "This action enables UART0 interface in GPIO 14 and 15."
+msgstr "Questa azione abilita l'interfaccia UART0 in GPIO 14 e 15."
 
-#: openplotterSerial.py:176 openplotterSerial.py:184 openplotterSerial.py:195
-#: openplotterSerial.py:203 openplotterSerial.py:214 openplotterSerial.py:222
-#: openplotterSerial.py:233 openplotterSerial.py:241 openplotterSerial.py:252
-#: openplotterSerial.py:260
+#: openplotterSerial.py:191
+msgid "This action disables Bluetooth and enables UART0 interface in GPIO 14 and 15."
+msgstr "Questa azione disabilita il Bluetooth e abilita l'interfaccia UART0 in GPIO 14 e 15."
+
+#: openplotterSerial.py:192 openplotterSerial.py:203 openplotterSerial.py:216
+#: openplotterSerial.py:225 openplotterSerial.py:238 openplotterSerial.py:249
+#: openplotterSerial.py:263 openplotterSerial.py:274 openplotterSerial.py:288
+#: openplotterSerial.py:299 openplotterSerial.py:312 openplotterSerial.py:321
+msgid "Changes will be applied after the next reboot."
+msgstr "Le modifiche saranno applicate dopo il prossimo riavvio."
+
+#: openplotterSerial.py:193 openplotterSerial.py:204 openplotterSerial.py:217
+#: openplotterSerial.py:226 openplotterSerial.py:239 openplotterSerial.py:250
+#: openplotterSerial.py:264 openplotterSerial.py:275 openplotterSerial.py:289
+#: openplotterSerial.py:300 openplotterSerial.py:313 openplotterSerial.py:322
 msgid "Are you sure?"
 msgstr "Sei sicuro?"
 
-#: openplotterSerial.py:177 openplotterSerial.py:185 openplotterSerial.py:196
-#: openplotterSerial.py:204 openplotterSerial.py:215 openplotterSerial.py:223
-#: openplotterSerial.py:234 openplotterSerial.py:242 openplotterSerial.py:253
-#: openplotterSerial.py:261
+#: openplotterSerial.py:194 openplotterSerial.py:205 openplotterSerial.py:218
+#: openplotterSerial.py:227 openplotterSerial.py:240 openplotterSerial.py:251
+#: openplotterSerial.py:265 openplotterSerial.py:276 openplotterSerial.py:290
+#: openplotterSerial.py:301 openplotterSerial.py:314 openplotterSerial.py:323
 msgid "Question"
 msgstr "Domanda"
 
-#: openplotterSerial.py:183
-msgid "This action disables UART0 interface in GPIO 14 and 15 and enables Bluetooth. Changes will be applied after the next reboot.\n"
-msgstr ""
-
-#: openplotterSerial.py:194
-msgid "This action enables UART2 interface in GPIO 0 and 1. Changes will be applied after the next reboot.\n"
-msgstr ""
+#: openplotterSerial.py:201
+msgid "This action disables UART0 interface in GPIO 14 and 15."
+msgstr "Questa azione disabilita l'interfaccia UART0 in GPIO 14 e 15."
 
 #: openplotterSerial.py:202
-msgid "This action disables UART2 interface in GPIO 0 and 1. Changes will be applied after the next reboot.\n"
-msgstr ""
+msgid "This action disables UART0 interface in GPIO 14 and 15 and enables Bluetooth."
+msgstr "Questa azione disabilita l'interfaccia UART0 in GPIO 14 e 15 e abilita Bluetooth."
 
-#: openplotterSerial.py:213
-msgid "This action enables UART3 interface in GPIO 4 and 5. Changes will be applied after the next reboot.\n"
-msgstr ""
+#: openplotterSerial.py:215
+msgid "This action enables UART1 interface in GPIO 0 and 1."
+msgstr "Questa azione abilita l'interfaccia UART1 in GPIO 0 e 1."
 
-#: openplotterSerial.py:221
-msgid "This action disables UART3 interface in GPIO 4 and 5. Changes will be applied after the next reboot.\n"
-msgstr ""
+#: openplotterSerial.py:224
+msgid "This action disables UART1 interface in GPIO 0 and 1."
+msgstr "Questa azione disabilita l'interfaccia UART1 in GPIO 0 e 1."
 
-#: openplotterSerial.py:232
-msgid "This action enables UART4 interface in GPIO 8 and 9. Changes will be applied after the next reboot.\n"
-msgstr ""
+#: openplotterSerial.py:236
+msgid "This action enables UART2 interface in GPIO 4 and 5."
+msgstr "Questa azione abilita l'interfaccia UART2 in GPIO 4 e 5."
 
-#: openplotterSerial.py:240
-msgid "This action disables UART4 interface in GPIO 8 and 9. Changes will be applied after the next reboot.\n"
-msgstr ""
+#: openplotterSerial.py:237
+msgid "This action enables UART2 interface in GPIO 0 and 1."
+msgstr "Questa azione abilita l'interfaccia UART2 in GPIO 0 e 1."
 
-#: openplotterSerial.py:251
-msgid "This action enables UART5 interface in GPIO 12 and 13. Changes will be applied after the next reboot.\n"
-msgstr ""
+#: openplotterSerial.py:247
+msgid "This action disables UART2 interface in GPIO 4 and 5."
+msgstr "Questa azione disabilita l'interfaccia UART2 in GPIO 4 e 5."
 
-#: openplotterSerial.py:259
-msgid "This action disables UART5 interface in GPIO 12 and 13. Changes will be applied after the next reboot.\n"
-msgstr ""
+#: openplotterSerial.py:248
+msgid "This action disables UART2 interface in GPIO 0 and 1."
+msgstr "Questa azione disabilita l'interfaccia UART2 in GPIO 0 e 1."
 
-#: openplotterSerial.py:292
+#: openplotterSerial.py:261
+msgid "This action enables UART3 interface in GPIO 8 and 9."
+msgstr "Questa azione abilita l'interfaccia UART3 in GPIO 8 e 9."
+
+#: openplotterSerial.py:262
+msgid "This action enables UART3 interface in GPIO 4 and 5."
+msgstr "Questa azione abilita l'interfaccia UART3 in GPIO 4 e 5."
+
+#: openplotterSerial.py:272
+msgid "This action disables UART3 interface in GPIO 8 and 9."
+msgstr "Questa azione disabilita l'interfaccia UART3 in GPIO 8 e 9."
+
+#: openplotterSerial.py:273
+msgid "This action disables UART3 interface in GPIO 4 and 5."
+msgstr "Questa azione disabilita l'interfaccia UART3 in GPIO 4 e 5."
+
+#: openplotterSerial.py:286
+msgid "This action enables UART4 interface in GPIO 12 and 13."
+msgstr "Questa azione consente l'interfaccia UART4 in GPIO 12 e 13."
+
+#: openplotterSerial.py:287
+msgid "This action enables UART4 interface in GPIO 8 and 9."
+msgstr "Questa azione abilita l'interfaccia UART4 in GPIO 8 e 9."
+
+#: openplotterSerial.py:297
+msgid "This action disables UART4 interface in GPIO 12 and 13."
+msgstr "Questa azione disabilita l'interfaccia UART4 in GPIO 12 e 13."
+
+#: openplotterSerial.py:298
+msgid "This action disables UART4 interface in GPIO 8 and 9."
+msgstr "Questa azione disabilita l'interfaccia UART4 in GPIO 8 e 9."
+
+#: openplotterSerial.py:311
+msgid "This action enables UART5 interface in GPIO 12 and 13."
+msgstr "Questa azione consente l'interfaccia UART5 in GPIO 12 e 13."
+
+#: openplotterSerial.py:320
+msgid "This action disables UART5 interface in GPIO 12 and 13."
+msgstr "Questa azione disabilita l'interfaccia UART5 in GPIO 12 e 13."
+
+#: openplotterSerial.py:354
 msgid "USB port"
 msgstr "Porta USB"
 
-#: openplotterSerial.py:293 openplotterSerial.py:739
+#: openplotterSerial.py:355 openplotterSerial.py:822
 msgid "device"
 msgstr "dispositivo"
 
-#: openplotterSerial.py:294 openplotterSerial.py:305 openplotterSerial.py:740
+#: openplotterSerial.py:356 openplotterSerial.py:367 openplotterSerial.py:823
 msgid "alias"
 msgstr "alias"
 
-#: openplotterSerial.py:295
+#: openplotterSerial.py:357
 msgid "vendor"
 msgstr "fornitore"
 
-#: openplotterSerial.py:296
+#: openplotterSerial.py:358
 msgid "product"
 msgstr "prodotto"
 
-#: openplotterSerial.py:297
-msgid "model"
-msgstr ""
+#: openplotterSerial.py:359
+msgid "serial"
+msgstr "seriale"
 
-#: openplotterSerial.py:298
+#: openplotterSerial.py:360
 msgid "remember"
 msgstr "ricorda"
 
-#: openplotterSerial.py:308 openplotterSerial.py:741
+#: openplotterSerial.py:370 openplotterSerial.py:824
 msgid "data"
 msgstr "dati"
 
-#: openplotterSerial.py:311
+#: openplotterSerial.py:373
 msgid "Remember device (by vendor, product, serial)"
 msgstr "Ricorda il dispositivo (per fornitore, prodotto, seriale)"
 
-#: openplotterSerial.py:312
-msgid "Remember port (positon on the USB-hub)"
-msgstr "Ricorda la porta (posizione nell' Hub USB)"
+#: openplotterSerial.py:374
+msgid "Remember port (position on the USB-hub)"
+msgstr "Ricorda la porta (posizione sull'hub USB)"
 
-#: openplotterSerial.py:315
+#: openplotterSerial.py:379 openplotterSerial.py:834
+msgid "Refresh"
+msgstr "Aggiorna"
+
+#: openplotterSerial.py:382
+msgid "Details"
+msgstr "Dettagli"
+
+#: openplotterSerial.py:384
 msgid "Apply"
 msgstr "Applica"
 
-#: openplotterSerial.py:317 openplotterSerial.py:752
+#: openplotterSerial.py:386 openplotterSerial.py:839
 msgid "Remove"
 msgstr "Rimuovi"
 
-#: openplotterSerial.py:397
+#: openplotterSerial.py:463
 msgid "Device with vendor "
 msgstr "Dispositivo con fornitore "
 
-#: openplotterSerial.py:397
+#: openplotterSerial.py:463
 msgid " is connected to a reserved port"
 msgstr " è connesso a una porta riservata"
 
-#: openplotterSerial.py:421
+#: openplotterSerial.py:487
 msgid "upper left"
 msgstr "in alto a sinistra"
 
-#: openplotterSerial.py:422
+#: openplotterSerial.py:488
 msgid "upper right"
 msgstr "in alto a destra"
 
-#: openplotterSerial.py:423
+#: openplotterSerial.py:489
 msgid "middle left"
 msgstr "centrale a sinistra"
 
-#: openplotterSerial.py:424
+#: openplotterSerial.py:490
 msgid "middle right"
 msgstr "centrale a destra"
 
-#: openplotterSerial.py:425
+#: openplotterSerial.py:491
 msgid "lower left"
 msgstr "in basso a sinistra"
 
-#: openplotterSerial.py:426
+#: openplotterSerial.py:492
 msgid "lower right"
 msgstr "in basso a destra"
 
-#: openplotterSerial.py:444
+#: openplotterSerial.py:510
 msgid "no Hub"
 msgstr "nessun Hub"
 
-#: openplotterSerial.py:507
+#: openplotterSerial.py:578
 msgid "There are missing devices"
 msgstr "Ci sono dispositivi mancanti"
 
-#: openplotterSerial.py:568 openplotterSerial.py:713
+#: openplotterSerial.py:639 openplotterSerial.py:704 openplotterSerial.py:796
 msgid "No device selected"
 msgstr "Nessun dispositivo selezionato"
 
-#: openplotterSerial.py:632
+#: openplotterSerial.py:715
 msgid "Failed. No port selected"
 msgstr "Fallito. Nessuna porta selezionata"
 
-#: openplotterSerial.py:637
+#: openplotterSerial.py:720
 msgid "The alias must be a lowercase string between 1 and 8 characters or numbers."
 msgstr "L'alias deve essere una stringa minuscola tra 1 e 8 caratteri o numeri."
 
-#: openplotterSerial.py:643
+#: openplotterSerial.py:726
 msgid "Same alias used for multiple devices"
 msgstr "Stesso alias utilizzato per più dispositivi"
 
-#: openplotterSerial.py:648
+#: openplotterSerial.py:731
 msgid "Please select type of data"
 msgstr "Seleziona il tipo di dati"
 
-#: openplotterSerial.py:669
+#: openplotterSerial.py:752
 msgid "Device with duplicate vendor and product must be set to \"Remember port\"."
 msgstr "I dispositivi con lo stesso fornitore e prodotto devono essere impostate su \"Ricorda porta\"."
 
-#: openplotterSerial.py:676
+#: openplotterSerial.py:759
 msgid "This port is already reserved and must be set to \"Remember device\"."
 msgstr "Questa porta è già riservata e deve essere impostata su \"Ricorda dispositivo\"."
 
-#: openplotterSerial.py:685
+#: openplotterSerial.py:768
 msgid "Applying changes ..."
 msgstr "Applicazione delle modifiche..."
 
-#: openplotterSerial.py:708
+#: openplotterSerial.py:791
 msgid "Applied changes"
 msgstr "Modifiche applicate"
 
-#: openplotterSerial.py:729
+#: openplotterSerial.py:812
 msgid "Add to Signal K"
 msgstr "Aggiungi a Signal K"
 
-#: openplotterSerial.py:731
+#: openplotterSerial.py:814
 msgid "Add to CAN Bus"
 msgstr "Aggiungi a CAN Bus"
 
-#: openplotterSerial.py:733
+#: openplotterSerial.py:816
 msgid "Add to GPSD"
 msgstr "Aggiungi a GPSD"
 
-#: openplotterSerial.py:735
+#: openplotterSerial.py:818
 msgid "Add to Pypilot"
 msgstr "Aggiungi a Pypilot"
 
-#: openplotterSerial.py:742
+#: openplotterSerial.py:825
 msgid "connection"
 msgstr "connessione"
 
-#: openplotterSerial.py:743
+#: openplotterSerial.py:826
 msgid "ID"
 msgstr "ID"
 
-#: openplotterSerial.py:744
+#: openplotterSerial.py:827
 msgid "bauds"
 msgstr "bauds"
 
-#: openplotterSerial.py:750
+#: openplotterSerial.py:837
 msgid "Edit"
 msgstr "Modifica"
 
-#: openplotterSerial.py:817 openplotterSerial.py:841
+#: openplotterSerial.py:904 openplotterSerial.py:928
 msgid "Please install \"Signal K Installer\" OpenPlotter app"
 msgstr "Installa l'app \"Signal K Installer\" OpenPlotter"
 
-#: openplotterSerial.py:844
+#: openplotterSerial.py:931
 msgid "Please install \"CAN Bus\" OpenPlotter app"
 msgstr "Installa l'app \"CAN Bus\" OpenPlotter"
 
-#: openplotterSerial.py:861 openplotterSerial.py:951 openplotterSerial.py:966
+#: openplotterSerial.py:948 openplotterSerial.py:1023 openplotterSerial.py:1038
 msgid "Restarting Signal K server... "
 msgstr "Riavvio server Signal K... "
 
-#: openplotterSerial.py:866 openplotterSerial.py:956 openplotterSerial.py:972
+#: openplotterSerial.py:953 openplotterSerial.py:1028 openplotterSerial.py:1045
 msgid "Signal K server restarted"
 msgstr "Server Signal K riavviato"
 
-#: openplotterSerial.py:870
+#: openplotterSerial.py:957
 msgid "Please install \"gpsd\" package"
 msgstr "Installa il pacchetto \"gpsd\""
 
-#: openplotterSerial.py:905
+#: openplotterSerial.py:977
 msgid "Pypilot serial devices modified and restarted"
-msgstr ""
+msgstr "Dispositivi seriali Pypilot modificati e riavviati"
 
-#: openplotterSerial.py:909
+#: openplotterSerial.py:981
 msgid "Please install \"Pypilot\" OpenPlotter app"
 msgstr "Installa l'app \"Pypilot\" OpenPlotter"
 
-#: openplotterSerial.py:944
+#: openplotterSerial.py:1016
 msgid "Failed. Error removing connection in Signal K"
 msgstr "Fallito. Errore nella rimozione della connessione in Signal K"
 
-#: openplotterSerial.py:987
+#: openplotterSerial.py:1060
 msgid "Adding connection for device: "
 msgstr "Aggiunta connessione per il dispositivo: "
 
-#: openplotterSerial.py:994
+#: openplotterSerial.py:1067
 msgid "Baud Rate: "
 msgstr "Baud rate: "
 
-#: openplotterSerial.py:1002
+#: openplotterSerial.py:1075
 msgid "MANUAL"
 msgstr "MANUALE"
 
-#: openplotterSerial.py:1004
+#: openplotterSerial.py:1077
 msgid "AUTO"
 msgstr "AUTO"
 
-#: openplotterSerial.py:1008 openplotterSerial.py:1020
-#: openplotterSerial.py:1035 openplotterSerial.py:1048
+#: openplotterSerial.py:1081 openplotterSerial.py:1093
+#: openplotterSerial.py:1108 openplotterSerial.py:1121
 msgid "Data: "
 msgstr "Dati: "
 
-#: openplotterSerial.py:1009 openplotterSerial.py:1021
+#: openplotterSerial.py:1082 openplotterSerial.py:1094
 msgid "ID: "
 msgstr "ID: "
 
-#: openplotterSerial.py:1010 openplotterSerial.py:1022
-#: openplotterSerial.py:1036 openplotterSerial.py:1049
+#: openplotterSerial.py:1083 openplotterSerial.py:1095
+#: openplotterSerial.py:1109 openplotterSerial.py:1122
 msgid "Serial port: "
 msgstr "Porta seriale: "
 
-#: openplotterSerial.py:1012
+#: openplotterSerial.py:1085
 msgid "Press AUTO to create a connection in Signal K using the settings above."
 msgstr "Premi AUTO per creare una connessione a Signal K utilizzando le impostazioni qui sopra."
 
-#: openplotterSerial.py:1015
+#: openplotterSerial.py:1088
 msgid "Press MANUAL if you need to add special settings."
 msgstr "Premere MANUALE se è necessario aggiungere impostazioni speciali."
 
-#: openplotterSerial.py:1018 openplotterSerial.py:1033
+#: openplotterSerial.py:1091 openplotterSerial.py:1106
 msgid ""
 "To get data in OpenCPN, make sure this network connection exists in OpenCPN:\n"
 "Protocol: Signal K\n"
 "Address: localhost\n"
 "DataPort: "
 msgstr ""
+"Per ottenere dati in OpenCPN, assicurati che questa connessione di rete esista in OpenCPN:\n"
+"Protocol: Signal K\n"
+"Indirizzo: localhost\n"
+"DataPort: "
 
-#: openplotterSerial.py:1024
+#: openplotterSerial.py:1097
 msgid "Press AUTO to create a \"canboatjs\" connection for a NGT-1 or a CAN-USB device in Signal K using the settings above."
 msgstr "Premi AUTO per creare una connessione \"canboatjs\" per un NGT-1 o dispositivo CAN-USB in Signal K utilizzando le impostazioni qui sopra."
 
-#: openplotterSerial.py:1027
+#: openplotterSerial.py:1100
 msgid "Press MANUAL if you need to add special settings or you want to set a slcand device."
-msgstr ""
+msgstr "Premere MANUAL se è necessario aggiungere impostazioni speciali o si desidera impostare un dispositivo slcand."
 
-#: openplotterSerial.py:1030
+#: openplotterSerial.py:1103
 msgid "Use \"SK → NMEA 2000\" plugin to send data from Signal K to your CAN network. Open desired TX PGNs in your device."
 msgstr "Usa il plugin \"SK → NMEA 2000\" per inviare dati da Signal K alla tua rete CAN. Apri i TX PGN desiderati nel tuo dispositivo."
 
-#: openplotterSerial.py:1040
+#: openplotterSerial.py:1113
 msgid "Press AUTO to add this device to the list of devices managed by GPSD. A connection for GPSD will be created in Signal K if it does not exist."
-msgstr ""
+msgstr "Premere AUTO per aggiungere questo dispositivo all'elenco dei dispositivi gestiti dal GPSD. Una connessione per GPSD verrà creata in Signal K se non esiste."
 
-#: openplotterSerial.py:1043
+#: openplotterSerial.py:1116
 msgid "Be sure you send only GNSS or AIS data to GPSD. Baud Rate will be automatically assigned."
 msgstr "Assicurati di inviare solo dati GNSS o AIS al GPSD. Il Baud Rate sarà assegnato automaticamente."
 
-#: openplotterSerial.py:1046
+#: openplotterSerial.py:1119
 msgid "Pypilot will get data from GPSD automatically."
 msgstr "Pypilot otterrà dati dalla GPSD automaticamente."
 
-#: openplotterSerial.py:1048
+#: openplotterSerial.py:1121
 msgid "(or motor controller data)"
 msgstr "(o dati del controller motore)"
 
-#: openplotterSerial.py:1052
+#: openplotterSerial.py:1125
 msgid "Press AUTO to use this device to send data to Pypilot. Baud Rate will be automatically assigned."
 msgstr "Premi AUTO per utilizzare questo dispositivo per inviare dati a Pypilot. La velocità di Baud verrà assegnata automaticamente."
 
-#: openplotterSerial.py:1055
+#: openplotterSerial.py:1128
 msgid "Press MANUAL if you prefer to set this device in openplotter-pypilot app."
 msgstr "Premi MANUALE se preferisci impostare questo dispositivo nell'app openplotter-pypilot."
 
-#: openplotterSerial.py:1090
+#: openplotterSerial.py:1163
 msgid "Failed. This ID already exists"
 msgstr "Fallito. Questo ID esiste già"
 
-#: openplotterSerial.py:1091
+#: openplotterSerial.py:1164
 msgid "Failed. This device is already in use"
 msgstr "Fallito. Questo dispositivo è già in uso"
 
-#: openplotterSerial.py:1103
+#: openplotterSerial.py:1176
 msgid "Failed. Error creating connection in Signal K"
 msgstr "Fallito. Errore nella creazione della connessione in Signal K"
 
-#: openplotterSerial.py:1116
+#: openplotterSerial.py:1189
 msgid "Failed. This device is already set in Pypilot"
 msgstr "Fallito. Questo dispositivo è già impostato in Pypilot"
 
-#: openplotterSerial.py:1121
+#: openplotterSerial.py:1194
 msgid "Failed. Error setting the device in Pypilot"
 msgstr "Fallito. Errore nell'impostazione del dispositivo in Pypilot"
+
+#: openplotterSerial.py:1209
+msgid "Device details on: "
+msgstr "Dettagli del dispositivo su: "
+
+#: openplotterSerial.py:1217
+msgid "Close"
+msgstr "Chiudi"
 
 #: serialPostInstall.py:29
 msgid "Editing GPSD config file..."
 msgstr "Modifica file di configurazione GPSD..."
 
-#: serialPostInstall.py:36 serialPostInstall.py:42 serialPreUninstall.py:31
+#: serialPostInstall.py:56 serialPostInstall.py:62 serialPreUninstall.py:31
 #: serialPreUninstall.py:37
 msgid "DONE"
 msgstr "FATTO"
 
-#: serialPostInstall.py:37 serialPostInstall.py:43 serialPreUninstall.py:32
+#: serialPostInstall.py:57 serialPostInstall.py:63 serialPreUninstall.py:32
 #: serialPreUninstall.py:38
 msgid "FAILED: "
 msgstr "FALLITO: "
 
-#: serialPostInstall.py:39
+#: serialPostInstall.py:59
 msgid "Setting version..."
 msgstr "Impostazione versione..."
 
@@ -437,3 +500,11 @@ msgstr "ID connessione: "
 #: startup.py:51 startup.py:52
 msgid "device: "
 msgstr "dispositivo: "
+
+#: startup.py:73
+msgid "Set USBAUTO=\"false\" in /etc/default/gpsd"
+msgstr "Imposta USBAUTO=\"false\" in /etc/default/gpsd"
+
+#: startup.py:78
+msgid "Set START_DAEMON=\"false\" in /etc/default/gpsd"
+msgstr "Imposta START_DAEMON=\"false\" in /etc/default/gpsd"
