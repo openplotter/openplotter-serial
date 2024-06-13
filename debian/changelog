@@ -1,3 +1,15 @@
+openplotter-serial (4.1.0-stable) bookworm; urgency=medium
+
+  * stable
+
+ -- Sailoog <info@sailoog.com>  Thu, 13 Jun 2024 11:31:25 +0200
+
+openplotter-serial (4.0.14-beta) bookworm; urgency=medium
+
+  * beta
+
+ -- Sailoog <info@sailoog.com>  Tue, 17 Oct 2023 18:15:35 +0200
+
 openplotter-serial (3.3.0-stable) bullseye; urgency=medium
 
   * Use serial instead of model to identify devices

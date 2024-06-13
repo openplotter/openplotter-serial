@@ -40,20 +40,11 @@ class SerialFrame(wx.Frame):
 			try:
 				modelfile = open('/sys/firmware/devicetree/base/model', 'r', 2000)
 				self.rpimodel = modelfile.read()[:-1]
-				if self.rpimodel == 'Raspberry Pi Zero W Rev 1.1':
-					self.rpitype = '0W'
-				elif self.rpimodel == 'Raspberry Pi 2 Model B Rev 1.1':
-					self.rpitype = '2B'
-				elif self.rpimodel == 'Raspberry Pi 3 Model B Rev 1.2':
-					self.rpitype = '3B'
-				elif self.rpimodel == 'Raspberry Pi 3 Model B Plus Rev 1.3':
-					self.rpitype = '3B+'
-				elif self.rpimodel == 'Raspberry Pi 4 Model B Rev 1.1':
-					self.rpitype = '4B'
-				elif self.rpimodel == 'Raspberry Pi 4 Model B Rev 1.2':
-					self.rpitype = '4B'
-				elif self.rpimodel == 'Raspberry Pi 4 Model B Rev 1.4':
-					self.rpitype = '4B'					
+				if 'Raspberry Pi 3' in self.rpimodel: 
+					self.rpitype = 'RPi3'
+					if 'Plus' in self.rpimodel: self.rpitype = 'RPi3+'
+				if 'Raspberry Pi 4' in self.rpimodel: self.rpitype = 'RPi4'
+				if 'Raspberry Pi 5' in self.rpimodel: self.rpitype = 'RPi5'			
 				modelfile.close()
 			except: self.rpimodel = ''
 	
@@ -75,6 +66,8 @@ class SerialFrame(wx.Frame):
 		self.toolbar1.AddSeparator()
 		uart = self.toolbar1.AddCheckTool(103, 'UART0', wx.Bitmap(self.currentdir+"/data/uart.png"))
 		self.Bind(wx.EVT_TOOL, self.onUart, uart)
+		uart1 = self.toolbar1.AddCheckTool(109, 'UART1', wx.Bitmap(self.currentdir+"/data/uart.png"))
+		self.Bind(wx.EVT_TOOL, self.onUart1, uart1)
 		uart2 = self.toolbar1.AddCheckTool(105, 'UART2', wx.Bitmap(self.currentdir+"/data/uart.png"))
 		self.Bind(wx.EVT_TOOL, self.onUart2, uart2)
 		uart3 = self.toolbar1.AddCheckTool(106, 'UART3', wx.Bitmap(self.currentdir+"/data/uart.png"))
@@ -88,31 +81,53 @@ class SerialFrame(wx.Frame):
 		self.toolbar1.EnableTool(106,False)
 		self.toolbar1.EnableTool(107,False)
 		self.toolbar1.EnableTool(108,False)
+		self.toolbar1.EnableTool(109,False)
 		if self.platform.isRPI: 
-			self.toolbar1.EnableTool(103,True)
-			try:
-				subprocess.check_output(['systemctl', 'is-active', 'hciuart']).decode(sys.stdin.encoding)
-				self.toolbar1.ToggleTool(103,False)
-			except: self.toolbar1.ToggleTool(103,True)
-			if 'Raspberry Pi 4' in self.rpimodel:
+			
+			try: 
+				config = open('/boot/firmware/config.txt', 'r')
+				if config: data = config.read()
+				config.close()
+			except:
+				try: 
+					config = open('/boot/config.txt', 'r')
+					if config: data = config.read()
+					config.close()
+				except: config = ''
+
+			if self.rpitype == 'RPi3' or self.rpitype == 'RPi3+':
+				self.toolbar1.EnableTool(103,True)
+
+				if config:
+					if 'dtoverlay=disable-bt' in data and not '#dtoverlay=disable-bt' in data: self.toolbar1.ToggleTool(103,True)
+
+			elif self.rpitype == 'RPi4':
+				self.toolbar1.EnableTool(103,True)
 				self.toolbar1.EnableTool(105,True)
 				self.toolbar1.EnableTool(106,True)
 				self.toolbar1.EnableTool(107,True)
 				self.toolbar1.EnableTool(108,True)
-				try: config = open('/boot/config.txt', 'r')
-				except:
-					try: config = open('/boot/firmware/config.txt', 'r')
-					except: config = ''
+
 				if config:
-					data = config.read()
-					config.close()
-					if 'dtoverlay=uart2' in data and not '#dtoverlay=uart2' in data: self.toolbar1.ToggleTool(105,True)
-					if 'dtoverlay=uart3' in data and not '#dtoverlay=uart3' in data: self.toolbar1.ToggleTool(106,True)
-					if 'dtoverlay=uart4' in data and not '#dtoverlay=uart4' in data: self.toolbar1.ToggleTool(107,True)
-					if 'dtoverlay=uart5' in data and not '#dtoverlay=uart5' in data: self.toolbar1.ToggleTool(108,True)
-		self.toolbar1.AddSeparator()
-		refresh = self.toolbar1.AddTool(104, _('Refresh'), wx.Bitmap(self.currentdir+"/data/refresh.png"))
-		self.Bind(wx.EVT_TOOL, self.onToolRefresh, refresh)
+					if 'dtoverlay=disable-bt' in data and not '#dtoverlay=disable-bt' in data: self.toolbar1.ToggleTool(103,True)
+					if 'dtoverlay=uart2' in data and not '#dtoverlay=uart2' in data and not 'dtoverlay=uart2-pi5' in data: self.toolbar1.ToggleTool(105,True)
+					if 'dtoverlay=uart3' in data and not '#dtoverlay=uart3' in data and not 'dtoverlay=uart3-pi5' in data: self.toolbar1.ToggleTool(106,True)
+					if 'dtoverlay=uart4' in data and not '#dtoverlay=uart4' in data and not 'dtoverlay=uart4-pi5' in data: self.toolbar1.ToggleTool(107,True)
+					if 'dtoverlay=uart5' in data and not '#dtoverlay=uart5' in data and not 'dtoverlay=uart5-pi5' in data: self.toolbar1.ToggleTool(108,True)
+			
+			elif self.rpitype == 'RPi5':
+				self.toolbar1.EnableTool(103,True)
+				self.toolbar1.EnableTool(109,True)
+				self.toolbar1.EnableTool(105,True)
+				self.toolbar1.EnableTool(106,True)
+				self.toolbar1.EnableTool(107,True)
+
+				if config:
+					if 'dtparam=uart0=on' in data and not '#dtparam=uart0=on' in data: self.toolbar1.ToggleTool(103,True)
+					if 'dtoverlay=uart1-pi5' in data and not '#dtoverlay=uart1-pi5' in data: self.toolbar1.ToggleTool(109,True)
+					if 'dtoverlay=uart2-pi5' in data and not '#dtoverlay=uart2-pi5' in data: self.toolbar1.ToggleTool(105,True)
+					if 'dtoverlay=uart3-pi5' in data and not '#dtoverlay=uart3-pi5' in data: self.toolbar1.ToggleTool(106,True)
+					if 'dtoverlay=uart4-pi5' in data and not '#dtoverlay=uart4-pi5' in data: self.toolbar1.ToggleTool(107,True)
 
 		self.notebook = wx.Notebook(self)
 		self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.onTabChange)
@@ -172,83 +187,129 @@ class SerialFrame(wx.Frame):
 
 	def onUart(self,e):
 		if self.toolbar1.GetToolState(103):
-			msg = _('This action disables Bluetooth and enables UART0 interface in GPIO 14 and 15. Changes will be applied after the next reboot.\n')
+			if self.rpitype == 'RPi5': msg = _('This action enables UART0 interface in GPIO 14 and 15.')
+			else: msg = _('This action disables Bluetooth and enables UART0 interface in GPIO 14 and 15.')
+			msg += ' '+_('Changes will be applied after the next reboot.')+'\n'
 			msg += _('Are you sure?')
 			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
-			if dlg.ShowModal() == wx.ID_YES: 
-				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uartTrue'])
+			if dlg.ShowModal() == wx.ID_YES:
+				if self.rpitype == 'RPi5': subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uartTruePi5'])
+				else: subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uartTrue'])
 				self.toolbar1.ToggleTool(103,True)
 			else: self.toolbar1.ToggleTool(103,False)
 		else:
-			msg = _('This action disables UART0 interface in GPIO 14 and 15 and enables Bluetooth. Changes will be applied after the next reboot.\n')
+			if self.rpitype == 'RPi5': msg = _('This action disables UART0 interface in GPIO 14 and 15.')
+			else: msg = _('This action disables UART0 interface in GPIO 14 and 15 and enables Bluetooth.')
+			msg += ' '+_('Changes will be applied after the next reboot.')+'\n'
 			msg += _('Are you sure?')
 			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
-			if dlg.ShowModal() == wx.ID_YES: 
-				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uartFalse'])
+			if dlg.ShowModal() == wx.ID_YES:
+				if self.rpitype == 'RPi5': subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uartFalsePi5'])
+				else: subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uartFalse'])
 				self.toolbar1.ToggleTool(103,False)
 			else: self.toolbar1.ToggleTool(103,True)
 		dlg.Destroy()
 
-	def onUart2(self,e):
-		if self.toolbar1.GetToolState(105):
-			msg = _('This action enables UART2 interface in GPIO 0 and 1. Changes will be applied after the next reboot.\n')
+	def onUart1(self,e):
+		if self.toolbar1.GetToolState(109):
+			msg = _('This action enables UART1 interface in GPIO 0 and 1.')
+			msg += ' '+_('Changes will be applied after the next reboot.')+'\n'
 			msg += _('Are you sure?')
 			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
 			if dlg.ShowModal() == wx.ID_YES: 
-				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart2True'])
+				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart1TruePi5'])
+				self.toolbar1.ToggleTool(109,True)
+			else: self.toolbar1.ToggleTool(109,False)
+		else:
+			msg = _('This action disables UART1 interface in GPIO 0 and 1.')
+			msg += ' '+_('Changes will be applied after the next reboot.')+'\n'
+			msg += _('Are you sure?')
+			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
+			if dlg.ShowModal() == wx.ID_YES: 
+				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart1FalsePi5'])
+				self.toolbar1.ToggleTool(109,False)
+			else: self.toolbar1.ToggleTool(109,True)
+		dlg.Destroy()
+
+	def onUart2(self,e):
+		if self.toolbar1.GetToolState(105):
+			if self.rpitype == 'RPi5': msg = _('This action enables UART2 interface in GPIO 4 and 5.')
+			else: msg = _('This action enables UART2 interface in GPIO 0 and 1.')
+			msg += ' '+_('Changes will be applied after the next reboot.')+'\n'
+			msg += _('Are you sure?')
+			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
+			if dlg.ShowModal() == wx.ID_YES: 
+				if self.rpitype == 'RPi5': subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart2TruePi5'])
+				else: subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart2True'])
 				self.toolbar1.ToggleTool(105,True)
 			else: self.toolbar1.ToggleTool(105,False)
 		else:
-			msg = _('This action disables UART2 interface in GPIO 0 and 1. Changes will be applied after the next reboot.\n')
+			if self.rpitype == 'RPi5': msg = _('This action disables UART2 interface in GPIO 4 and 5.')
+			else: msg = _('This action disables UART2 interface in GPIO 0 and 1.')
+			msg += ' '+_('Changes will be applied after the next reboot.')+'\n'
 			msg += _('Are you sure?')
 			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
 			if dlg.ShowModal() == wx.ID_YES: 
-				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart2False'])
+				if self.rpitype == 'RPi5': subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart2FalsePi5'])
+				else: subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart2False'])
 				self.toolbar1.ToggleTool(105,False)
 			else: self.toolbar1.ToggleTool(105,True)
 		dlg.Destroy()
 
 	def onUart3(self,e):
 		if self.toolbar1.GetToolState(106):
-			msg = _('This action enables UART3 interface in GPIO 4 and 5. Changes will be applied after the next reboot.\n')
+			if self.rpitype == 'RPi5': msg = _('This action enables UART3 interface in GPIO 8 and 9.')
+			else: msg = _('This action enables UART3 interface in GPIO 4 and 5.')
+			msg += ' '+_('Changes will be applied after the next reboot.')+'\n'
 			msg += _('Are you sure?')
 			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
 			if dlg.ShowModal() == wx.ID_YES: 
-				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart3True'])
+				if self.rpitype == 'RPi5': subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart3TruePi5'])
+				else: subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart3True'])
 				self.toolbar1.ToggleTool(106,True)
 			else: self.toolbar1.ToggleTool(106,False)
 		else:
-			msg = _('This action disables UART3 interface in GPIO 4 and 5. Changes will be applied after the next reboot.\n')
+			if self.rpitype == 'RPi5': msg = _('This action disables UART3 interface in GPIO 8 and 9.')
+			else: msg = _('This action disables UART3 interface in GPIO 4 and 5.')
+			msg += ' '+_('Changes will be applied after the next reboot.')+'\n'
 			msg += _('Are you sure?')
 			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
 			if dlg.ShowModal() == wx.ID_YES: 
-				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart3False'])
+				if self.rpitype == 'RPi5': subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart3FalsePi5'])
+				else: subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart3False'])
 				self.toolbar1.ToggleTool(106,False)
 			else: self.toolbar1.ToggleTool(106,True)
 		dlg.Destroy()
 
 	def onUart4(self,e):
 		if self.toolbar1.GetToolState(107):
-			msg = _('This action enables UART4 interface in GPIO 8 and 9. Changes will be applied after the next reboot.\n')
+			if self.rpitype == 'RPi5': msg = _('This action enables UART4 interface in GPIO 12 and 13.')
+			else: msg = _('This action enables UART4 interface in GPIO 8 and 9.')
+			msg += ' '+_('Changes will be applied after the next reboot.')+'\n'
 			msg += _('Are you sure?')
 			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
 			if dlg.ShowModal() == wx.ID_YES: 
-				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart4True'])
+				if self.rpitype == 'RPi5': subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart4TruePi5'])
+				else: subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart4True'])
 				self.toolbar1.ToggleTool(107,True)
 			else: self.toolbar1.ToggleTool(107,False)
 		else:
-			msg = _('This action disables UART4 interface in GPIO 8 and 9. Changes will be applied after the next reboot.\n')
+			if self.rpitype == 'RPi5': msg = _('This action disables UART4 interface in GPIO 12 and 13.')
+			else: msg = _('This action disables UART4 interface in GPIO 8 and 9.')
+			msg += ' '+_('Changes will be applied after the next reboot.')+'\n'
 			msg += _('Are you sure?')
 			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
 			if dlg.ShowModal() == wx.ID_YES: 
-				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart4False'])
+				if self.rpitype == 'RPi5': subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart4FalsePi5'])
+				else: subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'uart4False'])
 				self.toolbar1.ToggleTool(107,False)
 			else: self.toolbar1.ToggleTool(107,True)
 		dlg.Destroy()
 
 	def onUart5(self,e):
 		if self.toolbar1.GetToolState(108):
-			msg = _('This action enables UART5 interface in GPIO 12 and 13. Changes will be applied after the next reboot.\n')
+			msg = _('This action enables UART5 interface in GPIO 12 and 13.')
+			msg += ' '+_('Changes will be applied after the next reboot.')+'\n'
 			msg += _('Are you sure?')
 			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
 			if dlg.ShowModal() == wx.ID_YES: 
@@ -256,7 +317,8 @@ class SerialFrame(wx.Frame):
 				self.toolbar1.ToggleTool(108,True)
 			else: self.toolbar1.ToggleTool(108,False)
 		else:
-			msg = _('This action disables UART5 interface in GPIO 12 and 13. Changes will be applied after the next reboot.\n')
+			msg = _('This action disables UART5 interface in GPIO 12 and 13.')
+			msg += ' '+_('Changes will be applied after the next reboot.')+'\n'
 			msg += _('Are you sure?')
 			dlg = wx.MessageDialog(None, msg, _('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_EXCLAMATION)
 			if dlg.ShowModal() == wx.ID_YES: 
@@ -312,9 +374,13 @@ class SerialFrame(wx.Frame):
 		self.Serial_rem_port = wx.RadioButton(self.p_serial, label=_('Remember port (position on the USB-hub)'))
 
 		self.toolbar2 = wx.ToolBar(self.p_serial, style=wx.TB_TEXT | wx.TB_VERTICAL)
+
+
+		refresh1 = self.toolbar2.AddTool(204, _('Refresh'), wx.Bitmap(self.currentdir+"/data/refresh.png"))
+		self.Bind(wx.EVT_TOOL, self.onToolRefresh, refresh1)
+		self.toolbar2.AddSeparator()
 		self.serial_show = self.toolbar2.AddTool(203, _('Details'), wx.Bitmap(self.currentdir+"/data/show.png"))
 		self.Bind(wx.EVT_TOOL, self.on_show_Serialinst, self.serial_show)
-		self.toolbar2.AddSeparator()
 		self.serial_update = self.toolbar2.AddTool(201, _('Apply'), wx.Bitmap(self.currentdir+"/data/apply.png"))
 		self.Bind(wx.EVT_TOOL, self.on_update_Serialinst, self.serial_update)
 		self.serial_delete = self.toolbar2.AddTool(202, _('Remove'), wx.Bitmap(self.currentdir+"/data/cancel.png"))
@@ -443,23 +509,28 @@ class SerialFrame(wx.Frame):
 					usbport = l[0]
 					hubtext = _('no Hub')
 					image = ''
-					if self.rpitype == '3B':
+					if self.rpitype == 'RPi3':
 						if usbport[4:5] == '2': portpos = 2
 						elif usbport[4:5] == '4': portpos = 3
 						elif usbport[4:5] == '3': portpos = 0
 						elif usbport[4:5] == '5': portpos = 1
-					elif self.rpitype == '3B+':
+					elif self.rpitype == 'RPi3+':
 						if usbport[4:5] == '1':
 							hublen = 11
 							portpos = 2
 							if usbport[6:7] == '3': portpos = 0
 						elif usbport[4:5] == '2': portpos = 1
 						elif usbport[4:5] == '3': portpos = 3
-					elif self.rpitype == '4B':
+					elif self.rpitype == 'RPi4':
 						if usbport[4:5] == '3': portpos = 6
 						elif usbport[4:5] == '1': portpos = 7
 						elif usbport[4:5] == '4': portpos = 4
 						elif usbport[4:5] == '2': portpos = 5
+					elif self.rpitype == 'RPi5':
+						if usbport[:3] == '3-1': portpos = 2
+						elif usbport[:3] == '1-1': portpos = 0
+						elif usbport[:3] == '1-2': portpos = 3
+						elif usbport[:3] == '3-2': portpos = 1
 					
 					if len(usbport) > hublen:
 						portnr = usbport[hublen-3:hublen]
@@ -759,6 +830,10 @@ class SerialFrame(wx.Frame):
 		self.listConnections.SetTextColour(wx.BLACK)
 
 		self.toolbar4 = wx.ToolBar(self.connections, style=wx.TB_TEXT | wx.TB_VERTICAL)
+
+		refresh2 = self.toolbar4.AddTool(403, _('Refresh'), wx.Bitmap(self.currentdir+"/data/refresh.png"))
+		self.Bind(wx.EVT_TOOL, self.onToolRefresh, refresh2)
+		self.toolbar4.AddSeparator()
 		editConnection = self.toolbar4.AddTool(401, _('Edit'), wx.Bitmap(self.currentdir+"/data/edit.png"))
 		self.Bind(wx.EVT_TOOL, self.OnEditConnection, editConnection)
 		removeConnection = self.toolbar4.AddTool(402, _('Remove'), wx.Bitmap(self.currentdir+"/data/cancel.png"))
@@ -898,22 +973,7 @@ class SerialFrame(wx.Frame):
 			elif res == wx.ID_OK:
 				if dlg.error: self.ShowStatusBarRED(dlg.error)
 				else:
-					subprocess.call(['pkill', '-x', 'pypilot'])
-					subprocess.call(['pkill', '-f', 'openplotter-pypilot-read'])
-					subprocess.call(['pkill', '-f', 'pypilot_boatimu'])
-					subprocess.call(['pkill', '-f', 'pypilot_web'])
-					subprocess.call(['pkill', '-f', 'pypilot_hat'])
-					pypilot = self.conf.get('PYPILOT', 'pypilot')
-					pypilot_boatimu = self.conf.get('PYPILOT', 'pypilot_boatimu')
-					pypilot_web = self.conf.get('PYPILOT', 'pypilot_web')
-					pypilot_hat = self.conf.get('PYPILOT', 'pypilot_hat')
-					if pypilot_boatimu == '1':
-						subprocess.Popen('pypilot_boatimu', cwd = self.conf.home+'/.pypilot')
-						subprocess.Popen('openplotter-pypilot-read')
-					elif pypilot == '1':
-						subprocess.Popen('pypilot', cwd = self.conf.home+'/.pypilot')
-						if pypilot_web == '1': subprocess.Popen('pypilot_web')
-						if pypilot_hat == '1': subprocess.Popen('pypilot_hat')
+					subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'pypilotRestart'])
 					self.ShowStatusBarGREEN(_('Pypilot serial devices modified and restarted'))
 					self.read_Serialinst()
 			dlg.Destroy()
@@ -980,6 +1040,7 @@ class SerialFrame(wx.Frame):
 		subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'restart'])
 		for i in range(seconds, 0, -1):
 			self.ShowStatusBarYELLOW(msg+str(i))
+			wx.GetApp().Yield()
 			time.sleep(1)
 		self.ShowStatusBarGREEN(_('Signal K server restarted'))
 		self.read_Serialinst()

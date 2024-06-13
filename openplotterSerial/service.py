@@ -19,12 +19,12 @@ import sys, subprocess, os
 
 def edit_boot(onoff):
 	try:
-		config = '/boot/config.txt'
+		config = '/boot/firmware/config.txt'
 		os.system('cp -f '+config+' '+config+'_back')
 		file = open(config, 'r')
 	except:
 		try:
-			config = '/boot/firmware/config.txt'
+			config = '/boot/config.txt'
 			os.system('cp -f '+config+' '+config+'_back')
 			file = open(config, 'r')
 		except Exception as e:
@@ -57,12 +57,12 @@ def edit_boot(onoff):
 		return
 
 	try:
-		cmdline = '/boot/cmdline.txt'
+		cmdline = '/boot/firmware/cmdline.txt'
 		os.system('cp -f '+cmdline+' '+cmdline+'_back')
 		file = open(cmdline, 'r')
 	except:
 		try:
-			cmdline = '/boot/firmware/cmdline.txt'
+			cmdline = '/boot/cmdline.txt'
 			os.system('cp -f '+cmdline+' '+cmdline+'_back')
 			file = open(cmdline, 'r')
 		except Exception as e:
@@ -86,12 +86,12 @@ def edit_boot(onoff):
 
 def edit_boot2(onoff, i):
 	try:
-		config = '/boot/config.txt'
+		config = '/boot/firmware/config.txt'
 		os.system('cp -f '+config+' '+config+'_back')
 		file = open(config, 'r')
 	except:
 		try:
-			config = '/boot/firmware/config.txt'
+			config = '/boot/config.txt'
 			os.system('cp -f '+config+' '+config+'_back')
 			file = open(config, 'r')
 		except Exception as e:
@@ -118,29 +118,120 @@ def edit_boot2(onoff, i):
 		print(str(e))
 		return
 
+def edit_boot3(onoff, i):
+	try:
+		config = '/boot/firmware/config.txt'
+		os.system('cp -f '+config+' '+config+'_back')
+		file = open(config, 'r')
+	except:
+		try:
+			config = '/boot/config.txt'
+			os.system('cp -f '+config+' '+config+'_back')
+			file = open(config, 'r')
+		except Exception as e:
+			print(str(e))
+			return
+	exists = False
+	out = ''
+	while True:
+		line = file.readline()
+		if not line: break
+		if onoff and 'dtoverlay=uart'+i+'-pi5' in line: 
+			out += 'dtoverlay=uart'+i+'-pi5\n'
+			exists = True
+		elif not onoff and 'dtoverlay=uart'+i+'-pi5' in line: pass
+		else: out += line
+	if onoff and not exists: out += 'dtoverlay=uart'+i+'-pi5\n'
+	file.close()
+	try: 
+		file = open(config, 'w')
+		file.write(out)
+		file.close()
+	except Exception as e:
+		os.system('cp -f '+config+'_back '+config)
+		print(str(e))
+		return
+
+def edit_boot1(onoff):
+	try:
+		config = '/boot/firmware/config.txt'
+		os.system('cp -f '+config+' '+config+'_back')
+		file = open(config, 'r')
+	except:
+		try:
+			config = '/boot/config.txt'
+			os.system('cp -f '+config+' '+config+'_back')
+			file = open(config, 'r')
+		except Exception as e:
+			print(str(e))
+			return
+	exists = False
+	out = ''
+	while True:
+		line = file.readline()
+		if not line: break
+		if onoff and 'dtparam=uart0=on' in line: 
+			out += 'dtparam=uart0=on\n'
+			exists = True
+		elif not onoff and 'dtparam=uart0=on' in line: pass
+		else: out += line
+	if onoff and not exists: out += 'dtparam=uart0=on\n'
+	file.close()
+	try: 
+		file = open(config, 'w')
+		file.write(out)
+		file.close()
+	except Exception as e:
+		os.system('cp -f '+config+'_back '+config)
+		print(str(e))
+		return
+
 if sys.argv[1]=='start':
 	subprocess.call(['systemctl', 'start', 'signalk.socket'])
 	subprocess.call(['systemctl', 'start', 'signalk.service'])
-if sys.argv[1]=='stop':
+
+elif sys.argv[1]=='stop':
 	subprocess.call(['systemctl', 'stop', 'signalk.service'])
 	subprocess.call(['systemctl', 'stop', 'signalk.socket'])
-if sys.argv[1]=='restart':
+
+elif sys.argv[1]=='restart':
 	subprocess.call(['systemctl', 'stop', 'signalk.service'])
 	subprocess.call(['systemctl', 'stop', 'signalk.socket'])
 	subprocess.call(['systemctl', 'start', 'signalk.socket'])
 	subprocess.call(['systemctl', 'start', 'signalk.service'])
-if sys.argv[1]=='udev':
+
+elif sys.argv[1]=='udev':
 	path = sys.argv[2]
 	os.system('mv '+path+' /etc/udev/rules.d')
 	subprocess.call(['udevadm', 'control', '--reload-rules'])
 	subprocess.call(['udevadm', 'trigger', '--attr-match=subsystem=tty'])
-if sys.argv[1]=='uartTrue': edit_boot(True)
-if sys.argv[1]=='uartFalse': edit_boot(False)
-if sys.argv[1]=='uart2True': edit_boot2(True,'2')
-if sys.argv[1]=='uart2False': edit_boot2(False,'2')
-if sys.argv[1]=='uart3True': edit_boot2(True,'3')
-if sys.argv[1]=='uart3False': edit_boot2(False,'3')
-if sys.argv[1]=='uart4True': edit_boot2(True,'4')
-if sys.argv[1]=='uart4False': edit_boot2(False,'4')
-if sys.argv[1]=='uart5True': edit_boot2(True,'5')
-if sys.argv[1]=='uart5False': edit_boot2(False,'5')
+
+elif sys.argv[1]=='pypilotRestart':
+	try:
+		subprocess.check_output(['systemctl', 'is-enabled', 'pypilot']).decode(sys.stdin.encoding)
+		subprocess.call(['systemctl', 'restart', 'pypilot'])
+	except: pass
+
+elif sys.argv[1]=='uartTrue': edit_boot(True)
+elif sys.argv[1]=='uartFalse': edit_boot(False)
+
+elif sys.argv[1]=='uart2True': edit_boot2(True,'2')
+elif sys.argv[1]=='uart2False': edit_boot2(False,'2')
+elif sys.argv[1]=='uart3True': edit_boot2(True,'3')
+elif sys.argv[1]=='uart3False': edit_boot2(False,'3')
+elif sys.argv[1]=='uart4True': edit_boot2(True,'4')
+elif sys.argv[1]=='uart4False': edit_boot2(False,'4')
+elif sys.argv[1]=='uart5True': edit_boot2(True,'5')
+elif sys.argv[1]=='uart5False': edit_boot2(False,'5')
+
+elif sys.argv[1]=='uartTruePi5': edit_boot1(True)
+elif sys.argv[1]=='uartFalsePi5': edit_boot1(False)
+
+elif sys.argv[1]=='uart1TruePi5': edit_boot3(True,'1')
+elif sys.argv[1]=='uart1FalsePi5': edit_boot3(False,'1')
+elif sys.argv[1]=='uart2TruePi5': edit_boot3(True,'2')
+elif sys.argv[1]=='uart2FalsePi5': edit_boot3(False,'2')
+elif sys.argv[1]=='uart3TruePi5': edit_boot3(True,'3')
+elif sys.argv[1]=='uart3FalsePi5': edit_boot3(False,'3')
+elif sys.argv[1]=='uart4TruePi5': edit_boot3(True,'4')
+elif sys.argv[1]=='uart4FalsePi5': edit_boot3(False,'4')
